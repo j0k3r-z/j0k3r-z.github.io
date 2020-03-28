@@ -663,9 +663,9 @@ data <span class="token operator">=</span> <span class="token punctuation">{</sp
 <li>删除临时文件</li>
 </ol>
 <p>有点类似于条件竞争,需要考虑如何获取文件的路径,以及如何延长存在的时间,还需要一个包含来利用</p>
-<h3 id="4-6网络钓鱼"><a href="#4-6网络钓鱼" class="headerlink" title="4.6网络钓鱼"></a>4.6网络钓鱼</h3><p>若是内网存在一台易受攻击的SMTP服务器,就能利用ftp://协议结合CRLF注入向其发送任意命令,可以由此伪造信息源,造成钓鱼<br>原理:</p>
+<h3 id="4-6邮件伪造"><a href="#4-6邮件伪造" class="headerlink" title="4.6邮件伪造"></a>4.6邮件伪造</h3><p>若是内网存在一台易受攻击的SMTP服务器,就能利用ftp://协议结合CRLF注入向其发送任意命令,可以由此可以进行邮件伪造,造成钓鱼<br>原理:</p>
 <blockquote>
-<p>Java支持在sun.net.ftp.impl.FtpClient中的ftp URI。因此，我们可以指定用户名和密码，例如ft|p://user|:pass|word@host:port/XXX.txt(上传blog这里竟然被识别了…..忽视|即可)，FTP客户端将在连接中发送相应的USER命令。<br>但是如果我们将%0D%0A (CRLF)添加到URL的user部分的任意位置，我们就可以终止USER命令并向FTP会话中注入一个新的命令，即允许我们向25端口发送任意的SMTP命令：</p>
+<p>Java支持在sun.net.ftp.impl.FtpClient中的ftp URI。因此，我们可以指定用户名和密码，例如ftp://user:password@host:port/XXX.txt(上传blog这里竟然被识别了…..忽视|即可)，FTP客户端将在连接中发送相应的USER命令。<br>但是如果我们将%0D%0A (CRLF)添加到URL的user部分的任意位置，我们就可以终止USER命令并向FTP会话中注入一个新的命令，即允许我们向25端口发送任意的SMTP命令：</p>
 </blockquote>
 <p>demo:</p>
 <pre><code>ftp://a
