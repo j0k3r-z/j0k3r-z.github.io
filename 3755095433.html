@@ -527,7 +527,7 @@
     <span class="token punctuation">}</span> 
 <span class="token punctuation">}</span></code></pre>
 <h2 id="0x04-可利用协议"><a href="#0x04-可利用协议" class="headerlink" title="0x04 可利用协议"></a>0x04 可利用协议</h2><p>ssrf的危害大多是来自于其对于各种协议的支持，其中以curl_exec为最，几乎支持各种协议，其次是file_get_contens，最后的fsockopen几乎就不支持仍和协议了。</p>
-<p>先附上一波各语言ssrf可以利用的协议：<br><img src="/3755095433/1.jpg" alt></p>
+<p>先附上一波各语言ssrf可以利用的协议：<br><img src="/3755095433/8.jpg" alt></p>
 <p>从图中也可以看出curl支持的协议是最多的，而php其次，但是php仍带有一些封装协议可以利用。需要提一下windows可利用的curl协议要比linux少很多。本地测试的不一定对，gopher就不支持</p>
 <p>最为常见的协议为下面这些</p>
 <blockquote>
