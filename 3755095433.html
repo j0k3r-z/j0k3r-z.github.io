@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="ssrf学习笔记（持续更新……）, Joker">
+    <meta name="keywords" content="ssrf学习笔记, Joker">
     <meta name="description" content="ssrf学习笔记">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -13,7 +13,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>ssrf学习笔记（持续更新……） | Joker</title>
+    <title>ssrf学习笔记 | Joker</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -304,12 +304,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">ssrf学习笔记（持续更新……）</h1>
+                    <h1 class="description center-align post-title">ssrf学习笔记</h1>
                 </div>
             </div>
         </div>
@@ -465,7 +465,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.9k
+                    3k
                 </div>
                 
 
@@ -545,11 +545,11 @@ dict
 http://127.0.0.1/ssrf.php?url=dict://127.0.0.1:port/info
 http
 http://127.0.0.1/ssrf.php?url=http://xxx.com/302.php</code></pre><p>直接根据回显内容和状态判读即可</p>
-<h5 id="6-2-1-2BOOL型ssrf"><a href="#6-2-1-2BOOL型ssrf" class="headerlink" title="6.2.1.2BOOL型ssrf"></a>6.2.1.2BOOL型ssrf</h5><p>上面的会完整的显示回显信息，但是还以一种则只会返回True or False。这种要想读取文件就需要考虑OOB了，目前木的思路，如何进行oob</p>
+<h5 id="6-2-1-2BOOL型ssrf"><a href="#6-2-1-2BOOL型ssrf" class="headerlink" title="6.2.1.2BOOL型ssrf"></a>6.2.1.2BOOL型ssrf</h5><p>上面的会完整的显示回显信息，但是还以一种则只会返回True or False。这种要想读取文件就需要考虑OOB了，目前木的思路，感觉可行性不高。仍可进行内网探测与攻击……</p>
 <p>需要注意的是即使返回true，payload也不一定执行成功。</p>
-<h4 id="6-3-2无回显"><a href="#6-3-2无回显" class="headerlink" title="6.3.2无回显"></a>6.3.2无回显</h4><p>无回显就只能通过在vps上通过监听，进行测试</p>
+<h4 id="6-3-2无回显"><a href="#6-3-2无回显" class="headerlink" title="6.3.2无回显"></a>6.3.2无回显</h4><p>无回显就只能通过在vps上通过监听，进行测试，对于无回显无法判断命令是否执行成功，只能进行探测。可以先测一波协议，再从一些协议上下手，搞出来回显。或者直接尝试攻击……</p>
 <h3 id="6-3-Dos"><a href="#6-3-Dos" class="headerlink" title="6.3 Dos"></a>6.3 Dos</h3><p>请求大文件，始终保持连接Keep-Alive Always</p>
-<h2 id="0x06-漏洞常见的出现场景"><a href="#0x06-漏洞常见的出现场景" class="headerlink" title="0x06 漏洞常见的出现场景"></a>0x06 漏洞常见的出现场景</h2><p>直接先上某大佬的一张脑图和大佬们的总结，感觉总结的已经很完整了，就不班门弄斧了，还得多实践。总结一句话就是一切需要有url的地方都可能存在<br><img src="/3755095433/6.png" alt></p>
+<h2 id="0x06-漏洞常见的出现场景"><a href="#0x06-漏洞常见的出现场景" class="headerlink" title="0x06 漏洞常见的出现场景"></a>0x06 漏洞常见的出现场景</h2><p>直接先上某大佬的一张脑图和大佬们的总结，感觉总结的已经很完整了，就不班门弄斧了，还得多实践。总结一句话就是一切需要有url的地方都可能存在</p>
 <blockquote>
 <ol>
 <li>社交分享功能：获取超链接的标题等内容进行显示</li>
@@ -578,7 +578,7 @@ http://127.0.0.1/ssrf.php?url=http://xxx.com/302.php</code></pre><p>直接根据
 <h2 id="0x08-bypass姿势"><a href="#0x08-bypass姿势" class="headerlink" title="0x08 bypass姿势"></a>0x08 bypass姿势</h2><p>通过上面的防御方式，其实也能看出来一下bypass的姿势</p>
 <h3 id="8-1绕过姿势"><a href="#8-1绕过姿势" class="headerlink" title="8.1绕过姿势"></a>8.1绕过姿势</h3><h4 id="8-1-1-特殊地址"><a href="#8-1-1-特殊地址" class="headerlink" title="8.1.1 特殊地址"></a>8.1.1 特殊地址</h4><ol>
 <li>[::]<br>利用的应该是ipv6，windows本机测试失败，linux服务器可能是网卡问题提示网络问题，应该在linuz服务器上是可以用的</li>
-<li><a href="http://0/" target="_blank" rel="noopener">http://0/</a><br>等同于127.0.0.1，windows失败，linux成功<h4 id="8-1-2-绕过"><a href="#8-1-2-绕过" class="headerlink" title="8.1.2 @绕过"></a>8.1.2 @绕过</h4>下面会有详细介绍<h4 id="8-1-3-利用Enclosed-alphanumerics（封闭式字符数字）绕过"><a href="#8-1-3-利用Enclosed-alphanumerics（封闭式字符数字）绕过" class="headerlink" title="8.1.3 利用Enclosed alphanumerics（封闭式字符数字）绕过"></a>8.1.3 利用Enclosed alphanumerics（封闭式字符数字）绕过</h4>应该时编码的问题，同样windows失败，linux成功<pre><code>ⓔⓧⓐⓜⓟⓛⓔ.ⓒⓞⓜ  &gt;&gt;&gt;  example.com
+<li><a href="http://0/" target="_blank" rel="noopener">http://0/</a><br>等同于127.0.0.1，windows失败，linux成功<h4 id="8-1-2-、-字符绕过"><a href="#8-1-2-、-字符绕过" class="headerlink" title="8.1.2 @、#字符绕过"></a>8.1.2 @、#字符绕过</h4>下面会有详细介绍<h4 id="8-1-3-利用Enclosed-alphanumerics（封闭式字符数字）绕过"><a href="#8-1-3-利用Enclosed-alphanumerics（封闭式字符数字）绕过" class="headerlink" title="8.1.3 利用Enclosed alphanumerics（封闭式字符数字）绕过"></a>8.1.3 利用Enclosed alphanumerics（封闭式字符数字）绕过</h4>应该时编码的问题，同样windows失败，linux成功<pre><code>ⓔⓧⓐⓜⓟⓛⓔ.ⓒⓞⓜ  &gt;&gt;&gt;  example.com
 List:
 ① ② ③ ④ ⑤ ⑥ ⑦ ⑧ ⑨ ⑩ ⑪ ⑫ ⑬ ⑭ ⑮ ⑯ ⑰ ⑱ ⑲ ⑳ 
 ⑴ ⑵ ⑶ ⑷ ⑸ ⑹ ⑺ ⑻ ⑼ ⑽ ⑾ ⑿ ⒀ ⒁ ⒂ ⒃ ⒄ ⒅ ⒆ ⒇ 
@@ -643,7 +643,10 @@ header(&quot;Location: $url&quot;); </code></pre><h4 id="8-1-10-DNS-Rebinding绕
 <li>合法的话会再去进行一次DNS解析</li>
 </ol>
 <p>首要条件就是要TTL为0,即DNS记录在DNS服务器上缓存时间为0,等于无缓存.这样我们只需要设置两个解析,其中一个为内网地址,就可能会绕过内网的限制,但是有点拼几率.还有一种方式是通过ns记录解析到一个子域名,然后再把子域名解析到内网ip,这样的话就能直接到内网.</p>
-<h3 id="8-2-具体场景的绕过"><a href="#8-2-具体场景的绕过" class="headerlink" title="8.2 具体场景的绕过"></a>8.2 具体场景的绕过</h3><h4 id="8-2-1-限制为http-www-xxx-com-域名时"><a href="#8-2-1-限制为http-www-xxx-com-域名时" class="headerlink" title="8.2.1 限制为http://www.xxx.com 域名时"></a>8.2.1 限制为<a href="http://www.xxx.com" target="_blank" rel="noopener">http://www.xxx.com</a> 域名时</h4><p>先放一张图 url的组成<br><img src="https://legoc.github.io/2018/09/08/SSRF%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/1.jpg" alt><br>通过可以看到一般URL会通过@来区分用户名和域名，这样我们就可以通过@来绕过域名的限制，不同的处理函数处理机制是不一样的，parse_url中获取的host是最后一个@符号后面的host，而libcurl则是获取的第一个@符号之后的，再就是filter_var的限定，可以用data://绕过，主要是因为filter_var()函数对于<a href="http://evil.com;google.com" target="_blank" rel="noopener">http://evil.com;google.com</a> 会返回false也就是认为url格式错误，但是对于0://evil.com:80;google.com:80/ 、0://evil.com:80,google.com:80/、0://evil.com:80\google.com:80/却返回true</p>
+<h3 id="8-2-具体场景的绕过"><a href="#8-2-具体场景的绕过" class="headerlink" title="8.2 具体场景的绕过"></a>8.2 具体场景的绕过</h3><h4 id="8-2-1-限制为http-www-xxx-com-域名时"><a href="#8-2-1-限制为http-www-xxx-com-域名时" class="headerlink" title="8.2.1 限制为http://www.xxx.com 域名时"></a>8.2.1 限制为<a href="http://www.xxx.com" target="_blank" rel="noopener">http://www.xxx.com</a> 域名时</h4><p>先放一张图 url的组成<br><img src="https://legoc.github.io/2018/09/08/SSRF%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/1.jpg" alt></p>
+<p>通过可以看到一般URL会通过@来区分用户名和域名，这样我们就可以通过@来绕过域名的限制，不同的处理函数处理机制是不一样的，parse_url中获取的host是最后一个@符号后面的host，而libcurl则是获取的第一个@符号之后的</p>
+<p>基于parse_url也可利用#等字符绕过，# 会阻断把前面的当成host</p>
+<p>再就是filter_var的限定，可以用data://绕过，主要是因为filter_var()函数对于<a href="http://evil.com;google.com" target="_blank" rel="noopener">http://evil.com;google.com</a> 会返回false也就是认为url格式错误，但是对于0://evil.com:80;google.com:80/ 、0://evil.com:80,google.com:80/、0://evil.com:80\google.com:80/却返回true</p>
 <h3 id="8-2-2-限制请求IP不为内网地址"><a href="#8-2-2-限制请求IP不为内网地址" class="headerlink" title="8.2.2 限制请求IP不为内网地址"></a>8.2.2 限制请求IP不为内网地址</h3><ol>
 <li>短网址绕过</li>
 <li>使用可以指向任意域名的xip.io，127.0.0.1.xip.io，可以解析为127.0.0.1</li>
@@ -653,7 +656,7 @@ header(&quot;Location: $url&quot;); </code></pre><h4 id="8-1-10-DNS-Rebinding绕
 <li>url跳转</li>
 <li>短地址</li>
 </ol>
-<h2 id="0x09-PS-思维导图"><a href="#0x09-PS-思维导图" class="headerlink" title="0x09 PS:思维导图"></a>0x09 PS:思维导图</h2><p><img src="https://raw.githubusercontent.com/j0k3r-z/images/master/img/20200331001952.png" alt></p>
+<h2 id="0x09-PS-思维导图"><a href="#0x09-PS-思维导图" class="headerlink" title="0x09 PS:思维导图"></a>0x09 PS:思维导图</h2><p><img src="https://raw.githubusercontent.com/j0k3r-z/images/master/img/20200331005144.png" alt></p>
 <h2 id="0x10-参考文章"><a href="#0x10-参考文章" class="headerlink" title="0x10 参考文章"></a>0x10 参考文章</h2><p><a href="https://xz.aliyun.com/t/2115" target="_blank" rel="noopener">了解SSRF,这一篇就足够了</a></p>
 <p><a href="https://zhengbao.wang/SSRF%E7%9A%84%E4%B8%80%E4%BA%9B%E5%88%A9%E7%94%A8%E5%A7%BF%E5%8A%BF/" target="_blank" rel="noopener">SSRF的一些利用姿势</a><br><a href="https://xz.aliyun.com/t/6373" target="_blank" rel="noopener">https://xz.aliyun.com/t/6373</a><br><a href="https://www.secpulse.com/archives/65832.html" target="_blank" rel="noopener">https://www.secpulse.com/archives/65832.html</a><br><a href="https://blog.csdn.net/qq_39101049/article/details/102501839s" target="_blank" rel="noopener">https://blog.csdn.net/qq_39101049/article/details/102501839s</a><br><a href="https://zhuanlan.zhihu.com/p/89426041" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/89426041</a></p>
 <hr>
@@ -1026,7 +1029,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
         <div class="col s12 m8 l8 copy-right">
             
             &nbsp;苦逼博主已经肝了&nbsp;<span
-                class="white-color">8.3k</span>&nbsp;字
+                class="white-color">8.4k</span>&nbsp;字
             
             
             
