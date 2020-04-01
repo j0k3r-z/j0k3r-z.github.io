@@ -4,8 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="一道CTF的trick分析, Joker">
-    <meta name="description" content="一道CTF的trick分析">
+    <meta name="keywords" content="信息搜集, Joker">
+    <meta name="description" content="信息搜集">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -13,7 +13,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>一道CTF的trick分析 | Joker</title>
+    <title>信息搜集 | Joker</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -304,12 +304,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">一道CTF的trick分析</h1>
+                    <h1 class="description center-align post-title">信息搜集</h1>
                 </div>
             </div>
         </div>
@@ -424,13 +424,9 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                    <div class="article-tag">
-                        
-                            <a href="/tags/CTF/">
-                                <span class="chip bg-color">CTF</span>
-                            </a>
-                        
-                    </div>
+                          <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                          </div>
                     
                 </div>
                 <div class="col s5 right-align">
@@ -442,28 +438,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-03-17
+                    2020-04-01
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-03-17
+                    2020-04-01
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    563
+                    1.3k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    2 分
+                    4 分
                 </div>
                 
 				
@@ -479,40 +475,79 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="题目代码"><a href="#题目代码" class="headerlink" title="题目代码"></a>题目代码</h2><p>代码如下：</p>
-<pre class=" language-php"><code class="language-php"><span class="token delimiter">&lt;?php</span>
-<span class="token variable">$url</span> <span class="token operator">=</span> <span class="token variable">$_POST</span><span class="token punctuation">[</span><span class="token string">'url'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">filter_var</span><span class="token punctuation">(</span><span class="token variable">$url</span><span class="token punctuation">,</span> <span class="token constant">FILTER_VALIDATE_URL</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token function">var_dump</span><span class="token punctuation">(</span><span class="token variable">$url</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">preg_match</span><span class="token punctuation">(</span><span class="token string">'/(data:\/\/)|(&amp;)|(\|)|(\.\/)/i'</span><span class="token punctuation">,</span> <span class="token variable">$url</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">echo</span> <span class="token string">"you are hacker"</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
-        <span class="token variable">$res</span> <span class="token operator">=</span> <span class="token function">parse_url</span><span class="token punctuation">(</span><span class="token variable">$url</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token function">var_dump</span><span class="token punctuation">(</span><span class="token variable">$res</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">preg_match</span><span class="token punctuation">(</span><span class="token string">'/127\.0\.0\.1$/'</span><span class="token punctuation">,</span> <span class="token variable">$res</span><span class="token punctuation">[</span><span class="token string">'host'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token function">var_dump</span><span class="token punctuation">(</span><span class="token variable">$url</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token variable">$code</span> <span class="token operator">=</span> <span class="token function">file_get_contents</span><span class="token punctuation">(</span><span class="token variable">$url</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token function">var_dump</span><span class="token punctuation">(</span><span class="token variable">$code</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token function">exec</span><span class="token punctuation">(</span><span class="token variable">$code</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
-            <span class="token keyword">echo</span><span class="token string">'nononono'</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
-    <span class="token keyword">echo</span><span class="token string">'nonono!'</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span></code></pre>
-<h2 id="filter-var"><a href="#filter-var" class="headerlink" title="filter_var()"></a>filter_var()</h2><p>首先看filter_var()函数的官方说明<br><img src="https://raw.githubusercontent.com/j0k3r-z/images/master/img/20200314224534.png" alt></p>
-<blockquote>
-<p>FILTER_VALIDATE_URL 过滤器把值作为 URL 来验证。<br>Name: “validate_url”<br>ID-number: 273<br>可能的标志：<br>FILTER_FLAG_SCHEME_REQUIRED - 要求 URL 是 RFC 兼容 URL（比如 <a href="http://example）" target="_blank" rel="noopener">http://example）</a><br>FILTER_FLAG_HOST_REQUIRED - 要求 URL 包含主机名（比如 <a href="http://www.example.com）" target="_blank" rel="noopener">http://www.example.com）</a><br>FILTER_FLAG_PATH_REQUIRED - 要求 URL 在域名后存在路径（比如 <a href="http://www.example.com/example1/test2/）" target="_blank" rel="noopener">www.example.com/example1/test2/）</a><br>FILTER_FLAG_QUERY_REQUIRED - 要求 URL 存在查询字符串（比如 “example.php?name=Peter&amp;age=37”）</p>
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>稍微总结整理了下，当备忘录了，后期可能会继续更新</p>
+<h1 id="信息搜集流程"><a href="#信息搜集流程" class="headerlink" title="信息搜集流程"></a>信息搜集流程</h1><blockquote>
+<p>拿到一个网站首先进行：whois、子域名、备案信息；<br>利用获取到的子域名批量获取服务器信息：真实ip、端口服务、dns信息务；<br>然后是web层方面：网站架构、信息泄露、探测waf、旁站和C端、网络空间<br>整理后查找脆弱点进行渗透</p>
 </blockquote>
-<h2 id="parse-url"><a href="#parse-url" class="headerlink" title="parse_url()"></a>parse_url()</h2><p>先看官方手册<br><img src="https://raw.githubusercontent.com/j0k3r-z/images/master/img/20200314231824.png" alt><br><img src="https://raw.githubusercontent.com/j0k3r-z/images/master/img/20200314231939.png" alt><br><img src="https://raw.githubusercontent.com/j0k3r-z/images/master/img/20200314232031.png" alt><br>对于parse_url()的拆分，是有解析漏洞的，根据特定符号进行分段例如通过@分割 user 与 host<br>这样就可以伪造host<br><img src="https://raw.githubusercontent.com/j0k3r-z/images/master/img/20200314232827.png" alt></p>
-<h2 id="题目分析"><a href="#题目分析" class="headerlink" title="题目分析"></a>题目分析</h2><p>首先我们要post一个url，而且host是以127.0.0.1结尾，有一个题目，是要以baidu.com结尾，这就衍生了另外的思路：买域名，或者post.baidu.com跳转<br>正常情况下，利用parse_url()的解析漏洞，其实就可以绕过了，但是在后面有<code>file_get_contens</code>的情况下，我们需要传入数据让<code>file_get_contens</code>读取，因为php对于MIME不敏感，我们可以修改text来利用data://来绕过，如：<code>data://baidu.com/plain;base64,xxxxx</code>，but,data://被ban了，看了大佬们的WP，发现可以利用<code>compress.zlib://data:@127.0.0.1/palin,让file_get_contens读取的代码</code>来绕过，<br><img src="https://raw.githubusercontent.com/j0k3r-z/images/master/img/20200314235825.png" alt></p>
-<p>为什么要用<code>compress.zlib://</code>没怎么弄懂，希望知道的大佬们指点一波，我分析的应该是compress.zlib://将后面的当成了要读取的文件（具体伪协议会另写一篇文章），并且根据官方手册说明</p>
+<h1 id="信息搜集方法"><a href="#信息搜集方法" class="headerlink" title="信息搜集方法"></a>信息搜集方法</h1><h2 id="0x01-Whois"><a href="#0x01-Whois" class="headerlink" title="0x01 Whois"></a>0x01 Whois</h2><ol>
+<li><a href="https://whois.chinaz.com/" target="_blank" rel="noopener">https://whois.chinaz.com/</a> //站长</li>
+<li><a href="https://x.threatbook.cn/" target="_blank" rel="noopener">https://x.threatbook.cn/</a> //微步</li>
+<li><a href="https://whois.aizhan.com/" target="_blank" rel="noopener">https://whois.aizhan.com/</a> //爱站</li>
+<li>kali 也可通过whois命令进行查询<h2 id="0x02-备案查询"><a href="#0x02-备案查询" class="headerlink" title="0x02 备案查询"></a>0x02 备案查询</h2></li>
+<li><a href="http://www.beian.gov.cn/portal/recordQuery/" target="_blank" rel="noopener">http://www.beian.gov.cn/portal/recordQuery/</a> //公安备案查询</li>
+<li><a href="http://beianbeian.com/" target="_blank" rel="noopener">http://beianbeian.com/</a></li>
+<li><a href="https://www.tianyancha.com/" target="_blank" rel="noopener">https://www.tianyancha.com/</a> //天眼查</li>
+<li><a href="http://www.gsxt.gov.cn/index.html" target="_blank" rel="noopener">http://www.gsxt.gov.cn/index.html</a> //企业信用公示<h2 id="0x03-子域名"><a href="#0x03-子域名" class="headerlink" title="0x03 子域名"></a>0x03 子域名</h2></li>
+<li>layer子域名挖掘机</li>
+<li><a href="https://phpinfo.me/domain/" target="_blank" rel="noopener">https://phpinfo.me/domain/</a></li>
+<li>subDomainsBrute</li>
+<li>搜索引擎语法(site:xxx.com)<h2 id="0x04-DNS"><a href="#0x04-DNS" class="headerlink" title="0x04 DNS"></a>0x04 DNS</h2></li>
+<li>Kali（host、dig命令）</li>
+<li>windows（nslookup命令）</li>
+<li>在线工具（<a href="http://tool.chinaz.com/dns/" target="_blank" rel="noopener">http://tool.chinaz.com/dns/</a> //站长）<h2 id="0x05-真实IP"><a href="#0x05-真实IP" class="headerlink" title="0x05 真实IP"></a>0x05 真实IP</h2>很多的网站都挂有CDN加速，获取到的IP不一定是真实IP，如果搜索出来的IP直接访问返回错误，一般就不是真实IP</li>
+</ol>
 <blockquote>
-<p>compress.zlib://、 compress.bzip2:// 和 gzopen()、bzopen() 是相等的<br>尝试换成 compress.bzip2://试了一下，但是不知道为什么返回的全是空白（同求大佬指点）</p>
+<p>CDN的全称是Content Delivery Network，即内容分发网络。其基本思路是尽可能避开互联网上有可能影响数据传输速度和稳定性的瓶颈和环节，使内容传输的更快、更稳定。通过在网络各处放置节点服务器所构成的在现有的互联网基础之上的一层智能虚拟网络，CDN系统能够实时地根据网络流量和各节点的连接、负载状况以及到用户的距离和响应时间等综合信息将用户的请求重新导向离用户最近的服务节点上。其目的是使用户可就近取得所需内容，解决 Internet网络拥挤的状况，提高用户访问网站的响应速度。</p>
 </blockquote>
-<h2 id="END"><a href="#END" class="headerlink" title="END"></a>END</h2><p>这道题目大概就这些知识点和trick<br>下面再附上以为师傅的关于file_get_contens获取数据的总结截图<br><img src="https://raw.githubusercontent.com/j0k3r-z/images/master/img/20200314235620.png" alt></p>
-<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p><a href="https://www.jianshu.com/p/80ce73919edb" target="_blank" rel="noopener">【SSRF】如何绕过filter_var(), preg_match() 和 parse_url()</a><br><a href="https://blog.dyboy.cn/websecurity/154.html#title-3" target="_blank" rel="noopener">一道CTF题目的探究</a></p>
+<p>获取真实IP 思路</p>
+<blockquote>
+<p>1、二级域名法 一般网站不会所有的二级域名放CDN，因此我们可以利用这点来获取网站的真实ip </p>
+<p> 2、<a href="http://ping.chinaz.com/" target="_blank" rel="noopener">多地ping法</a> 由CDN的原理，不同的地方去Ping服务器，如果IP不一样，则目标网站肯定使用了CDN</p>
+<p> 3、nslookup法 找国外的比较偏僻的DNS解析服务器进行DNS查询，因为大部分CDN提供商只针对国内市场，而对国外市场几乎是不做CDN，所以有很大的几率会直接解析到真实IP </p>
+<p>4、查看邮件法 通过查看邮件原文来确定ip地址，CDN总不会发送邮件吧</p>
+<p>5、RSS订阅法 RSS原理于邮件法差不多</p>
+<p>6、<a href="https://toolbar.netcraft.com/site_report" target="_blank" rel="noopener">查看历史解析记录法</a> 查找域名历史解析记录，域名在上CDN之前用的IP，很有可能就是CDN的真实源IP地址</p>
+<p>7、利用网站漏洞（XSS、命令执行、SSRF、php探针、phpinfo页面等） 可以通过一些页面和漏洞获取到服务器ip地址也是可能的。</p>
+</blockquote>
+<h2 id="0x06-敏感目录和敏感信息"><a href="#0x06-敏感目录和敏感信息" class="headerlink" title="0x06 敏感目录和敏感信息"></a>0x06 敏感目录和敏感信息</h2><ol>
+<li>目录工具（御剑、dirsearch，kali的dirb）</li>
+<li>wpscan（kali扫描wordpress漏洞）</li>
+<li>BBscan （批量扫描信息泄露工具）</li>
+<li>GSIL（GitHub敏感信息泄露监控工具）</li>
+<li>搜索引擎语法（<a href="http://www.exploit-db.com/google-hacking-database/" target="_blank" rel="noopener">www.exploit-db.com/google-hacking-database/</a> //Google Hacking Database）</li>
+<li>同时也可以通过其他社交平台，侧面收集目标的敏感信息</li>
+</ol>
+<h2 id="0x07-网站架构（操作系统、CMS、中间件、数据库、编程语言）"><a href="#0x07-网站架构（操作系统、CMS、中间件、数据库、编程语言）" class="headerlink" title="0x07 网站架构（操作系统、CMS、中间件、数据库、编程语言）"></a>0x07 网站架构（操作系统、CMS、中间件、数据库、编程语言）</h2><ol>
+<li>Nmap、masscan</li>
+<li>wappalyzer插件</li>
+<li><a href="http://www.yunsee.cn/" target="_blank" rel="noopener">云悉</a></li>
+<li>CMS查询工具（御剑cms 、大禹cms、kali的whatweb）</li>
+<li><a href="http://tool.chinaz.com/port" target="_blank" rel="noopener">站长端口在线查询</a> //仅限单个端口扫描（不留痕迹）</li>
+</ol>
+<p>PS：netstat -anbo（window查看开放端口及对应进程，a查看所有连接和侦听端口，n以数字方式显示地址和端口号，b显示端口连接的程序，o显示关联id）需要权限</p>
+<h2 id="旁站和C段"><a href="#旁站和C段" class="headerlink" title="旁站和C段"></a>旁站和C段</h2><ol>
+<li>nmap</li>
+<li>北极熊扫描器</li>
+<li><a href="http://stool.chinaz.com/same" target="_blank" rel="noopener">站长</a></li>
+<li><a href="https://phpinfo.me/bing.php" target="_blank" rel="noopener">在线C段旁站查询</a></li>
+</ol>
+<h2 id="WAF"><a href="#WAF" class="headerlink" title="WAF"></a>WAF</h2><ol>
+<li>nmap (–script=http-waf-detect、–script=http-waf-fingerprint)<blockquote>
+<p>http-waf-detect ，它发送很多恶意请求，看有没有被服务端封杀、过滤或检测到的请求。 http-waf-fingerprint 也是这个工作流程，但是这个脚本还会进一步解析响应，根据不同 IDSs 和 WAFs 的模式来对 WAF 进行分类</p>
+</blockquote>
+</li>
+<li>wafw00f</li>
+<li>sqlmap –identify-waf</li>
+<li>手工探测</li>
+</ol>
+<h2 id="网络空间"><a href="#网络空间" class="headerlink" title="网络空间"></a>网络空间</h2><ol>
+<li><a href="https://www.shodan.io/" target="_blank" rel="noopener">Shodan</a></li>
+<li><a href="https://fofa.so/" target="_blank" rel="noopener">FOFA</a></li>
+<li><a href="https://www.zoomeye.org/statistics" target="_blank" rel="noopener">Zoomeye</a></li>
+</ol>
+<h1 id="PS"><a href="#PS" class="headerlink" title="PS"></a>PS</h1><h3 id="谷歌基本语法"><a href="#谷歌基本语法" class="headerlink" title="谷歌基本语法"></a>谷歌基本语法</h3><blockquote>
+<p>“” //双引号表示强制搜索<br>-//表示搜索不包含关键词的网页<br>|  //或者的意思<br>site //返回所有于这个域名有关的网页<br>intext //搜索到的网页正文部分包含关键词<br>intitle //搜索到的网页标题包含关键词<br>cache   //搜索关于某些内容的缓存<br>definne //搜索某个词语的定义<br>filetype //搜索指定的文件类型<br>info //查找指定站点的一些基本信息<br>inurl //搜索包含关键词的URL<br>link //可以返回所有和baidu.com做了链接的URL</p>
+</blockquote>
 <hr>
 <p>版权声明：</p>
 <p>除非注明，本博文章均为原创，转载请以链接形式标明本文地址。</p>
@@ -542,7 +577,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://blog.j0k3r.cn/4215173263.html">http://blog.j0k3r.cn/4215173263.html</a>
+                    <a href="http://blog.j0k3r.cn/186766472.html">http://blog.j0k3r.cn/186766472.html</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -579,11 +614,7 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            
-                                <a href="/tags/CTF/">
-                                    <span class="chip bg-color">CTF</span>
-                                </a>
-                            
+                            <span class="chip bg-color">无标签</span>
                         </div>
                     
                 </div>
@@ -622,49 +653,39 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/3755095433.html">
+                <a href="/186766472.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="ssrf学习笔记">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="信息搜集">
                         
-                        <span class="card-title">ssrf学习笔记</span>
+                        <span class="card-title">信息搜集</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            ssrf学习笔记
+                            信息搜集
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-03-17
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-04-01
+                            </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    学习笔记
-                                </a>
-                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Joker
                             
                         </span>
                     </div>
                 </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/ssrf/">
-                        <span class="chip bg-color">ssrf</span>
-                    </a>
-                    
-                </div>
+
                 
             </div>
         </div>
@@ -675,24 +696,24 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/1877436815.html">
+                <a href="/2133607805.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="命令执行绕过">
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="SSRF漏洞研究[转载]">
                         
-                        <span class="card-title">命令执行绕过</span>
+                        <span class="card-title">SSRF漏洞研究[转载]</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            命令执行绕过
+                            SSRF漏洞研究[转载]
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-03-17
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-04-01
                             </span>
                         <span class="publish-author">
                             
@@ -701,14 +722,6 @@
                             
                         </span>
                     </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">
-                        <span class="chip bg-color">命令执行</span>
-                    </a>
-                    
                 </div>
                 
             </div>
