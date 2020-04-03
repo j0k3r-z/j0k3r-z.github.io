@@ -452,14 +452,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    10.6k
+                    10.4k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    54 分
+                    53 分
                 </div>
                 
 				
@@ -590,36 +590,7 @@ window.location.href=… (and assigning to location’s href, host and hostname)
 <blockquote>
 <p>下面摘自<a href="https://juejin.im/post/5bad9140e51d450e935c6d64#heading-24" target="_blank" rel="noopener">https://juejin.im/post/5bad9140e51d450e935c6d64#heading-24</a></p>
 </blockquote>
-<ul>
-<li><strong>利用模板引擎</strong></li>
-</ul>
-<ul>
-<li><p><strong>避免内联事件</strong></p>
-<blockquote>
-<p>尽量不要使用 onLoad=”onload(‘‘)”、onClick=”go(‘‘)”这种拼接内联事件的写法。在 JavaScript 中通过 .addEventlistener()事件绑定会更安全。</p>
-</blockquote>
-</li>
-<li><p><strong>避免拼接 HTML</strong></p>
-<blockquote>
-<p>前端采用拼接 HTML 的方法比较危险，如果框架允许，使用 createElement、setAttribute 之类的方法实现。或者采用比较成熟的渲染框架，如 Vue/React 等。</p>
-</blockquote>
-</li>
-<li><p><strong>时刻保持警惕</strong></p>
-<blockquote>
-<p>在插入位置为 DOM 属性、链接等位置时，要打起精神，严加防范。</p>
-</blockquote>
-</li>
-<li><p><strong>增加攻击难度，降低攻击后果</strong></p>
-<blockquote>
-<p>通过 CSP、输入长度配置、接口安全措施等方法，增加攻击的难度，降低攻击的后果。</p>
-</blockquote>
-</li>
-<li><p><strong>主动检测和发现</strong></p>
-<blockquote>
-<p>可使用 XSS 攻击字符串和自动扫描工具寻找潜在的 XSS 漏洞。</p>
-</blockquote>
-</li>
-</ul>
+<p><img src="/236463394/2.png" alt></p>
 <h1 id="0x05-bypass"><a href="#0x05-bypass" class="headerlink" title="0x05 bypass"></a>0x05 bypass</h1><p>这个绕过就更多了……花里胡哨。先说下完全没过滤的情况下<br>一般输出再标签内，一般就可以试一下是否有xss，如：</p>
 <pre><code>&lt;input value=&quot;输出&quot;&gt;
 &lt;img onload=&quot;...[输出]...&quot;&gt;
@@ -772,7 +743,7 @@ xlink:href
 autofocus
 src
 content
-data</code></pre><h2 id="思维导图"><a href="#思维导图" class="headerlink" title="思维导图"></a>思维导图</h2><p><img src="https://raw.githubusercontent.com/j0k3r-z/images/master/img/20200403140121.png" alt></p>
+data</code></pre><h2 id="思维导图"><a href="#思维导图" class="headerlink" title="思维导图"></a>思维导图</h2><p><img src="https://raw.githubusercontent.com/j0k3r-z/images/master/img/20200403143705.png" alt></p>
 <h2 id="备忘录"><a href="#备忘录" class="headerlink" title="备忘录"></a>备忘录</h2><p>收藏一下，当字典用</p>
 <hr>
 <p>这是一份跨站脚本（XSS）备忘录，收集了大量的XSS攻击向量，包含了各种事件处理、通讯协议、特殊属性、限制字符、编码方式、沙箱逃逸等技巧，可以帮助渗透测试人员绕过WAF和过滤机制。<br>网址：<a href="https://mp.weixin.qq.com/s?__biz=MzA3NzE2MjgwMg==&mid=2448904601&idx=1&sn=3c8fd18363ddb3b7b6b5f33565696186&chksm=8b55c1c4bc2248d2c2b935b3980652ce576f4d532e63ca4c72f9a7a4cbafb2c9e6a62abca620&mpshare=1&scene=1&srcid=&sharer_sharetime=1576462865354&sharer_shareid=9aaf420661f2f9968b23fa8064773d63#rd" target="_blank" rel="noopener">跨站脚本（XSS）备忘录-2019版</a></p>
@@ -1446,7 +1417,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
         <div class="col s12 m8 l8 copy-right">
             
             &nbsp;苦逼博主已经肝了&nbsp;<span
-                class="white-color">27.8k</span>&nbsp;字
+                class="white-color">27.6k</span>&nbsp;字
             
             
             
