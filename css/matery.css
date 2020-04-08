@@ -34,14 +34,10 @@
 }
 
 body {
-    background-image: url(https://raw.githubusercontent.com/j0k3r-z/images/master/img/20200408153956.jpg);
-    background-repeat:no-repeat;
-    background-attachment:fixed;
-    background-position:center;
-    background-size: cover;
-    margin:0 auto;
+    background-color: #eaeaea;
+    margin: 0;
+    color: #34495e;
 }
-
 
 h1 {
     margin: 48px 0 22px -5px;
@@ -252,7 +248,8 @@ mark {
 }
 
 .bg-color {
-    background-image: linear-gradient(to right, #4cbf30 0%, #0f9d58 100%);
+    background-image: linear-gradient(slateblue, cornflowerblue);
+    opacity: 0.8;
 }
 
 .text-color {
@@ -646,7 +643,7 @@ header .go-back i {
     }
 }*/
 
-@keyframes rainbow {
+/*@keyframes rainbow {
 
     0%,
     100% {
@@ -690,7 +687,7 @@ header .go-back i {
         background: -moz-linear-gradient(135deg, rgba(233, 30, 99, 0.75) 0%, rgba(233, 30, 99, 0.65) 100%);
         background: -webkit-linear-gradient(135deg, rgba(2233, 30, 99, 0.75) 0%, rgba(233, 30, 99, 0.65) 100%);
     }
-}
+}*/
 
 .index-card {
     margin-top: -10px;
