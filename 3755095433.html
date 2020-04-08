@@ -869,7 +869,7 @@ header(&quot;Location: $url&quot;); </code></pre><h4 id="8-1-10-DNS-Rebinding绕
 
         var selection = window.getSelection();
         // if the selection is short let's not annoy our users.
-        if (('' + selection).length < Number.parseInt('50')) {
+        if (('' + selection).length < Number.parseInt('150')) {
             return;
         }
 

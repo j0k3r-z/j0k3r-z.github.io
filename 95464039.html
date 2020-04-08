@@ -827,7 +827,7 @@ attack.php写上CSRF攻击代码</code></pre><h3 id="绕过正则表达式"><a h
 
         var selection = window.getSelection();
         // if the selection is short let's not annoy our users.
-        if (('' + selection).length < Number.parseInt('50')) {
+        if (('' + selection).length < Number.parseInt('150')) {
             return;
         }
 

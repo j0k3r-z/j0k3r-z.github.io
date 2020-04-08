@@ -1256,7 +1256,7 @@ function document.body.innerHTML(){ x = &quot;&lt;img src=1 onerror=alert(1)&gt;
 
         var selection = window.getSelection();
         // if the selection is short let's not annoy our users.
-        if (('' + selection).length < Number.parseInt('50')) {
+        if (('' + selection).length < Number.parseInt('150')) {
             return;
         }
 

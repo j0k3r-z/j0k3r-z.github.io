@@ -445,7 +445,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-04-01
+                    2020-04-05
                 </div>
                 
 
@@ -546,8 +546,12 @@
 <li><a href="https://www.zoomeye.org/statistics" target="_blank" rel="noopener">Zoomeye</a></li>
 </ol>
 <h1 id="PS"><a href="#PS" class="headerlink" title="PS"></a>PS</h1><h3 id="谷歌基本语法"><a href="#谷歌基本语法" class="headerlink" title="谷歌基本语法"></a>谷歌基本语法</h3><blockquote>
-<p>“” //双引号表示强制搜索<br>-//表示搜索不包含关键词的网页<br>|  //或者的意思<br>site //返回所有于这个域名有关的网页<br>intext //搜索到的网页正文部分包含关键词<br>intitle //搜索到的网页标题包含关键词<br>cache   //搜索关于某些内容的缓存<br>definne //搜索某个词语的定义<br>filetype //搜索指定的文件类型<br>info //查找指定站点的一些基本信息<br>inurl //搜索包含关键词的URL<br>link //可以返回所有和baidu.com做了链接的URL</p>
+<p>cache //缓存搜索（快照）<br>AND //你懂的<br>“”  //双引号表示强制搜索</p>
+<ul>
+<li>//表示搜索不包含关键词的网页<br>|     //或者的意思<br>site //返回所有于这个域名有关的网页<br>intext //搜索到的网页正文部分包含关键词<br>intitle //搜索到的网页标题包含关键词<br>cache   //搜索关于某些内容的缓存<br>definne //搜索某个词语的定义<br>filetype //搜索指定的文件类型<br>info //查找指定站点的一些基本信息<br>inurl //搜索包含关键词的URL<br>link //可以返回所有和baidu.com做了链接的URL</li>
+</ul>
 </blockquote>
+<h3 id="操作系统判断"><a href="#操作系统判断" class="headerlink" title="操作系统判断"></a>操作系统判断</h3><p>window大小写不敏感，linux大小写敏感</p>
 <hr>
 <p>版权声明：</p>
 <p>除非注明，本博文章均为原创，转载请以链接形式标明本文地址。</p>
@@ -738,7 +742,7 @@
 
         var selection = window.getSelection();
         // if the selection is short let's not annoy our users.
-        if (('' + selection).length < Number.parseInt('50')) {
+        if (('' + selection).length < Number.parseInt('150')) {
             return;
         }
 
