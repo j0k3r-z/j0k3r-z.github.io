@@ -423,14 +423,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-04-09
+                    2020-04-10
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    253
+                    7
                 </div>
                 
 
@@ -453,14 +453,15 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>漏洞环境：<br>php版本：7.2<br>dedeV5.7sp2最新版</p>
-<p>不特别指明的话就是这样子</p>
-<h1 id="SQL漏洞"><a href="#SQL漏洞" class="headerlink" title="SQL漏洞"></a>SQL漏洞</h1><h2 id><a href="#" class="headerlink" title></a></h2><h1 id="代码执行"><a href="#代码执行" class="headerlink" title="代码执行"></a>代码执行</h1><h2 id="plus-search-php存在任意文件写入"><a href="#plus-search-php存在任意文件写入" class="headerlink" title="plus/search.php存在任意文件写入"></a>plus/search.php存在任意文件写入</h2><p>漏洞位置:<br><img src="/1024615804/1.png" alt><br>可以看到<code>$row[&#39;typename&#39;]</code>是从数据库中提取出来的，我们跟一下，看看这个值是如何传入的，是否可控。在<code>dede/catalog_edit.php</code>中我们找到了插入的点<br><img src="/1024615804/2.png" alt><br>再往前跟发现，没对<code>$typename</code>进行任何的过滤操作，直接传入。<br><img src="/1024615804/3.png" alt><br>利用：<br>在<code>dede/catalog_edit.php</code>页面进行修改<code>typename</code>的值通过栏目名称传入(需要注意的是还要传入一个存在的id)，直接修改<br><img src="/1024615804/4.png" alt><br>然后访问<br><code>plus/search.php</code>进行更新(需要本地没有缓存，或缓存存在时间大于24小时)<br><img src="/1024615804/5.png" alt><br>同时，可以发现这个地方没有token检验，可以利用csrf来结合这个直接getshell</p>
-<h2 id="-1"><a href="#-1" class="headerlink" title></a></h2><hr>
-<p>版权声明：</p>
-<p>除非注明，本博文章均为原创，转载请以链接形式标明本文地址。</p>
-<hr>
-
+                <div id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <div class="hbe-input-container">
+  <input type="password" id="hbePass" placeholder="" />
+    <label for="hbePass">Please enter the password to read.</label>
+    <div class="bottom-line"></div>
+  </div>
+  <script id="hbeData" type="hbeData" data-hmacdigest="609983cc1d6e7bc67159b2d7cf2d7972bf9572375359e761a65dd0297d8befe1">4735393623415a6a77293005882cea60569b02b346c57bff45e06a0bb54422155d67d19d3a599251728ff0d833d2c37cc644ff44fe5d527a8bdc6c2722acff31f759d8900ad709a1d93c6df949a01ae2809707f1aa8e45a922c378fbed1c922c5baf5b66c562d554f2b46368280b1c225e32fa077e344a6520651f7e93233870d795e0c84e587f725f0b084705bd0dab700a4e096503311d516ee8d756244952174d0c9fa5c78649d69670cbb78940bbb62b4947486a70c667d159404d21432af719d8011d0688661cfd4a053e18a2a1c7b63a46809c746847ca930a521238c9fa68195c907dda0b6e6d16e93cedab6478d84b0007ac65e6aa2ba9578162b55281f5d302cda6c14fba444313404f067468974cdc81df6b1beac69a6cf6633d544c5786d3ff6d31434c4acad3048af93d9ef33978ff8985fb6d7317e52bee5dd2f24a568c4ed8fb90c6994ed01cb285018a11645f34eb432c28710ca5c2bccb08838bab622c924d38725ed7ac658d4adf878fc0779787da9ebe03451b3ffbe54eabc24c13dd1e935c54bf3b56c8cced26306b95014627b504e8974f20bcc1b477d2e23a4937881318a238ef8a74954daa9ca5cdd1057922239f2c57b6fc026420792a4a9512a92d5513a4c67d852bd4b26851adfa1a8e48d75f6c307d72f94849585fca6057c3f1feb3441244d9bb1db5546bc45dabd8969e0698a440490db63eed0a0a90ff4c73ef6accb07f38b93117559bb85d936072cfae7cf8abcfb2e832c6d1e2d8eb79938534f5c830ffd79e4f88e8678ded6783aa3b6006c8246affbc20c05bd8f5796c93f62e2a8176b4cf8d1b66190ae7a9847fc506d7573f98e41e64853883a3624f189cd302396b9fc0dec64bfa48f0ebce8e128b9f586f0e7d7b2811d0ab71ee947c5946a360812e1a202fc001c8b7a7eb8eab6c2e5bbd612817315d8b58d701f8030ca45409fea9f5ac567bae7252e9c5afbdbee9ae99c4a0327666639da091183535cf6e558da366da42e8cf36bc92571187d4c81542b1e198f224420ff0ab84de7c8b6d1d80593bf3d7def9f620259a1007007f141112d234bdd3e73754109252c5cbbb88d7ebf9ec1530fa3d9e6ad1a1c1ff0db933131647f923c21f9f279b8a494cbd97d7ad9d8471eb4ebb6a2fea457586bcf2730f7f433f24a9dabb75eff0536fe1730406f7823722d72a73f119a9580b0c401a343d6c422841f82841e7a3151a1bb3c3eb9618dff33b89240e333b76fd824f6e49855af96817c52ea3bf315b91fbeafbc2f839a6ae1180324798dd222a256bebe99f645677a49bfd1265fd3cb4bad8c4116afdbbea8345fcc07749a89b03c9d7c947f5b0b2b6b3c91a0bb46dd1981279abfaf57f8ed8728642761f7c7ac66f2f99512de975d11bac1fb6c64b440ed48f5b29ad301b725c9f0e72fc75994292f2bbaa5a5df6c94750e86f3920de9ae9d0f3a29fab48d5b637f5ecec5bad9c504bfd6991f2b6fcfc2e680187194977cf9e2b6a95bbca04ad882fd1e073918e5dadbfa142ed847fdb677fb43d086f43976ab8e2a660638a25f3a5d137ec7c378d4810fd40fdbf87b362da2bae107130db1f66a7d829b2e0c9aa00fdf8d699719d96dd34d955a37e9f09e0d44cf1d748ed58a021f8b93f5a4c2a0f181c012ad65b8625b7f6f140b2d168e2ba98f9f388a571386c164b6a0e90c67b4405c074dbb0d67c7ee50abbb7bbf08b7d2e8d06d4a62fc0437873cb6503073196abf67bce8adc3227980a5dfb2b15741db2829f30fa3c2f12e27998c6bba23f634c456c01497e74765fea086e774d9da18032a6d764a41f1cff00b296a830ead3e2607229e1051051d7728531a22da27edafd764e6766561c495359ce011cf51272a66da0ee2ba3b93a7c846824a500787473eb125ce6953689eb5a134d3cbebb2177c0fbe980827d06fad7e146de2cef4f6e963f8e5429b70ac16f4df302b6ec6acb5737fcc779fc053f7b3be72007a82286207d82097b54a8593aec0d2335eb713ab79c0c57f790e81d78f3a28e404d58e04f0ebf41ff40b0a8a83bc17994606fee2b6bd596e343575c4e1a81d134d8d6762ca67e80faf094279a92a54aa35966b50e24106f55f5b00c67935d8c03b5f9662a5467bd9b171e87915a011726a2156628b6fe0a551190def0b89849fe8a56cd425be19a0a6707ac93ec1fe8aa4b501fa64308019162c1c5c7f3c6a4849b36df8ac17f5bbd0b92b06b867b46ca58f45e45e8b2406d6e98fbcc0a12367cacf5cbdaafd94b37edba0c2b26758ef84831428a1c1259be50df1a6ade1eedcb783bf96ac230c0757b442856cab616d49a7db2d86f5c43af757309e5d679ec512c84b36bff58b3648c2cf0881fd0ecd106cb1cf7fee78ad26fe295d499f0c7281cd9774eefb238b4f8d81243720d1ec6324d1e3e19a4df60c6dfa2ae67c3d8e2609224187f682de5f08a2699ead4a39af2854b9aea10b2bc638c6cbcc374c8708dd2938144cc09fc731dc3303cf11dae19f89ebc55ef5e07c34d04ab90b8bf1102da0a1d48b19d064817</script>
+</div>
+<script src="/lib/blog-encrypt.js"></script><link href="/css/blog-encrypt.css" rel="stylesheet" type="text/css">
             </div>
             <hr/>
 
@@ -818,7 +819,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
         <div class="col s12 m8 l8 copy-right">
             
             &nbsp;苦逼博主已经肝了&nbsp;<span
-                class="white-color">33.2k</span>&nbsp;字
+                class="white-color">32.9k</span>&nbsp;字
             
             
             
