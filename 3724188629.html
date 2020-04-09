@@ -584,7 +584,7 @@ select * from ctf where flag = 1 and 0 and get_lock(&#39;username&#39;,5);</code
 <p>如：<br>传入 <code>1&#39;</code>，被php转义后变为<code>1\&#39;</code>，这其实没什么问题，但当我们传入<code>1%df&#39;</code>是就会变成<code>1%df\&#39;</code>编码看的话是<code>1%df%5c&#39;</code>，而<code>%df%5c</code>在GBK编码下是一个繁体字“連”，这就导致单引号被绕过。</p>
 <h3 id="二次注入"><a href="#二次注入" class="headerlink" title="二次注入"></a>二次注入</h3><p>直接上一位师傅画的图<br><img src="https://img-blog.csdnimg.cn/20191028152937942.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQzNDMxMTU4,size_16,color_FFFFFF,t_70" alt></p>
 <p>涉及的函数和宽字节注入是一样的，都是由转义造成的，话说其实很想知道为什么到sql后斜杠就被去除了……二次注入感觉漏洞挖掘中遇到的次数挺多的，尤其是dede，貌似就有好几个,而且一般框架基本全部的传值都在初始化的时候就被转义了。</p>
-<h2 id="堆叠注入"><a href="#堆叠注入" class="headerlink" title="堆叠注入"></a>堆叠注入</h2><p>堆叠注入可以执行任意的语句，多条sql一起执行，在MYSQL命令框中，常以;作为结束符，那我们便可以在一句SQL语句结束后再紧跟一句SQL语句 。<br>但是这种仍有局限性：<br>（1）可能受到API或者数据库引擎不支持的限制<br>（2）权限不足</p>
+<h3 id="堆叠注入"><a href="#堆叠注入" class="headerlink" title="堆叠注入"></a>堆叠注入</h3><p>堆叠注入可以执行任意的语句，多条sql一起执行，在MYSQL命令框中，常以;作为结束符，那我们便可以在一句SQL语句结束后再紧跟一句SQL语句 。<br>但是这种仍有局限性：<br>（1）可能受到API或者数据库引擎不支持的限制<br>（2）权限不足</p>
 <p>现实场景一般遇不到，出现在CTF中，可参考强网杯的题目</p>
 <h3 id="其他注入"><a href="#其他注入" class="headerlink" title="其他注入"></a>其他注入</h3><p>还以一些其他的XFF注入（IP处），base64注入（base64解码），Cookie（cookie处）注入，都是字面意思了……就不写了，太懒了。</p>
 <h2 id="0x06-常见绕过姿势"><a href="#0x06-常见绕过姿势" class="headerlink" title="0x06 常见绕过姿势"></a>0x06 常见绕过姿势</h2><h3 id="大小写绕过"><a href="#大小写绕过" class="headerlink" title="大小写绕过"></a>大小写绕过</h3><p>在sql中是不区分大小写的，但是过滤函数可能会，所以就导致了绕过<br>区分大小写的函数：<br>1、ereg()函数<br>2、strstr()<br>3、以及不加i的正则<br>4、……</p>

