@@ -402,12 +402,25 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/mysql/">
+                                <span class="chip bg-color">mysql</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E8%BD%AC%E8%BD%BD/" class="post-category">
+                                转载
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -454,30 +467,36 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h2 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h2><p>本文转载自：<a href="https://blog.csdn.net/zhyoulun/article/details/78513221" target="_blank" rel="noopener">https://blog.csdn.net/zhyoulun/article/details/78513221</a></p>
-<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>SQL中最常用的当属<code>select</code>命令了，它被用于从一张或者多张表中获取数据，简单的使用例子例如是<code>select * from
-tab_name</code>，可以将一张表中的所有数据取出来；但又由于支持条件过滤、分组、排序、合并、嵌套查询等等特性，有些应用场景中的SQL可以说是非常复杂，下面我们就来整理一下SQL支持的语法都有哪些。</p>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>SQL中最常用的当属<code>select</code>命令了，它被用于从一张或者多张表中获取数据，简单的使用例子例如是<code>select * from tab_name</code>，可以将一张表中的所有数据取出来；但又由于支持条件过滤、分组、排序、合并、嵌套查询等等特性，有些应用场景中的SQL可以说是非常复杂，下面我们就来整理一下SQL支持的语法都有哪些。</p>
 <p><code>select</code>完整的语法结构如下所示，可以说是非常庞大的。</p>
-<p>​<br>​    SELECT<br>​        [ALL | DISTINCT | DISTINCTROW ]<br>​          [HIGH_PRIORITY]<br>​          [STRAIGHT_JOIN]<br>​          [SQL_SMALL_RESULT] [SQL_BIG_RESULT] [SQL_BUFFER_RESULT]<br>​          [SQL_CACHE | SQL_NO_CACHE] [SQL_CALC_FOUND_ROWS]<br>​        select_expr [, select_expr …]<br>​        [<br>​    </p>
-<pre><code>     FROM table_references
-      [PARTITION partition_list]
-    [WHERE where_condition]
-    [GROUP BY {col_name | expr | position}
-      [ASC | DESC], ... [WITH ROLLUP]]
-    [HAVING where_condition]
-    [ORDER BY {col_name | expr | position}
-      [ASC | DESC], ...]
-    [LIMIT {[offset,] row_count | row_count OFFSET offset}]
-    [PROCEDURE procedure_name(argument_list)]
-    [INTO OUTFILE &#39;file_name&#39;
-        [CHARACTER SET charset_name]
-        export_options
-      | INTO DUMPFILE &#39;file_name&#39;
-      | INTO var_name [, var_name]]
-    [FOR UPDATE | LOCK IN SHARE MODE]
+<pre><code>    SELECT
+        [ALL | DISTINCT | DISTINCTROW ]
+          [HIGH_PRIORITY]
+          [STRAIGHT_JOIN]
+          [SQL_SMALL_RESULT] [SQL_BIG_RESULT] [SQL_BUFFER_RESULT]
+          [SQL_CACHE | SQL_NO_CACHE] [SQL_CALC_FOUND_ROWS]
+        select_expr [, select_expr ...]
+        [ 
+         FROM table_references
+          [PARTITION partition_list]
+        [WHERE where_condition]
+        [GROUP BY {col_name | expr | position}
+          [ASC | DESC], ... [WITH ROLLUP]]
+        [HAVING where_condition]
+        [ORDER BY {col_name | expr | position}
+          [ASC | DESC], ...]
+        [LIMIT {[offset,] row_count | row_count OFFSET offset}]
+        [PROCEDURE procedure_name(argument_list)]
+        [INTO OUTFILE &#39;file_name&#39;
+            [CHARACTER SET charset_name]
+            export_options
+          | INTO DUMPFILE &#39;file_name&#39;
+          | INTO var_name [, var_name]]
+        [FOR UPDATE | LOCK IN SHARE MODE]
 
-    ]</code></pre><p>如下是我总结的select语法流程图：</p>
+        ]</code></pre><p>如下是我总结的select语法流程图：</p>
 <p><img src="http://mdimg.fabuler.cn/1711/p002.png" alt="select语法流程图"></p>
-<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="SELECT-select-expr-select-expr"><a href="#SELECT-select-expr-select-expr" class="headerlink" title="SELECT select_expr [, select_expr ...]"></a><code>SELECT select_expr [, select_expr ...]</code></h3><p>其中的中括号表示可选的意思，所以只需要<code>SELECT select_expr</code>这两部分，<code>select</code>就可以正常工作啦，这两部分也是必选的。举个例子：</p>
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="SELECT-select-expr-select-expr-…"><a href="#SELECT-select-expr-select-expr-…" class="headerlink" title="SELECT select_expr [, select_expr …]/"></a>SELECT select_expr [, select_expr …]/</h3><p>其中的中括号表示可选的意思，所以只需要<code>SELECT select_expr</code>这两部分，<code>select</code>就可以正常工作啦，这两部分也是必选的。举个例子：</p>
 <ul>
 <li>查询数字 <code>select 1</code> 结果：<code>1</code></li>
 <li>查询字符串 <code>select &#39;a&#39;</code> 结果：<code>a</code></li>
@@ -485,7 +504,7 @@ tab_name</code>，可以将一张表中的所有数据取出来；但又由于�
 <li>查询当前时间 <code>select now()</code> 结果：<code>2017-11-11 15:23:11</code></li>
 </ul>
 <p>当然我们也可以查询多个<code>select_expr</code>，这时的语法结构是<code>SELECT select_expr [, select_expr ...]</code>。</p>
-<h3 id="FROM-table-references"><a href="#FROM-table-references" class="headerlink" title="FROM table_references"></a><code>FROM table_references</code></h3><p>大部分情况下，我们需要指定数据源，即表名，<code>FROM
+<h3 id="FROM-table-references"><a href="#FROM-table-references" class="headerlink" title="FROM table_references"></a>FROM table_references</h3><p>大部分情况下，我们需要指定数据源，即表名，<code>FROM
 table_references</code>，注意这里是<code>table_references</code>，而不是<code>table_name</code>，因为<code>table_references</code>可以代指多张表的组合。组合的方法查考本文后边提到的<code>JOIN</code>语法。我们暂时只考虑一张表。</p>
 <p>假设我们有一张表，表名为<code>student</code>，字段有<code>id, name, age, create_time</code>，</p>
 <ul>
@@ -553,65 +572,115 @@ c2, c3)</code></p>
 USING(all_same_column_list)</code>，其中<code>all_same_column_list</code>代表<code>t1</code>和<code>t2</code>表中所有名称相同的字段</p>
 <p><code>RIGHT JOIN</code>和<code>LEFT JOIN</code>，建议使用<code>LEFT JOIN</code></p>
 <h3 id="UNION"><a href="#UNION" class="headerlink" title="UNION"></a>UNION</h3><p><code>UNION</code>的语法</p>
-<p>​<br>​    SELECT …<br>​    UNION [ALL | DISTINCT] SELECT …<br>​    [UNION [ALL | DISTINCT] SELECT …]</p>
-<p><code>UNION</code>用于合并多个<code>select</code>查询结果。</p>
+<pre><code>    SELECT ...
+    UNION [ALL | DISTINCT] SELECT ...
+    [UNION [ALL | DISTINCT] SELECT ...]</code></pre><p><code>UNION</code>用于合并多个<code>select</code>查询结果。</p>
 <p>第一个<code>select</code>结果中的列名称会作为总结果的列名称。</p>
 <p>多个<code>select</code>结果中对应列的类型应该相同；否则总结果会统筹考虑所有<code>select</code>结果的值。</p>
 <p>默认情况下，如果两个<code>select</code>的结果有相同的行，只会保留相同行中的一个。如果不希望这样的事发生，需要使用关键词<code>ALL</code>，即<code>select ...
 union all select ...;</code>。</p>
-<p>如果单个<code>select</code>中使用了<code>order by</code>或者<code>limit</code>，需要用括号括起来：</p>
-<p>​<br>​    (SELECT a FROM t1 WHERE a=10 AND B=1 ORDER BY a LIMIT 10)<br>​    UNION<br>​    (SELECT a FROM t2 WHERE a=11 AND B=2 ORDER BY a LIMIT 10);</p>
+<p>如果单个<code>select</code>中使用了<code>order by</code>或者<code>limit</code>，需要用括号括起来：<br><code>​    (SELECT a FROM t1 WHERE a=10 AND B=1 ORDER BY a LIMIT 10)</code><br><code>​    UNION</code><br><code>​    (SELECT a FROM t2 WHERE a=11 AND B=2 ORDER BY a LIMIT 10);</code></p>
 <p>可以对合并后的结果做<code>order by</code>和<code>limit</code>操作，例如：</p>
-<p>​<br>​    (SELECT a FROM t1 WHERE a=10 AND B=1)<br>​    UNION<br>​    (SELECT a FROM t2 WHERE a=11 AND B=2)<br>​    ORDER BY a LIMIT 10;</p>
+<p><code>​    (SELECT a FROM t1 WHERE a=10 AND B=1)</code><br><code>​    UNION</code><br><code>​    (SELECT a FROM t2 WHERE a=11 AND B=2)</code><br><code>​    ORDER BY a LIMIT 10;</code></p>
 <p>可以使用一个固定值来连接两个表，标识数据是属于哪张表的</p>
-<p>​<br>​    (SELECT 1 AS sort_col, col1a, col1b, … FROM t1)<br>​    UNION<br>​    (SELECT 2, col2a, col2b, … FROM t2) ORDER BY sort_col;</p>
+<p><code>​    (SELECT 1 AS sort_col, col1a, col1b, ... FROM t1)</code><br><code>​    UNION</code><br><code>​    (SELECT 2, col2a, col2b, ... FROM t2) ORDER BY sort_col;</code></p>
 <h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><p><code>INNER JOIN</code> <code>LEFT JOIN</code> <code>RIGHT JOIN</code>比较</p>
-<p>表t1，表t2如下所示</p>
-<p>​<br>​    mysql&gt; select * from t1;<br>​    +——+——+<br>​    | c1   | c2   |<br>​    +——+——+<br>​    |    1 |    1 |<br>​    |    2 |    3 |<br>​    |    3 |    5 |<br>​    +——+——+<br>​    </p>
-<pre><code>mysql&gt; select * from t2;
-+------+------+
-| c1   | c2   |
-+------+------+
-|    1 |    2 |
-|    2 |    4 |
-|    4 |    6 |
-+------+------+</code></pre><p>​<br>​    mysql&gt; select * from t1 inner join t2;<br>​    +——+——+——+——+<br>​    | c1   | c2   | c1   | c2   |<br>​    +——+——+——+——+<br>​    |    1 |    1 |    1 |    2 |<br>​    |    2 |    3 |    1 |    2 |<br>​    |    3 |    5 |    1 |    2 |<br>​    |    1 |    1 |    2 |    4 |<br>​    |    2 |    3 |    2 |    4 |<br>​    |    3 |    5 |    2 |    4 |<br>​    |    1 |    1 |    4 |    6 |<br>​    |    2 |    3 |    4 |    6 |<br>​    |    3 |    5 |    4 |    6 |<br>​    +——+——+——+——+</p>
-<p>​<br>​    mysql&gt; select * from t1 inner join t2 on t1.c1=t2.c1;<br>​    +——+——+——+——+<br>​    | c1   | c2   | c1   | c2   |<br>​    +——+——+——+——+<br>​    |    1 |    1 |    1 |    2 |<br>​    |    2 |    3 |    2 |    4 |<br>​    +——+——+——+——+<br>​    </p>
-<pre><code>mysql&gt; select * from t1 left join t2 on t1.c1=t2.c1;
-+------+------+------+------+
-| c1   | c2   | c1   | c2   |
-+------+------+------+------+
-|    1 |    1 |    1 |    2 |
-|    2 |    3 |    2 |    4 |
-|    3 |    5 | NULL | NULL |
-+------+------+------+------+
+<pre><code>表t1，表t2如下所示
+``​    mysql&gt; select * from t1;`
+`​    +------+------+`
+`​    | c1   | c2   |`
+`​    +------+------+`
+`​    |    1 |    1 |`
+`​    |    2 |    3 |`
+`​    |    3 |    5 |`
+`​    +------+------+`
+​`    
 
-mysql&gt; select * from t1 right join t2 on t1.c1=t2.c1;
-+------+------+------+------+
-| c1   | c2   | c1   | c2   |
-+------+------+------+------+
-|    1 |    1 |    1 |    2 |
-|    2 |    3 |    2 |    4 |
-| NULL | NULL |    4 |    6 |
-+------+------+------+------+</code></pre><p><code>c1</code>是<code>t1</code>和<code>t2</code>的共有字段</p>
-<p>​<br>​    mysql&gt; select * from t1 inner join t2 using (c1);<br>​    +——+——+——+<br>​    | c1   | c2   | c2   |<br>​    +——+——+——+<br>​    |    1 |    1 |    2 |<br>​    |    2 |    3 |    4 |<br>​    +——+——+——+<br>​    </p>
-<pre><code>mysql&gt; select * from t1 left join t2 using (c1);
-+------+------+------+
-| c1   | c2   | c2   |
-+------+------+------+
-|    1 |    1 |    2 |
-|    2 |    3 |    4 |
-|    3 |    5 | NULL |
-+------+------+------+
+    mysql&gt; select * from t2;
+    +------+------+
+    | c1   | c2   |
+    +------+------+
+    |    1 |    2 |
+    |    2 |    4 |
+    |    4 |    6 |
+    +------+------+
 
-mysql&gt; select * from t1 right join t2 using (c1);
-+------+------+------+
-| c1   | c2   | c2   |
-+------+------+------+
-|    1 |    2 |    1 |
-|    2 |    4 |    3 |
-|    4 |    6 | NULL |
-+------+------+------+</code></pre><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+
+​    
+​    mysql&gt; select * from t1 inner join t2;
+​    +------+------+------+------+
+​    | c1   | c2   | c1   | c2   |
+​    +------+------+------+------+
+​    |    1 |    1 |    1 |    2 |
+​    |    2 |    3 |    1 |    2 |
+​    |    3 |    5 |    1 |    2 |
+​    |    1 |    1 |    2 |    4 |
+​    |    2 |    3 |    2 |    4 |
+​    |    3 |    5 |    2 |    4 |
+​    |    1 |    1 |    4 |    6 |
+​    |    2 |    3 |    4 |    6 |
+​    |    3 |    5 |    4 |    6 |
+​    +------+------+------+------+
+
+
+​    
+​    mysql&gt; select * from t1 inner join t2 on t1.c1=t2.c1;
+​    +------+------+------+------+
+​    | c1   | c2   | c1   | c2   |
+​    +------+------+------+------+
+​    |    1 |    1 |    1 |    2 |
+​    |    2 |    3 |    2 |    4 |
+​    +------+------+------+------+
+​    
+
+    mysql&gt; select * from t1 left join t2 on t1.c1=t2.c1;
+    +------+------+------+------+
+    | c1   | c2   | c1   | c2   |
+    +------+------+------+------+
+    |    1 |    1 |    1 |    2 |
+    |    2 |    3 |    2 |    4 |
+    |    3 |    5 | NULL | NULL |
+    +------+------+------+------+
+
+    mysql&gt; select * from t1 right join t2 on t1.c1=t2.c1;
+    +------+------+------+------+
+    | c1   | c2   | c1   | c2   |
+    +------+------+------+------+
+    |    1 |    1 |    1 |    2 |
+    |    2 |    3 |    2 |    4 |
+    | NULL | NULL |    4 |    6 |
+    +------+------+------+------+
+
+`c1`是`t1`和`t2`的共有字段
+
+
+​    
+​    mysql&gt; select * from t1 inner join t2 using (c1);
+​    +------+------+------+
+​    | c1   | c2   | c2   |
+​    +------+------+------+
+​    |    1 |    1 |    2 |
+​    |    2 |    3 |    4 |
+​    +------+------+------+
+​    
+
+    mysql&gt; select * from t1 left join t2 using (c1);
+    +------+------+------+
+    | c1   | c2   | c2   |
+    +------+------+------+
+    |    1 |    1 |    2 |
+    |    2 |    3 |    4 |
+    |    3 |    5 | NULL |
+    +------+------+------+
+
+    mysql&gt; select * from t1 right join t2 using (c1);
+    +------+------+------+
+    | c1   | c2   | c2   |
+    +------+------+------+
+    |    1 |    2 |    1 |
+    |    2 |    4 |    3 |
+    |    4 |    6 | NULL |
+    +------+------+------+</code></pre><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
 <li><a href="https://dev.mysql.com/doc/refman/5.7/en/select.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/5.7/en/select.html</a></li>
 <li><a href="https://dev.mysql.com/doc/refman/5.7/en/join.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/5.7/en/join.html</a></li>
 <li><a href="https://dev.mysql.com/doc/refman/5.7/en/union.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/5.7/en/union.html</a></li>
@@ -681,7 +750,11 @@ mysql&gt; select * from t1 right join t2 using (c1);
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
+                            
+                                <a href="/tags/mysql/">
+                                    <span class="chip bg-color">mysql</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -746,13 +819,25 @@ mysql&gt; select * from t1 right join t2 using (c1);
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            Joker
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E8%BD%AC%E8%BD%BD/" class="post-category">
+                                    转载
+                                </a>
+                            
                             
                         </span>
                     </div>
                 </div>
 
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/mysql/">
+                        <span class="chip bg-color">mysql</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
@@ -967,7 +1052,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
         <div class="col s12 m8 l8 copy-right">
             
             &nbsp;苦逼博主已经肝了&nbsp;<span
-                class="white-color">32.9k</span>&nbsp;字
+                class="white-color">37.1k</span>&nbsp;字
             
             
             
