@@ -4,6 +4,19 @@
   
     
     <entry>
+      <title>buuoj每日一题（3）</title>
+      <link href="/2747396825.html"/>
+      <url>/2747396825.html</url>
+      
+        <content type="html"><![CDATA[<h2 id="EasySQL"><a href="#EasySQL" class="headerlink" title="EasySQL"></a>EasySQL</h2><p>太简单了……就过滤了空格，然后万能密码就行了，后端应该就是把账号密码放一个语句里了<br><img src="/2747396825/1.png" alt></p><p>没啥好说的，今天多花时间复现漏洞吧……</p><hr><p>版权声明：</p><p>除非注明，本博文章均为原创，转载请以链接形式标明本文地址。</p><hr>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>buuoj每日一题（2）</title>
       <link href="/461215164.html"/>
       <url>/461215164.html</url>
