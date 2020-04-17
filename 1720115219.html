@@ -4,8 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="buuoj每日一题（2）, Joker">
-    <meta name="description" content="buuoj每日一题（2）">
+    <meta name="keywords" content="HTTP请求走私学习笔记, Joker">
+    <meta name="description" content="HTTP请求走私学习笔记">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -13,7 +13,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>buuoj每日一题（2） | Joker</title>
+    <title>HTTP请求走私学习笔记 | Joker</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -197,12 +197,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/20.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/6.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">buuoj每日一题（2）</h1>
+                    <h1 class="description center-align post-title">HTTP请求走私学习笔记</h1>
                 </div>
             </div>
         </div>
@@ -331,28 +331,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-04-15
+                    2020-04-17
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-04-16
+                    2020-04-17
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    794
+                    7
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    3 分
+                    1 分
                 </div>
                 
 				
@@ -368,68 +368,15 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="Easy-Calc"><a href="#Easy-Calc" class="headerlink" title="Easy Calc"></a>Easy Calc</h2><pre><code>&lt;?php
-error_reporting(0);
-if(!isset($_GET[&#39;num&#39;])){
-    show_source(__FILE__);
-}else{
-        $str = $_GET[&#39;num&#39;];
-        $blacklist = [&#39; &#39;, &#39;\t&#39;, &#39;\r&#39;, &#39;\n&#39;,&#39;\&#39;&#39;, &#39;&quot;&#39;, &#39;`&#39;, &#39;\[&#39;, &#39;\]&#39;,&#39;\$&#39;,&#39;\\&#39;,&#39;\^&#39;];
-        foreach ($blacklist as $blackitem) {
-                if (preg_match(&#39;/&#39; . $blackitem . &#39;/m&#39;, $str)) {
-                        die(&quot;what are you want to do?&quot;);
-                }
-        }
-        eval(&#39;echo &#39;.$str.&#39;;&#39;);
-}
-?&gt;</code></pre><p>同时还对num做了check要求必须是数字，思路就是绕过数字的限制，然后就是编码绕过字符的限制，本来想找dockfile看一下后端源码的，但是没找到……</p>
-<p>考点：</p>
-<ol>
-<li>php字符串解析特性</li>
-<li>Http请求走私</li>
-<li>编码bypass</li>
-</ol>
-<p>主要学习下php的字符串解析特性和http请求走私</p>
-<h2 id="php字符串解析特性"><a href="#php字符串解析特性" class="headerlink" title="php字符串解析特性"></a>php字符串解析特性</h2><p>在php将传入的字符串解析到<code>$_GET</code>,<code>$_POST</code>内置数组的时候会对字符串，做一些解析，会将某些字符去掉或用下划线替代。感觉这个解析问题应该出在parse_str身上，而在字符串到<code>$_GET、$_POST</code>的中间做了一次parse_str处理。<br>用脚本跑了下，可以发现，加了一些字符之后仍然会等同于foo_bar<br><img src="/461215164/1.png" alt><br>具体可以参考下面这张某大佬的图，其中两边的被直接去掉了，而中间的则会被替换为<code>_</code><br><img src="https://image.3001.net/images/20190904/1567560448_5d6f13004035f.png" alt></p>
-<p>脚本</p>
-<pre><code>&lt;?php
-foreach(
-    [
-        &quot;{chr}foo_bar&quot;,
-        &quot;foo{chr}bar&quot;,
-        &quot;foo_bar{chr}&quot;
-    ] as $k =&gt; $arg){
-    for ($i=0;$i&lt;=255;$i++){
-        parse_str(str_replace(&quot;{chr}&quot;,chr($i),$arg),$o);
-        foreach ($o as $key =&gt; $value) {
-            if ($key == &#39;foo_bar&#39;){
-                echo str_replace(&quot;{chr}&quot;,chr($i),&quot;[&quot;.$arg).&quot;] -&gt; [&quot;.$key.&quot;]&quot;;
-                echo &quot;\n&quot;;
-            }
-        }
-    }
-    echo &quot;\n&quot;;
-}</code></pre><p>这道题目本来是以为在后端做的过滤，这样看应该是对str做完过滤之后，在传到后端，而前waf检查的只是num，而<code>num</code>则放过去了，但是在后端却解析成了num，可以用这个trick绕过一些前端对于特定变量的检验</p>
-<h2 id="HTTP请求走私"><a href="#HTTP请求走私" class="headerlink" title="HTTP请求走私"></a>HTTP请求走私</h2><p>其实这个很久之间就看到过，一直没研究，看了一天其实也没怎么搞懂，这周回学校有时间专门写一篇文章学习一下。搞得有点晚，困了，稍微说下如何实现的就睡了。</p>
-<blockquote>
-<p>HTTP请求走私是针对于服务端处理一个或者多个接收http请求序列的方式，进行绕过安全机制，实施未授权访问一种攻击手段，获取敏感信息，并直接危害其他用户。</p>
-</blockquote>
-<p>例如：</p>
-<pre><code>POST / HTTP/1.1\r\n
-Host: example.com\r\n
-Content-Length: 8\r\n //前端看到这个
-Content-Length: 7\r\n //后端看到这个
-
-12345\r\n
-a
-</code></pre><p>Content-Length控制body的长度，前端看到长度为8，后端看到长度为7，就会把a这个字符给带到下一个http请求当中导致返回Unknow method</p>
-<p>看这个题目<br><img src="/461215164/2.png" alt></p>
-<p>表面好理解，再深入就不懂了，这个地方还有点没彻底搞懂原理，先这样吧，可能会写到HTTP请求走私的章节里，涉及的东西有点多，自己不会的又多……太难了。</p>
-<hr>
-<p>版权声明：</p>
-<p>除非注明，本博文章均为原创，转载请以链接形式标明本文地址。</p>
-<hr>
-
+                <div id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <div class="hbe-input-container">
+  <input type="password" id="hbePass" placeholder="" />
+    <label for="hbePass">Please enter the password to read.</label>
+    <div class="bottom-line"></div>
+  </div>
+  <script id="hbeData" type="hbeData" data-hmacdigest="b328ff8a2d3c6dc6674b47c5df22bb5f701ec80aa34a1c5391f1e6914230d848">0a07d8729bf65fd44f195bc48485ae55d9941cd2969f0ba6bb4647779f24e61020123cb8b990917055780d1c53cc2448abf572e823312b84bb9df49e0a1f91cd1d5d13305480fd862d2bfc9b9544c7c9738de87f2f45159f0a81aae593a7e0e7f8fa179eb55aac489bba751072e56f5f5bcc49cd40740506f7877de805823e94</script>
+</div>
+<script src="/lib/blog-encrypt.js"></script><link href="/css/blog-encrypt.css" rel="stylesheet" type="text/css">
             </div>
             <hr/>
 
@@ -454,7 +401,7 @@ a
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://blog.j0k3r.cn/461215164.html">http://blog.j0k3r.cn/461215164.html</a>
+                    <a href="http://blog.j0k3r.cn/1720115219.html">http://blog.j0k3r.cn/1720115219.html</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -530,29 +477,30 @@ a
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2747396825.html">
+                <a href="/1720115219.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="buuoj每日一题（3）">
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="HTTP请求走私学习笔记">
                         
-                        <span class="card-title">buuoj每日一题（3）</span>
+                        <span class="card-title">HTTP请求走私学习笔记</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            buuoj每日一题（3）
+                            HTTP请求走私学习笔记
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-04-16
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-04-17
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -561,6 +509,7 @@ a
                         </span>
                     </div>
                 </div>
+
                 
             </div>
         </div>
@@ -571,24 +520,24 @@ a
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/164117074.html">
+                <a href="/1041680992.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="buuoj每日一题（1）">
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="buuoj每日一题（4）">
                         
-                        <span class="card-title">buuoj每日一题（1）</span>
+                        <span class="card-title">buuoj每日一题（4）</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            buuoj每日一题（1）
+                            buuoj每日一题（4）
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-04-14
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-04-17
                             </span>
                         <span class="publish-author">
                             
