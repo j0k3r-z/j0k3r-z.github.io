@@ -338,21 +338,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-04-16
+                    2020-04-18
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    794
+                    1.2k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    3 分
+                    4 分
                 </div>
                 
 				
@@ -410,21 +410,15 @@ foreach(
     }
     echo &quot;\n&quot;;
 }</code></pre><p>这道题目本来是以为在后端做的过滤，这样看应该是对str做完过滤之后，在传到后端，而前waf检查的只是num，而<code>num</code>则放过去了，但是在后端却解析成了num，可以用这个trick绕过一些前端对于特定变量的检验</p>
-<h2 id="HTTP请求走私"><a href="#HTTP请求走私" class="headerlink" title="HTTP请求走私"></a>HTTP请求走私</h2><p>其实这个很久之间就看到过，一直没研究，看了一天其实也没怎么搞懂，这周回学校有时间专门写一篇文章学习一下。搞得有点晚，困了，稍微说下如何实现的就睡了。</p>
+<h2 id="HTTP请求走私"><a href="#HTTP请求走私" class="headerlink" title="HTTP请求走私"></a>HTTP请求走私</h2><p>2020.4.18修改</p>
+<p>重新写一下之前理解的不够透彻，现在回过头来重新回顾下这道题目</p>
+<p>先看上次的哪个payload<br><img src="/461215164/2.png" alt><br>典型的CL-CL型的HTTP请求走私，但是HTTP走私请求当中应该是除了CL不为0的为GET型的请求其他的都为POST型才对，而且需要HTTP协议为1.1。这也是一直没看懂这个题目的原因之一，但是先不管这个，我们看payload。<br><img src="/461215164/3.png" alt></p>
 <blockquote>
-<p>HTTP请求走私是针对于服务端处理一个或者多个接收http请求序列的方式，进行绕过安全机制，实施未授权访问一种攻击手段，获取敏感信息，并直接危害其他用户。</p>
+<p>在RFC7230中规定：如果收到不带Transfer-Encoding头字段且带着不同的Content-Length头字段，其中包含的值不小，则消息帧无效，并且收件人必须将其视为不可恢复的错误。如果这是一个请求消息，服务器必须以400（错误请求）响应状态代码，然后关闭连接。如果这是回应代理收到的消息，代理必须关闭连接发送到服务器，丢弃收到的响应，然后发送502（错误 网关）对客户端的响应。如果这是响应消息用户代理收到后，该用户代理必须关闭连接到服务器并丢弃收到的响应。</p>
 </blockquote>
-<p>例如：</p>
-<pre><code>POST / HTTP/1.1\r\n
-Host: example.com\r\n
-Content-Length: 8\r\n //前端看到这个
-Content-Length: 7\r\n //后端看到这个
-
-12345\r\n
-a
-</code></pre><p>Content-Length控制body的长度，前端看到长度为8，后端看到长度为7，就会把a这个字符给带到下一个http请求当中导致返回Unknow method</p>
-<p>看这个题目<br><img src="/461215164/2.png" alt></p>
-<p>表面好理解，再深入就不懂了，这个地方还有点没彻底搞懂原理，先这样吧，可能会写到HTTP请求走私的章节里，涉及的东西有点多，自己不会的又多……太难了。</p>
+<p>以上是谷歌翻译，从我们payload的响应包我们也能看出来服务器返回了400错误，但是却仍然执行了num，所以我猜测这道题目，应该是前端服务器返回了400错误，但是却又把我们的请求传给了后端服务器，而后端服务器却成功解析了，然后返回结果，目前的话我是这么理解的，这个payload也是我最看不懂的payload跟我理解的HTTP请求走私完全不一样，上面是目前我感觉最为接近的一个猜测。</p>
+<p>然后根据HTTP请求的特性，我们尝试构造其他的payload进行尝试<br><img src="/461215164/4.png" alt><br>可以看出来，仍然是前端报错，但是请求却传给了后端<br>我认为的CL-TE型的HTTP请求伪造应该是接收两个请求头，前端代理服务器只处理Content-Length，后端遵守RFC2616忽略Content-Length，处理Transfer-Encoding所以感觉这个题目说是HTTP请求走私不是很正确，更像是前端的解析错误但是却又把数据传给了后端导致waf的绕过。</p>
+<p>最后看两种payload<br><img src="/461215164/5.png" alt><br><img src="/461215164/6.png" alt><br>这两个payload一对比就看出来这个题目其实考点并不是HTTP请求走私，第一个payload还是利用报错，而第二个则是利用了HTTP请求走私把第一个payload传过去了。这一点也验证了我前面的说法……</p>
 <hr>
 <p>版权声明：</p>
 <p>除非注明，本博文章均为原创，转载请以链接形式标明本文地址。</p>
@@ -775,7 +769,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
         <div class="col s12 m8 l8 copy-right">
             
             &nbsp;苦逼博主已经肝了&nbsp;<span
-                class="white-color">38.6k</span>&nbsp;字
+                class="white-color">41.6k</span>&nbsp;字
             
             
             

